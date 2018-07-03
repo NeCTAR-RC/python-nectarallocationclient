@@ -1,0 +1,38 @@
+Source: python-nectarallocationclient
+Section: unknown
+Priority: optional
+Maintainer: Sam Morrison <sorrison@gmail.com>
+Build-Depends: debhelper (>= 9), python-all (>=2.7), python3-all (>=3.2),
+ python-setuptools,
+ python-pip,
+ python-mock,
+ python-testtools,
+ python-requests-mock,
+ python-fixtures,
+ python-requests,
+ python-keystoneauth1,
+ python-osc-lib,
+ python3-setuptools,
+ python3-pip,
+ python3-mock,
+ python3-testtools,
+ python3-requests-mock,
+ python3-fixtures,
+ python3-requests,
+ python3-keystoneauth1,
+ python3-osc-lib,
+ dh-python,
+Standards-Version: 3.9.5
+Homepage: https://github.com/NeCTAR-RC/python-nectarallocationclient
+
+Package: python-nectarallocationclient
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends}
+Description: Nectar Allocation System python client
+ Nectar Allocation System python client
+
+Package: python3-nectarallocationclient
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends}
+Description: Nectar Allocation System python client
+ Nectar Allocation System python client
