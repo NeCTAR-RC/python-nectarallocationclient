@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "daf55975_130e5f80",
+        "filename": "nectarallocationclient/v1/allocations.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000077
+      },
+      "writtenOn": "2018-07-04T22:28:03Z",
+      "side": 1,
+      "message": "amend",
+      "range": {
+        "startLine": 46,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 14
+      },
+      "revId": "1125095eb0ba4dd34b57aa68acf8832b08a01f83",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c09809be_8654b612",
+        "filename": "nectarallocationclient/v1/allocations.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000077
+      },
+      "writtenOn": "2018-07-04T22:28:03Z",
+      "side": 1,
+      "message": "amend",
+      "range": {
+        "startLine": 202,
+        "startChar": 8,
+        "endLine": 202,
+        "endChar": 14
+      },
+      "revId": "1125095eb0ba4dd34b57aa68acf8832b08a01f83",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e9a69de1_fdc56bb7",
+        "filename": "nectarallocationclient/v1/allocations.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000077
+      },
+      "writtenOn": "2018-07-04T22:28:03Z",
+      "side": 1,
+      "message": "ammend \u003c- is this baked into the API yet?",
+      "range": {
+        "startLine": 203,
+        "startChar": 45,
+        "endLine": 203,
+        "endChar": 51
+      },
+      "revId": "1125095eb0ba4dd34b57aa68acf8832b08a01f83",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}
