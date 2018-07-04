@@ -40,24 +40,19 @@ class Allocation(base.Resource):
     def __repr__(self):
         return "<Allocation %s (%s)>" % (self.id, self.project_name)
 
-    def update(self, **kwargs):
-        # Handle special case where allocation updated to deleted state
-        if kwargs == {'status': states.DELETED}:
-            return self.delete()
+    def approve(self):
+        return self.manager.approve(self.id)
 
+    def amend(self):
+        return self.manager.amend(self.id)
+
+    def update(self, **kwargs):
         LOG.debug("%s: Updating allocation %s", self.id, kwargs)
         return self.manager.update(self.id, **kwargs)
 
     def delete(self):
         LOG.debug("%s: Deleting allocation", self.id)
-        self.manager.update(self.id, status=states.DELETED)
-        if self.parent_request:
-            LOG.debug("%s: Deleting parent allocation %s", self.id,
-                      self.parent_request)
-            self.manager.update(self.parent_request,
-                                status=states.DELETED)
-
-        self.status = states.DELETED
+        return self.manager.delete(self.id)
 
     def get_quota(self, service_type):
         if self._quota_cache is None:
@@ -185,17 +180,24 @@ class AllocationManager(base.Manager):
     def update(self, allocation_id, **kwargs):
         return self._update('/allocations/%s/' % allocation_id, data=kwargs)
 
-    def create(self, project_name, project_description, created_by,
-               contact_email, start_date, allocation_home, use_case,
+    def create(self, project_name, project_description,
+               start_date, allocation_home, use_case,
                convert_trial_project=False):
         data = {
             'project_name': project_name,
             'project_description': project_description,
-            'created_by': created_by,
-            'contact_email': contact_email,
             'start_date': start_date,
             'convert_trial_project': convert_trial_project,
             'allocation_home': allocation_home,
             'use_case': use_case,
         }
         return self._create('/allocations/', data=data)
+
+    def approve(self, allocation_id):
+        return self._create('/allocations/%s/approve/' % allocation_id)
+
+    def delete(self, allocation_id):
+        return self._create('/allocations/%s/delete/' % allocation_id)
+
+    def amend(self, allocation_id):
+        return self._create('/allocations/%s/amend/' % allocation_id)
