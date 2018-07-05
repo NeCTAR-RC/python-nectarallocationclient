@@ -14,6 +14,17 @@ except ImportError: # for pip <= 9.0.3
 
 requirements = parse_requirements("requirements.txt", session=False)
 
+entry_points = {
+    'openstack.cli.extension':
+    ['allocation = nectarallocationclient.osc.plugin',],
+    'openstack.allocation.v1':
+    [
+        'allocation list = nectarallocationclient.osc.v1.allocations:ListAllocations',
+        'allocation show = nectarallocationclient.osc.v1.allocations:ShowAllocation',
+    ]
+}
+
+
 setup(
     name='nectarallocationclient',
     version='0.1.0',
@@ -41,4 +52,5 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
     ],
+    entry_points=entry_points,
 )
