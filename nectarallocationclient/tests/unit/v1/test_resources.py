@@ -11,7 +11,6 @@
 #   under the License.
 #
 
-from nectarallocationclient import exceptions
 from nectarallocationclient.v1 import resources
 
 from nectarallocationclient.tests.unit import utils

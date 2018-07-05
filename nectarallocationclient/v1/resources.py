@@ -28,4 +28,3 @@ class ResourceManager(base.Manager):
 
     def get(self, resource_id):
         return self._get('/%s/%s/' % (self.base_url, resource_id))
-

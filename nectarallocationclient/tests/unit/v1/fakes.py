@@ -364,7 +364,6 @@ class FakeSessionClient(base_client.SessionClient):
         return (202, {}, generic_allocation)
 
     def get_resources(self, **kw):
-        params = kw.get('params')
         resources = [
             {
                 "id": 4,
@@ -390,7 +389,7 @@ class FakeSessionClient(base_client.SessionClient):
                 "quota_name": "instances",
                 "unit": "Servers",
                 "requestable": True,
-                "help_text": "The maximum number of database instances that you think your project will require at any one time.",
+                "help_text": "The maximum number of database instances",
                 "service_type": "database"
             }
         ]
@@ -404,6 +403,6 @@ class FakeSessionClient(base_client.SessionClient):
                     "quota_name": "instances",
                     "unit": "servers",
                     "requestable": True,
-                    "help_text": "The maximum number of instances that you think your project will require at any one time.",
+                    "help_text": "The maximum number of instances",
                     "service_type": "compute"
                 })
