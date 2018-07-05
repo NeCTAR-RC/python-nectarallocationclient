@@ -21,12 +21,12 @@ from nectarallocationclient import exceptions
 
 
 def getid(obj):
-    """Get obj's uuid or object itself if no uuid
+    """Get obj's id or object itself if no id
     Abstracts the common pattern of allowing both an object or
-    an object's ID (UUID) as a parameter when dealing with relationships.
+    an object's ID as a parameter when dealing with relationships.
     """
     try:
-        return obj.uuid
+        return obj.id
     except AttributeError:
         return obj
 
@@ -176,7 +176,7 @@ class ManagerWithFind(Manager):
         elif num > 1:
             raise exceptions.NoUniqueMatch
         else:
-            return self.get(matches[0].uuid)
+            return self.get(matches[0].id)
 
     def findall(self, **kwargs):
         """Find all items with attributes matching ``**kwargs``.
@@ -285,7 +285,7 @@ class Resource(RequestIdMixin):
         if not hasattr(self.manager, 'get'):
             return
 
-        new = self.manager.get(self.uuid)
+        new = self.manager.get(self.id)
         if new:
             self._add_details(new._info)
             # The 'request_ids' attribute has been added,
