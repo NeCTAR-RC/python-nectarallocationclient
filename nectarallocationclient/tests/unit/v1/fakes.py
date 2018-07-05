@@ -21,6 +21,8 @@ from nectarallocationclient.tests.unit import fakes
 from nectarallocationclient.tests.unit import utils
 from nectarallocationclient.v1 import allocations
 from nectarallocationclient.v1 import client
+from nectarallocationclient.v1 import resources
+
 
 # regex to compare callback to result of get_endpoint()
 # checks version number (vX or vX.X where X is a number)
@@ -75,6 +77,7 @@ class FakeClient(fakes.FakeClient, client.Client):
         client.Client.__init__(self, session=mock.Mock())
         self.http_client = FakeSessionClient(**kwargs)
         self.allocations = allocations.AllocationManager(self.http_client)
+        self.resources = resources.ResourceManager(self.http_client)
 
 
 class FakeSessionClient(base_client.SessionClient):
@@ -359,3 +362,47 @@ class FakeSessionClient(base_client.SessionClient):
 
     def post_allocations_123_amend(self, **kw):
         return (202, {}, generic_allocation)
+
+    def get_resources(self, **kw):
+        resources = [
+            {
+                "id": 4,
+                "name": "Storage",
+                "quota_name": "gigabytes",
+                "unit": "GB",
+                "requestable": True,
+                "help_text": None,
+                "service_type": "volume"
+            },
+            {
+                "id": 7,
+                "name": "Storage",
+                "quota_name": "object",
+                "unit": "GB",
+                "requestable": True,
+                "help_text": None,
+                "service_type": "object"
+            },
+            {
+                "id": 10,
+                "name": "Servers",
+                "quota_name": "instances",
+                "unit": "Servers",
+                "requestable": True,
+                "help_text": "The maximum number of database instances",
+                "service_type": "database"
+            }
+        ]
+        return (200, {}, resources)
+
+    def get_resources_1(self, **kw):
+        return (200, {},
+                {
+                    "id": 1,
+                    "name": "Instances",
+                    "quota_name": "instances",
+                    "unit": "servers",
+                    "requestable": True,
+                    "help_text": "The maximum number of instances",
+                    "service_type": "compute"
+                })

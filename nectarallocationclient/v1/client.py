@@ -14,6 +14,7 @@
 from nectarallocationclient import client
 from nectarallocationclient import exceptions
 from nectarallocationclient.v1 import allocations
+from nectarallocationclient.v1 import resources
 
 
 class Client(object):
@@ -30,3 +31,4 @@ class Client(object):
         self.http_client = client.SessionClient(
             session, service_type=service_type, **kwargs)
         self.allocations = allocations.AllocationManager(self.http_client)
+        self.resources = resources.ResourceManager(self.http_client)
