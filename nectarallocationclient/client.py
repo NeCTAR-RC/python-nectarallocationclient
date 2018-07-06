@@ -31,7 +31,7 @@ class SessionClient(adapter.Adapter):
 
     def request(self, url, method, **kwargs):
         kwargs.setdefault('headers', kwargs.get('headers', {}))
-        # NOTE(sileht): The standard call raises errors from
+        # NOTE(sorrison): The standard call raises errors from
         # keystoneauth, where we need to raise the nectarallocation errors.
         raise_exc = kwargs.pop('raise_exc', True)
         resp = super(SessionClient, self).request(url,
@@ -41,4 +41,7 @@ class SessionClient(adapter.Adapter):
 
         if raise_exc and resp.status_code >= 400:
             raise exceptions.from_response(resp, url, method)
+        # NOTE(sorrison): Deletes don't return json body
+        if resp.status_code == 204:
+            return resp, '{}'
         return resp, resp.json()
