@@ -76,7 +76,19 @@ class AllocationsTest(utils.TestCase):
         self.assertEqual('test', a.notes)
 
     def test_create(self):
-        pass
+        data = {
+            'project_name': 'foo',
+            'project_description': 'bar',
+            'start_date': '2018-03-03',
+            'allocation_home': 'somewhere',
+            'use_case': 'testing',
+        }
+
+        a = self.cs.allocations.create(**data)
+        data['convert_trial_project'] = False
+        self.cs.assert_called('POST', '/allocations/',
+                              data=data)
+        self.assertIsInstance(a, allocations.Allocation)
 
     def test_approve(self):
         a = self.cs.allocations.approve(123)

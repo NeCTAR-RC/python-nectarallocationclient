@@ -193,5 +193,5 @@ def from_response(response, url, method=None):
     return exception
 
 
-class AllocationDoesNotExist(Exception):
+class AllocationDoesNotExist(NotFound):
     pass
