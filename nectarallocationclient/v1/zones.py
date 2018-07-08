@@ -14,17 +14,17 @@
 from nectarallocationclient import base
 
 
-class Resource(base.Resource):
+class Zone(base.Resource):
     pass
 
 
-class ResourceManager(base.ManagerWithFind):
+class ZoneManager(base.ManagerWithFind):
 
-    base_url = 'resources'
-    resource_class = Resource
+    base_url = 'zones'
+    resource_class = Zone
 
     def list(self, **kwargs):
         return self._list('/%s/' % self.base_url, params=kwargs)
 
-    def get(self, resource_id):
-        return self._get('/%s/%s/' % (self.base_url, resource_id))
+    def get(self, zone_id):
+        return self._get('/%s/%s/' % (self.base_url, zone_id))

@@ -16,15 +16,10 @@ import logging
 from nectarallocationclient import base
 from nectarallocationclient import exceptions
 from nectarallocationclient import states
+from nectarallocationclient.v1 import quotas
 
 
 LOG = logging.getLogger(__name__)
-
-
-class Quota(base.Resource):
-
-    def __repr__(self):
-        return "<Quota %s %s %s>" % (self.zone, self.resource, self.quota)
 
 
 class Allocation(base.Resource):
@@ -35,7 +30,7 @@ class Allocation(base.Resource):
         self.quotas = []
         self._quota_cache = None
         for quota in raw_quotas:
-            self.quotas.append(Quota(manager, quota))
+            self.quotas.append(quotas.Quota(manager, quota))
 
     def __repr__(self):
         return "<Allocation %s (%s)>" % (self.id, self.project_name)
@@ -175,7 +170,7 @@ class AllocationManager(base.Manager):
         allocations = self.list(status=states.APPROVED, **kwargs)
         if allocations:
             return allocations[0]
-        raise exceptions.AllocationDoesNotExist(project_id=None)
+        raise exceptions.AllocationDoesNotExist()
 
     def update(self, allocation_id, **kwargs):
         return self._update('/allocations/%s/' % allocation_id, data=kwargs)

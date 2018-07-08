@@ -39,11 +39,11 @@ def assert_has_keys(dict, required=None, optional=None):
 
 class FakeClient(object):
 
-    def assert_called(self, method, url, body=None, pos=-1, params=None):
+    def assert_called(self, method, url, data=None, pos=-1, params=None):
         """Assert that an HTTP method was called at given order/position.
         :param method: HTTP method name which is expected to be called
         :param url: Expected request url to be called with given method
-        :param body: Expected request body to be called with given method
+        :param data: Expected request data to be called with given method
                      and url. Default is None.
         :param pos: Order of the expected method call. If multiple methods
                     calls are made in single API request, then, order of each
@@ -87,22 +87,22 @@ class FakeClient(object):
              {'expected': expected, 'called': called, 'pos': pos,
               'calls': '\n'.join(str(c) for c in self.http_client.callstack)})
 
-        if body is not None:
-            if self.http_client.callstack[pos][2] != body:
+        if data is not None:
+            if self.http_client.callstack[pos][2] != data:
                 raise AssertionError('%r != %r' %
                                      (self.http_client.callstack[pos][2],
-                                      body))
+                                      data))
         if params is not None:
             if self.http_client.callstack[pos][3] != params:
                 raise AssertionError('%r != %r' %
                                      (self.http_client.callstack[pos][3],
                                       params))
 
-    def assert_called_anytime(self, method, url, body=None):
+    def assert_called_anytime(self, method, url, data=None):
         """Assert that an HTTP method was called anytime in the test.
         :param method: HTTP method name which is expected to be called
         :param url: Expected request url to be called with given method
-        :param body: Expected request body to be called with given method
+        :param data: Expected request data to be called with given method
                      and url. Default is None.
         Usage::
             self.run_command('flavor-list --extra-specs')
@@ -121,28 +121,28 @@ class FakeClient(object):
 
         assert found, 'Expected %s; got %s' % (expected,
                                                self.http_client.callstack)
-        if body is not None:
+        if data is not None:
             try:
-                assert entry[2] == body
+                assert entry[2] == data
             except AssertionError:
                 print(entry[2])
                 print("!=")
-                print(body)
+                print(data)
                 raise
 
         self.http_client.callstack = []
 
-    def assert_not_called(self, method, url, body=None):
+    def assert_not_called(self, method, url, data=None):
         """Assert that an HTTP method was not called in the test.
         :param method: HTTP method name which is expected not to be called
         :param url: Expected request url not to be called with given method
-        :param body: Expected request body not to be called with given method
+        :param data: Expected request data not to be called with given method
                      and url. Default is None.
         """
-        not_expected = (method, url, body)
+        not_expected = (method, url, data)
         for entry in self.http_client.callstack:
             assert not_expected != entry[0:3], (
-                'API %s %s body=%s was called.' % not_expected)
+                'API %s %s data=%s was called.' % not_expected)
 
     def clear_callstack(self):
         self.http_client.callstack = []

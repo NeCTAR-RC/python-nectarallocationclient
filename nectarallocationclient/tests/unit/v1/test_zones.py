@@ -11,27 +11,27 @@
 #   under the License.
 #
 
-from nectarallocationclient.v1 import resources
+from nectarallocationclient.v1 import zones
 
 from nectarallocationclient.tests.unit import utils
 from nectarallocationclient.tests.unit.v1 import fakes
 
 
-class ResourcesTest(utils.TestCase):
+class ZonesTest(utils.TestCase):
 
     def setUp(self):
-        super(ResourcesTest, self).setUp()
+        super(ZonesTest, self).setUp()
         self.cs = fakes.FakeClient()
 
     def test_zone_list(self):
-        al = self.cs.resources.list()
-        self.cs.assert_called('GET', '/resources/')
+        al = self.cs.zones.list()
+        self.cs.assert_called('GET', '/zones/')
         for a in al:
-            self.assertIsInstance(a, resources.Resource)
-        self.assertEqual(3, len(al))
+            self.assertIsInstance(a, zones.Zone)
+        self.assertEqual(2, len(al))
 
     def test_zone_get(self):
-        a = self.cs.resources.get(1)
-        self.cs.assert_called('GET', '/resources/1/')
-        self.assertIsInstance(a, resources.Resource)
-        self.assertEqual(1, a.id)
+        a = self.cs.zones.get('australia')
+        self.cs.assert_called('GET', '/zones/australia/')
+        self.assertIsInstance(a, zones.Zone)
+        self.assertEqual('australia', a.name)

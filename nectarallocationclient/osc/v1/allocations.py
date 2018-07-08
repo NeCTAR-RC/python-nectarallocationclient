@@ -68,3 +68,34 @@ class ListAllocations(command.Lister):
             columns,
             (utils.get_item_properties(r, columns) for r in allocations)
         )
+
+
+class ListAllocationQuotas(command.Lister):
+    """List allocation qoutas."""
+
+    log = logging.getLogger(__name__ + '.ListAllocations')
+
+    def get_parser(self, prog_name):
+        parser = super(ListAllocationQuotas, self).get_parser(prog_name)
+        parser.add_argument(
+            'allocation',
+            metavar='<allocation>',
+            help=('ID of allocation to display quota for')
+        )
+
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug('take_action(%s)', parsed_args)
+
+        client = self.app.client_manager.allocation
+        try:
+            allocation = client.allocations.get(parsed_args.allocation)
+        except exceptions.NotFound as ex:
+            raise exceptions.CommandError(str(ex))
+
+        columns = ['zone', 'resource', 'quota']
+        return (
+            columns,
+            (utils.get_item_properties(q, columns) for q in allocation.quotas)
+        )

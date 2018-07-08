@@ -21,7 +21,10 @@ from nectarallocationclient.tests.unit import fakes
 from nectarallocationclient.tests.unit import utils
 from nectarallocationclient.v1 import allocations
 from nectarallocationclient.v1 import client
+from nectarallocationclient.v1 import quotas
 from nectarallocationclient.v1 import resources
+from nectarallocationclient.v1 import service_types
+from nectarallocationclient.v1 import zones
 
 
 # regex to compare callback to result of get_endpoint()
@@ -77,7 +80,10 @@ class FakeClient(fakes.FakeClient, client.Client):
         client.Client.__init__(self, session=mock.Mock())
         self.http_client = FakeSessionClient(**kwargs)
         self.allocations = allocations.AllocationManager(self.http_client)
+        self.quotas = quotas.QuotaManager(self.http_client)
         self.resources = resources.ResourceManager(self.http_client)
+        self.service_types = service_types.ServiceTypeManager(self.http_client)
+        self.zones = zones.ZoneManager(self.http_client)
 
 
 class FakeSessionClient(base_client.SessionClient):
@@ -128,27 +134,6 @@ class FakeSessionClient(base_client.SessionClient):
             munged_url = munged_url.replace('%20', '_')
             munged_url = munged_url.replace('%3A', '_')
             callback = "%s_%s" % (method.lower(), munged_url)
-
-        if url is None or callback == "get_http:__nectarallocation_api:8774":
-            # To get API version information, it is necessary to GET
-            # a nectarallocation endpoint directly without "v2/<tenant-id>".
-            callback = "get_versions"
-        elif CALLBACK_RE.search(callback):
-            callback = "get_current_version"
-        elif ENDPOINT_RE.search(callback):
-            # compare callback to result of get_endpoint()
-            # NOTE(sdague): if we try to call a thing that doesn't
-            # exist, just return a 404. This allows the stack to act
-            # more like we'd expect when making REST calls.
-            raise exceptions.NotFound('404')
-
-        simulate_pagination_next_links = [
-            'get_os_simple_tenant_usage',
-            'get_os_simple_tenant_usage_tenant_id',
-        ]
-        if callback in simulate_pagination_next_links:
-            while callback in self.visited:
-                callback += '_next'
 
         if not hasattr(self, callback):
             raise AssertionError('Called unknown API method: %s %s, '
@@ -354,8 +339,11 @@ class FakeSessionClient(base_client.SessionClient):
                  "parent_request": None
                 })
 
+    def post_allocations(self, **kw):
+       return (200, {}, generic_allocation)
+        
     def post_allocations_123_approve(self, **kw):
-        return (202, {}, generic_allocation)
+       return (202, {}, generic_allocation)
 
     def post_allocations_123_delete(self, **kw):
         return (202, {}, generic_allocation)
@@ -406,3 +394,68 @@ class FakeSessionClient(base_client.SessionClient):
                     "help_text": "The maximum number of instances",
                     "service_type": "compute"
                 })
+
+    def get_zones(self, **kw):
+        zones = [
+            {
+                "name": "australia",
+                "display_name": "Australia"
+            },
+            {
+                "name": "new-zealand",
+                "display_name": "New Zealand"
+            }
+        ]
+        return (200, {}, zones)
+
+    def get_zones_australia(self, **kw):
+        return (200, {},
+            {
+                "name": "australia",
+                "display_name": "Australia"
+            })
+
+    def get_quotas(self, **kw):
+        quotas = [
+            {
+                "id": 1,
+                "zone": "foo",
+                "allocation": 22,
+                "requested_quota": 10,
+                "quota": 10,
+                "resource": 4
+            },
+            {
+                "id": 3,
+                "zone": "bar",
+                "allocation": 19,
+                "requested_quota": 20,
+                "quota": 20,
+                "resource": 7
+            }
+        ]
+        return (200, {}, quotas)
+
+    def get_quotas_1(self, **kw):
+        return (200, {},
+            {
+                "id": 1,
+                "zone": "foo",
+                "allocation": 22,
+                "requested_quota": 10,
+                "quota": 10,
+                "resource": 4
+            })
+
+    def delete_quotas_1(self, **kw):
+        return (204, {}, '')
+
+    def post_quotas(self, **kwargs):
+        return (201, {}, {
+            "id": 95,
+            "zone": "foo",
+            "allocation": 2,
+            "requested_quota": 3,
+            "quota": 3,
+            "resource": 4
+        })

@@ -12,19 +12,29 @@
 #
 
 from nectarallocationclient import base
+from nectarallocationclient.v1 import resources
 
 
-class Resource(base.Resource):
-    pass
+class ServiceType(base.Resource):
+
+    def __init__(self, manager, info, loaded=False, resp=None):
+        super(ServiceType, self).__init__(manager, info, loaded, resp)
+        self.resources = []
+        for resource in self.resource_set:
+            self.resources.append(resources.Resource(manager, resource))
+        del(self.resource_set)
+
+    def __repr__(self):
+        return "<ServiceType %s>" % (self.catalog_name)
 
 
-class ResourceManager(base.ManagerWithFind):
+class ServiceTypeManager(base.ManagerWithFind):
 
-    base_url = 'resources'
-    resource_class = Resource
+    base_url = 'service-types'
+    resource_class = ServiceType
 
     def list(self, **kwargs):
         return self._list('/%s/' % self.base_url, params=kwargs)
 
-    def get(self, resource_id):
-        return self._get('/%s/%s/' % (self.base_url, resource_id))
+    def get(self, service_type_id):
+        return self._get('/%s/%s/' % (self.base_url, service_type_id))
