@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "db4bd4fc_d5b4ed40",
+        "filename": "nectarallocationclient/tests/unit/v1/test_resources.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000077
+      },
+      "writtenOn": "2018-07-10T01:34:14Z",
+      "side": 1,
+      "message": "should this be resources?",
+      "range": {
+        "startLine": 26,
+        "startChar": 8,
+        "endLine": 26,
+        "endChar": 22
+      },
+      "revId": "f7b0eaee3fc1a877ea55c90a09c1aac8b86069fc",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4a582bdc_d6f4fe53",
+        "filename": "nectarallocationclient/tests/unit/v1/test_resources.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000077
+      },
+      "writtenOn": "2018-07-10T01:34:14Z",
+      "side": 1,
+      "message": "resources?",
+      "range": {
+        "startLine": 33,
+        "startChar": 8,
+        "endLine": 33,
+        "endChar": 21
+      },
+      "revId": "f7b0eaee3fc1a877ea55c90a09c1aac8b86069fc",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}
