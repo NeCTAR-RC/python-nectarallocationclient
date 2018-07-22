@@ -82,10 +82,52 @@ class AllocationsTest(utils.TestCase):
             'start_date': '2018-03-03',
             'allocation_home': 'somewhere',
             'use_case': 'testing',
+            'estimated_numer_users': 2,
+            'estimated_project_duration': 4,
+            'field_of_research_1': 1222,
+            'field_of_research_2': 1333,
+            'field_of_research_3': 4555,
+            'for_percentage_1': 60,
+            'for_percentage_2': 30,
+            'for_percentage_3': 10,
+            'geographic_requirements': 'near the beach',
+            'ncris_support': 'some',
+            'nectar_support': 'little',
+            'usage_pattterns': 'sporadic',
+            'convert_trial_project': False
         }
 
         a = self.cs.allocations.create(**data)
-        data['convert_trial_project'] = False
+        self.cs.assert_called('POST', '/allocations/',
+                              data=data)
+        self.assertIsInstance(a, allocations.Allocation)
+
+    def test_create_defaults(self):
+        data = {
+            'project_name': 'foo',
+            'project_description': 'bar',
+            'start_date': '2018-03-03',
+            'allocation_home': 'somewhere',
+            'use_case': 'testing',
+        }
+        defaults = {
+            'estimated_numer_users': 1,
+            'estimated_project_duration': 6,
+            'field_of_research_1': None,
+            'field_of_research_2': None,
+            'field_of_research_3': None,
+            'for_percentage_1': 0,
+            'for_percentage_2': 0,
+            'for_percentage_3': 0,
+            'geographic_requirements': '',
+            'ncris_support': '',
+            'nectar_support': '',
+            'usage_pattterns': '',
+            'convert_trial_project': False
+        }
+
+        a = self.cs.allocations.create(**data)
+        data.update(defaults)
         self.cs.assert_called('POST', '/allocations/',
                               data=data)
         self.assertIsInstance(a, allocations.Allocation)
