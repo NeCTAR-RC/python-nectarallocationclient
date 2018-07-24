@@ -177,7 +177,7 @@ class AllocationManager(base.Manager):
 
     def create(self, project_name, project_description,
                start_date, allocation_home, use_case,
-               estimated_numer_users=1, estimated_project_duration=6,
+               estimated_number_users=1, estimated_project_duration=6,
                field_of_research_1=None, field_of_research_2=None,
                field_of_research_3=None,
                for_percentage_1=0, for_percentage_2=0, for_percentage_3=0,
@@ -190,7 +190,7 @@ class AllocationManager(base.Manager):
             'convert_trial_project': convert_trial_project,
             'allocation_home': allocation_home,
             'use_case': use_case,
-            'estimated_numer_users': estimated_numer_users,
+            'estimated_number_users': estimated_number_users,
             'estimated_project_duration': estimated_project_duration,
             'field_of_research_1': field_of_research_1,
             'field_of_research_2': field_of_research_2,

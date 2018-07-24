@@ -82,7 +82,7 @@ class AllocationsTest(utils.TestCase):
             'start_date': '2018-03-03',
             'allocation_home': 'somewhere',
             'use_case': 'testing',
-            'estimated_numer_users': 2,
+            'estimated_number_users': 2,
             'estimated_project_duration': 4,
             'field_of_research_1': 1222,
             'field_of_research_2': 1333,
@@ -111,7 +111,7 @@ class AllocationsTest(utils.TestCase):
             'use_case': 'testing',
         }
         defaults = {
-            'estimated_numer_users': 1,
+            'estimated_number_users': 1,
             'estimated_project_duration': 6,
             'field_of_research_1': None,
             'field_of_research_2': None,
