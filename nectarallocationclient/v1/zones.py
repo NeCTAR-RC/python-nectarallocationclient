@@ -18,13 +18,7 @@ class Zone(base.Resource):
     pass
 
 
-class ZoneManager(base.ManagerWithFind):
+class ZoneManager(base.BasicManager):
 
     base_url = 'zones'
     resource_class = Zone
-
-    def list(self, **kwargs):
-        return self._list('/%s/' % self.base_url, params=kwargs)
-
-    def get(self, zone_id):
-        return self._get('/%s/%s/' % (self.base_url, zone_id))

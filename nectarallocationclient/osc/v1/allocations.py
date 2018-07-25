@@ -59,9 +59,9 @@ class ListAllocations(command.Lister):
         self.log.debug('take_action(%s)', parsed_args)
 
         client = self.app.client_manager.allocation
-        allocations = client.allocations.list()
+        allocations = client.allocations.list(parent_request__isnull=True)
 
-        columns = ['id', 'parent_request', 'project_name',
+        columns = ['id', 'status_display', 'project_name',
                    'project_description', 'contact_email']
 
         return (
