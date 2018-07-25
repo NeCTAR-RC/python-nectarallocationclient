@@ -14,11 +14,11 @@
 from nectarallocationclient import base
 
 
-class Resource(base.Resource):
+class Chiefinvestigator(base.Resource):
     pass
 
 
-class ResourceManager(base.BasicManager):
+class ChiefinvestigatorManager(base.BasicManager):
 
-    base_url = 'resources'
-    resource_class = Resource
+    base_url = 'chiefinvestigators'
+    resource_class = Chiefinvestigator

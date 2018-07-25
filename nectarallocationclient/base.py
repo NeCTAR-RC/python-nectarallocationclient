@@ -197,6 +197,15 @@ class ManagerWithFind(Manager):
         return found
 
 
+class BasicManager(ManagerWithFind):
+
+    def list(self, **kwargs):
+        return self._list('/%s/' % self.base_url, params=kwargs)
+
+    def get(self, resource_id):
+        return self._get('/%s/%s/' % (self.base_url, resource_id))
+
+
 class RequestIdMixin(object):
     """Wrapper class to expose x-openstack-request-id to the caller."""
     def request_ids_setup(self):

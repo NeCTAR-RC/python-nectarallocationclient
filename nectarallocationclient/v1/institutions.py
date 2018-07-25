@@ -14,11 +14,11 @@
 from nectarallocationclient import base
 
 
-class Resource(base.Resource):
+class Institution(base.Resource):
     pass
 
 
-class ResourceManager(base.BasicManager):
+class InstitutionManager(base.BasicManager):
 
-    base_url = 'resources'
-    resource_class = Resource
+    base_url = 'institutions'
+    resource_class = Institution

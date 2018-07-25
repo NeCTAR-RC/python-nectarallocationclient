@@ -28,13 +28,7 @@ class ServiceType(base.Resource):
         return "<ServiceType %s>" % (self.catalog_name)
 
 
-class ServiceTypeManager(base.ManagerWithFind):
+class ServiceTypeManager(base.BasicManager):
 
     base_url = 'service-types'
     resource_class = ServiceType
-
-    def list(self, **kwargs):
-        return self._list('/%s/' % self.base_url, params=kwargs)
-
-    def get(self, service_type_id):
-        return self._get('/%s/%s/' % (self.base_url, service_type_id))
