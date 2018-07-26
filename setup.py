@@ -21,11 +21,16 @@ entry_points = {
     [
         'allocation list = nectarallocationclient.osc.v1.allocations:ListAllocations',
         'allocation show = nectarallocationclient.osc.v1.allocations:ShowAllocation',
-        'allocation quota list = nectarallocationclient.osc.v1.allocations:ListAllocationQuotas',
+        'allocation amend = nectarallocationclient.osc.v1.allocations:AmendAllocation',
+        'allocation approve = nectarallocationclient.osc.v1.allocations:ApproveAllocation',
+        'allocation history = nectarallocationclient.osc.v1.allocations:AllocationHistory',
+        'allocation create = nectarallocationclient.osc.v1.allocations:CreateAllocation',
+        'allocation set = nectarallocationclient.osc.v1.allocations:UpdateAllocation',
         'allocation zone list = nectarallocationclient.osc.v1.zones:ListZones',
         'allocation zone show = nectarallocationclient.osc.v1.zones:ShowZone',
         'allocation service-type list = nectarallocationclient.osc.v1.service_types:ListServiceTypes',
         'allocation service-type show = nectarallocationclient.osc.v1.service_types:ShowServiceType',
+        'allocation quota list = nectarallocationclient.osc.v1.quotas:ListQuotas',
     ]
 }
 
