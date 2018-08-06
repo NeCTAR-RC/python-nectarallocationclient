@@ -182,7 +182,8 @@ class AllocationManager(base.Manager):
                field_of_research_3=None,
                for_percentage_1=0, for_percentage_2=0, for_percentage_3=0,
                geographic_requirements='', ncris_support='', nectar_support='',
-               usage_pattterns='', convert_trial_project=False):
+               usage_pattterns='', convert_trial_project=False,
+               notifications=True):
         data = {
             'project_name': project_name,
             'project_description': project_description,
@@ -202,6 +203,7 @@ class AllocationManager(base.Manager):
             'ncris_support': ncris_support,
             'nectar_support': nectar_support,
             'usage_pattterns': usage_pattterns,
+            'notifications': notifications,
         }
         return self._create('/allocations/', data=data)
 
