@@ -243,7 +243,8 @@ class CreateAllocation(AllocationShowOne):
         parser.add_argument(
             '--convert-trial-project',
             action='store_true',
-            help='Convert Project Trial of user to this allocation'
+            help="""Convert Project Trial of user to this allocation
+                 (default:False)"""
         )
         parser.add_argument(
             '--geographic-requirements',
@@ -264,6 +265,12 @@ class CreateAllocation(AllocationShowOne):
             '--usage-pattterns',
             metavar='<details>',
             help='Usage pattterns'
+        )
+        parser.add_argument(
+            '--notifications',
+            action='store_true',
+            default=True,
+            help='Send allocations (default:True)'
         )
         return parser
 
@@ -290,6 +297,7 @@ class CreateAllocation(AllocationShowOne):
             'ncris_support': parsed_args.ncris_support,
             'nectar_support': parsed_args.nectar_support,
             'usage_pattterns': parsed_args.usage_pattterns,
+            'notifications': parsed_args.notifications,
         }
 
         allocation = client.allocations.create(**fields)
