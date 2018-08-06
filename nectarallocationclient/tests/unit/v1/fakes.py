@@ -70,6 +70,7 @@ generic_allocation = {
     "funding_node": None,
     "notes": "test",
     "provisioned": False,
+    "notifications": True,
     "parent_request": None}
 
 
@@ -187,6 +188,7 @@ class FakeSessionClient(base_client.SessionClient):
                 "funding_national_percent": 100,
                 "funding_node": None,
                 "provisioned": False,
+                "notifications": True,
                 "parent_request": None
             },
             {
@@ -220,6 +222,7 @@ class FakeSessionClient(base_client.SessionClient):
                 "funding_national_percent": 100,
                 "funding_node": None,
                 "provisioned": False,
+                "notifications": True,
                 "parent_request": 587
             },
             {
@@ -253,6 +256,7 @@ class FakeSessionClient(base_client.SessionClient):
                 "funding_national_percent": 100,
                 "funding_node": None,
                 "provisioned": False,
+                "notifications": True,
                 "parent_request": None
             }
         ]
@@ -299,6 +303,7 @@ class FakeSessionClient(base_client.SessionClient):
                  "funding_national_percent": 100,
                  "funding_node": None,
                  "provisioned": False,
+                 "notifications": True,
                  "parent_request": None
                 })
 
@@ -335,6 +340,7 @@ class FakeSessionClient(base_client.SessionClient):
                  "funding_node": None,
                  "notes": "test",
                  "provisioned": False,
+                 "notifications": True,
                  "parent_request": None
                 })
 

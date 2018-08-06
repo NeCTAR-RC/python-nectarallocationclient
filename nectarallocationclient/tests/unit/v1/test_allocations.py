@@ -94,7 +94,8 @@ class AllocationsTest(utils.TestCase):
             'ncris_support': 'some',
             'nectar_support': 'little',
             'usage_pattterns': 'sporadic',
-            'convert_trial_project': False
+            'convert_trial_project': True,
+            'notifications': False,
         }
 
         a = self.cs.allocations.create(**data)
@@ -123,7 +124,8 @@ class AllocationsTest(utils.TestCase):
             'ncris_support': '',
             'nectar_support': '',
             'usage_pattterns': '',
-            'convert_trial_project': False
+            'convert_trial_project': False,
+            'notifications': True,
         }
 
         a = self.cs.allocations.create(**data)
