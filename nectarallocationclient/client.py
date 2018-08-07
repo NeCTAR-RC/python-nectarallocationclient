@@ -30,7 +30,9 @@ class SessionClient(adapter.Adapter):
     client_version = '0.3'
 
     def request(self, url, method, **kwargs):
+        project_id = self.get_project_id()
         kwargs.setdefault('headers', kwargs.get('headers', {}))
+        kwargs['headers']['X-PROJECT-ID'] = project_id
         # NOTE(sorrison): The standard call raises errors from
         # keystoneauth, where we need to raise the nectarallocation errors.
         raise_exc = kwargs.pop('raise_exc', True)
