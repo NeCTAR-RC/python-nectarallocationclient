@@ -27,7 +27,7 @@ def Client(version, *args, **kwargs):
 class SessionClient(adapter.Adapter):
 
     client_name = 'python-nectarallocationclient'
-    client_version = '0.1'
+    client_version = '0.3'
 
     def request(self, url, method, **kwargs):
         kwargs.setdefault('headers', kwargs.get('headers', {}))
