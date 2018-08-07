@@ -37,7 +37,7 @@ entry_points = {
 
 setup(
     name='nectarallocationclient',
-    version='0.2.0',
+    version='0.3.0',
     description=('Client for the Nectar Allocation system'),
     author='Sam Morrison',
     author_email='sorrison@gmail.com',
@@ -47,7 +47,7 @@ setup(
     ],
     include_package_data=True,
     install_requires=[str(r.req) for r in requirements],
-    license="GPLv3+",
+    license="Apache",
     zip_safe=False,
     classifiers=(
         'License :: OSI Approved :: Apache Software License',
