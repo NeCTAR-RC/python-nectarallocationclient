@@ -74,7 +74,7 @@ class Allocation(base.Resource):
             quota_resource = quota.resource.split('.')[1]
             kwargs[quota_resource] = quota.quota
         if 'ram' not in kwargs or int(kwargs['ram']) == 0:
-            kwargs['ram'] = kwargs['cores']
+            kwargs['ram'] = kwargs['cores'] * 4
         return kwargs
 
     def get_allocated_cinder_quota(self):
