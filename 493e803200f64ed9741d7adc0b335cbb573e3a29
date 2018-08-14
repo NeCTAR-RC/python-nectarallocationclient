@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "02daec81_46f27b31",
+        "filename": "nectarallocationclient/osc/v1/allocations.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000104
+      },
+      "writtenOn": "2018-08-14T03:35:31Z",
+      "side": 1,
+      "message": "why not use the argparse formatter to do this?\n\nhttps://docs.python.org/2/library/argparse.html#argparse.ArgumentDefaultsHelpFormatter",
+      "range": {
+        "startLine": 234,
+        "startChar": 18,
+        "endLine": 234,
+        "endChar": 31
+      },
+      "revId": "493e803200f64ed9741d7adc0b335cbb573e3a29",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}
