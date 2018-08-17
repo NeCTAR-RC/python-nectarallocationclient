@@ -22,6 +22,30 @@
       "revId": "493e803200f64ed9741d7adc0b335cbb573e3a29",
       "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a8c136fa_d497c645",
+        "filename": "nectarallocationclient/osc/v1/allocations.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-17T01:18:33Z",
+      "side": 1,
+      "message": "I don\u0027t have any control over this as it uses osc-lib",
+      "parentUuid": "02daec81_46f27b31",
+      "range": {
+        "startLine": 234,
+        "startChar": 18,
+        "endLine": 234,
+        "endChar": 31
+      },
+      "revId": "493e803200f64ed9741d7adc0b335cbb573e3a29",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
     }
   ]
 }
