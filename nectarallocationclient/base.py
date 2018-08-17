@@ -41,9 +41,11 @@ class Manager(object):
     def __init__(self, api):
         self.api = api
 
-    def _list(self, url, response_key=None, obj_class=None,
-              data=None, headers=None, params=None):
+    def _list(self, url, response_key='results', obj_class=None,
+              items=None, headers=None, params=None, limit=None):
 
+        if items is None:
+            items = []
         if headers is None:
             headers = {}
         resp, body = self.api.get(url, headers=headers, params=params)
@@ -51,16 +53,20 @@ class Manager(object):
         if obj_class is None:
             obj_class = self.resource_class
 
-        if response_key:
-            if response_key not in body:
-                body[response_key] = []
+        if response_key and response_key in body:
             data = body[response_key]
         else:
             data = body
+
         if all([isinstance(res, six.string_types) for res in data]):
-            items = data
+            new_items =  data
         else:
-            items = [obj_class(self, res, loaded=True) for res in data if res]
+            new_items = [obj_class(self, res, loaded=True) for res in data if res]
+
+        items = items + new_items
+        if 'next' in body and body['next']:
+            items = self._list(body['next'], response_key, obj_class, items, headers,
+                               None, limit)
 
         return ListWithMeta(items, resp)
 
