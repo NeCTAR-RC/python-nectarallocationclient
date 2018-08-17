@@ -141,7 +141,7 @@ class AllocationHistory(command.Lister):
         allocations = client.allocations.list(
             parent_request=parsed_args.allocation)
         allocations.insert(0, allocation)
-        columns = ['modified_time', 'status_display', 'start_date', 'end_date',
+        columns = ['id', 'modified_time', 'status_display', 'start_date', 'end_date',
                    'contact_email']
 
         return (
