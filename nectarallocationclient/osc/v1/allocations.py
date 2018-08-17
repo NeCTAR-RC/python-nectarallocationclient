@@ -88,12 +88,24 @@ class ListAllocations(command.Lister):
 
     log = logging.getLogger(__name__ + '.ListAllocations')
 
+    def get_parser(self, prog_name):
+        parser = super(ListAllocations, self).get_parser(prog_name)
+        parser.add_argument(
+            '--filter',
+            metavar='<filter>',
+            action='append',
+            help=('Filter allocation, use key=value, can be specified multiple times')
+        )
+        return parser
+
     def take_action(self, parsed_args):
         self.log.debug('take_action(%s)', parsed_args)
 
         client = self.app.client_manager.allocation
-        allocations = client.allocations.list(parent_request__isnull=True)
+        filters = {'parent_request__isnull': True}
+        filters.update(utils.format_parameters(parsed_args.filter))
 
+        allocations = client.allocations.list(**filters)
         columns = ['id', 'project_name',
                    'contact_email', 'status_display']
 
