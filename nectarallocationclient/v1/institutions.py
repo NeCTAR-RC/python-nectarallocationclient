@@ -22,3 +22,13 @@ class InstitutionManager(base.BasicManager):
 
     base_url = 'institutions'
     resource_class = Institution
+
+    def delete(self, resource_id):
+        self._delete('/%s/%s/' % (self.base_url, resource_id))
+
+    def create(self, allocation, name):
+        data = {
+            'allocation': base.getid(allocation),
+            'name': name,
+        }
+        return self._create('/%s/' % self.base_url, data=data)
