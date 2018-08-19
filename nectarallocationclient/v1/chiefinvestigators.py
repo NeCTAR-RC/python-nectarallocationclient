@@ -14,11 +14,27 @@
 from nectarallocationclient import base
 
 
-class Chiefinvestigator(base.Resource):
+class ChiefInvestigator(base.Resource):
     pass
 
 
-class ChiefinvestigatorManager(base.BasicManager):
+class ChiefInvestigatorManager(base.BasicManager):
 
     base_url = 'chiefinvestigators'
-    resource_class = Chiefinvestigator
+    resource_class = ChiefInvestigator
+
+    def delete(self, resource_id):
+        self._delete('/%s/%s/' % (self.base_url, resource_id))
+
+    def create(self, allocation, title, given_name, surname, email,
+               institution, additional_researchers=''):
+        data = {
+            'allocation': base.getid(allocation),
+            'title': title,
+            'given_name': given_name,
+            'surname': surname,
+            'email': email,
+            'institution': institution,
+            'additional_researchers': additional_researchers
+        }
+        return self._create('/%s/' % self.base_url, data=data)

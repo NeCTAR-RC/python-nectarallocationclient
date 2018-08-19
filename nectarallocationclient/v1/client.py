@@ -14,6 +14,10 @@
 from nectarallocationclient import client
 from nectarallocationclient import exceptions
 from nectarallocationclient.v1 import allocations
+from nectarallocationclient.v1 import chiefinvestigators
+from nectarallocationclient.v1 import grants
+from nectarallocationclient.v1 import institutions
+from nectarallocationclient.v1 import publications
 from nectarallocationclient.v1 import quotas
 from nectarallocationclient.v1 import resources
 from nectarallocationclient.v1 import service_types
@@ -34,6 +38,11 @@ class Client(object):
         self.http_client = client.SessionClient(
             session, service_type=service_type, **kwargs)
         self.allocations = allocations.AllocationManager(self.http_client)
+        self.chiefinvestigators = \
+                chiefinvestigators.ChiefInvestigatorManager(self.http_client)
+        self.grants = grants.GrantManager(self.http_client)
+        self.institutions = institutions.InstitutionManager(self.http_client)
+        self.publications = publications.PublicationManager(self.http_client)
         self.quotas = quotas.QuotaManager(self.http_client)
         self.resources = resources.ResourceManager(self.http_client)
         self.service_types = service_types.ServiceTypeManager(self.http_client)
