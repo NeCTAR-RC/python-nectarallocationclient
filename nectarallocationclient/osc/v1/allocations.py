@@ -20,6 +20,29 @@ from nectarallocationclient import exceptions
 from nectarallocationclient.osc import utils
 
 
+def get_allocation(client, id_or_name):
+    def _is_int(id_or_name):
+        try:
+            int(id_or_name)
+            return True
+        except ValueError:
+            return False
+
+    try:
+        if _is_int(id_or_name):
+            return client.allocations.get(id_or_name)
+        else:
+            filters = {'parent_request__isnull': True,
+                       'project_name': id_or_name}
+            allocations = client.allocations.list(**filters)
+            if len(allocations) == 1:
+                return allocations[0]
+            else:
+                raise exceptions.NotFound()
+    except exceptions.NotFound as ex:
+        raise exceptions.CommandError(str(ex))
+
+
 class AllocationShowOne(command.ShowOne):
 
     def get_parser(self, prog_name):
@@ -27,7 +50,7 @@ class AllocationShowOne(command.ShowOne):
         parser.add_argument(
             'allocation',
             metavar='<allocation>',
-            help=('ID of allocation to display details for')
+            help=('ID or Name of allocation to display details for')
         )
         return parser
 
@@ -46,10 +69,7 @@ class ShowAllocation(AllocationShowOne):
     def take_action(self, parsed_args):
         self.log.debug('take_action(%s)', parsed_args)
         client = self.app.client_manager.allocation
-        try:
-            allocation = client.allocations.get(parsed_args.allocation)
-        except exceptions.NotFound as ex:
-            raise exceptions.CommandError(str(ex))
+        allocation = get_allocation(client, parsed_args.allocation)
         return self._show_allocation(allocation)
 
 
@@ -61,10 +81,8 @@ class ApproveAllocation(AllocationShowOne):
     def take_action(self, parsed_args):
         self.log.debug('take_action(%s)', parsed_args)
         client = self.app.client_manager.allocation
-        try:
-            allocation = client.allocations.approve(parsed_args.allocation)
-        except exceptions.NotFound as ex:
-            raise exceptions.CommandError(str(ex))
+        allocation = get_allocation(client, parsed_args.allocation)
+        allocation = client.allocations.approve(allocation.id)
         return self._show_allocation(allocation)
 
 
@@ -76,10 +94,8 @@ class AmendAllocation(AllocationShowOne):
     def take_action(self, parsed_args):
         self.log.debug('take_action(%s)', parsed_args)
         client = self.app.client_manager.allocation
-        try:
-            allocation = client.allocations.amend(parsed_args.allocation)
-        except exceptions.NotFound as ex:
-            raise exceptions.CommandError(str(ex))
+        allocation = get_allocation(client, parsed_args.allocation)
+        allocation = client.allocations.amend(allocation.id)
         return self._show_allocation(allocation)
 
 
@@ -126,7 +142,7 @@ class AllocationHistory(command.Lister):
         parser.add_argument(
             'allocation',
             metavar='<allocation>',
-            help=('ID of allocation to display history for')
+            help=('ID or Name of allocation to display history for')
         )
         return parser
 
@@ -134,13 +150,9 @@ class AllocationHistory(command.Lister):
         self.log.debug('take_action(%s)', parsed_args)
 
         client = self.app.client_manager.allocation
-
-        try:
-            allocation = client.allocations.get(parsed_args.allocation)
-        except exceptions.NotFound as ex:
-            raise exceptions.CommandError(str(ex))
+        allocation = get_allocation(client, parsed_args.allocation)
         allocations = client.allocations.list(
-            parent_request=parsed_args.allocation)
+            parent_request=allocation.id)
         allocations.insert(0, allocation)
         columns = ['id', 'modified_time', 'status_display', 'start_date',
                    'end_date', 'contact_email']
@@ -321,14 +333,8 @@ class UpdateAllocation(AllocationShowOne):
 
     def take_action(self, parsed_args):
         self.log.debug('take_action(%s)', parsed_args)
-
         client = self.app.client_manager.allocation
-
-        try:
-            allocation = client.allocations.get(parsed_args.allocation)
-        except exceptions.NotFound as ex:
-            raise exceptions.CommandError(str(ex))
-
+        allocation = get_allocation(client, parsed_args.allocation)
         fields = utils.format_parameters(parsed_args.property)
         allocation = allocation.update(**fields)
         return self._show_allocation(allocation)
