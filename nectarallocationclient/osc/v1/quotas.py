@@ -16,7 +16,7 @@ import logging
 from osc_lib.command import command
 from osc_lib import utils as osc_utils
 
-from nectarallocationclient import exceptions
+from nectarallocationclient.osc.v1.allocations import get_allocation
 
 
 class ListQuotas(command.Lister):
@@ -28,20 +28,15 @@ class ListQuotas(command.Lister):
         parser.add_argument(
             'allocation',
             metavar='<allocation>',
-            help=('ID of allocation to display details for')
+            help=('ID or Name of allocation to display details for')
         )
         return parser
 
     def take_action(self, parsed_args):
         self.log.debug('take_action(%s)', parsed_args)
         client = self.app.client_manager.allocation
-
-        try:
-            client.allocations.get(parsed_args.allocation)
-        except exceptions.NotFound as ex:
-            raise exceptions.CommandError(str(ex))
-
-        quotas = client.quotas.list(allocation=parsed_args.allocation)
+        allocation = get_allocation(client, parsed_args.allocation)
+        quotas = client.quotas.list(allocation=allocation.id)
         for q in quotas:
             resource = client.resources.get(q.resource)
             q.resource = resource.name
