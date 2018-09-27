@@ -42,6 +42,10 @@ class ListQuotas(command.Lister):
             q.resource = resource.name
             q.service = resource.service_type
             q.unit = resource.unit
+            if hasattr(resource, 'resource_type') and \
+               resource.resource_type == 'boolean':
+                q.quota = 'Enabled'
+                q.unit = 'N/A'
         columns = ['zone', 'service', 'resource', 'quota', 'unit']
         return (
             columns,
