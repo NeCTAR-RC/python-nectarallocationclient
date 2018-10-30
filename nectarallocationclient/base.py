@@ -238,9 +238,9 @@ class RequestIdMixin(object):
         if isinstance(resp, Response):
             # Extract 'X-Openstack-Request-Id' from headers if
             # response is a Response object.
-            request_id = (resp.headers.get('Openstack-Request-Id') or
-                          resp.headers.get('x-openstack-request-id') or
-                          resp.headers.get('x-compute-request-id'))
+            request_id = (resp.headers.get('Openstack-Request-Id')
+                          or resp.headers.get('x-openstack-request-id')
+                          or resp.headers.get('x-compute-request-id'))
         else:
             # If resp is of type string or None.
             request_id = resp
@@ -290,8 +290,8 @@ class Resource(RequestIdMixin):
             return self.__dict__[k]
 
     def __repr__(self):
-        reprkeys = sorted(k for k in self.__dict__.keys() if k[0] != '_' and
-                          k not in ('manager', 'x_openstack_request_ids'))
+        reprkeys = sorted(k for k in self.__dict__.keys() if k[0] != '_'
+                          and k not in ('manager', 'x_openstack_request_ids'))
         info = ", ".join("%s=%s" % (k, getattr(self, k)) for k in reprkeys)
         return "<%s %s>" % (self.__class__.__name__, info)
 

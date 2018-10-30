@@ -56,7 +56,7 @@ def build_option_parser(parser):
     parser.add_argument(
         '--os-allocation-api-version',
         metavar='<allocation-api-version>',
-        help='Nectar Allocation API version, default=' +
-             DEFAULT_API_VERSION +
-             ' (Env: OS_ALLOCATION_API_VERSION)')
+        help='Nectar Allocation API version, default='
+             + DEFAULT_API_VERSION
+             + ' (Env: OS_ALLOCATION_API_VERSION)')
     return parser
