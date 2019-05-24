@@ -46,7 +46,8 @@ class ListQuotas(command.Lister):
                resource.resource_type == 'boolean':
                 q.quota = 'Enabled'
                 q.unit = 'N/A'
-        columns = ['zone', 'service', 'resource', 'quota', 'unit']
+        columns = ['zone', 'service', 'resource', 'requested_quota', 'quota',
+                   'unit']
         return (
             columns,
             (osc_utils.get_item_properties(q, columns) for q in quotas)
