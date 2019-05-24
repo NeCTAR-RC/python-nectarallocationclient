@@ -34,6 +34,8 @@ entry_points = {
         'allocation quota history = nectarallocationclient.osc.v1.quotas:QuotaHistory',
         'allocation resource list = nectarallocationclient.osc.v1.resources:ListResources',
         'allocation resource show = nectarallocationclient.osc.v1.resources:ShowResource',
+        'allocation grant list = nectarallocationclient.osc.v1.grants:ListGrants',
+        'allocation grant show = nectarallocationclient.osc.v1.grants:ShowGrant',
     ]
 }
 
