@@ -52,3 +52,49 @@ class ListQuotas(command.Lister):
             columns,
             (osc_utils.get_item_properties(q, columns) for q in quotas)
         )
+
+
+class QuotaHistory(command.Lister):
+    """List quota history for an allocation and resource."""
+
+    log = logging.getLogger(__name__ + '.QuotaHistory')
+
+    def get_parser(self, prog_name):
+        parser = super(QuotaHistory, self).get_parser(prog_name)
+        parser.add_argument(
+            'allocation',
+            metavar='<allocation>',
+            help=('ID or Name of allocation to display history for')
+        )
+        parser.add_argument(
+            'resource_id',
+            metavar='<resource_id>',
+            help=('Resource ID')
+        )
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug('take_action(%s)', parsed_args)
+
+        client = self.app.client_manager.allocation
+        allocation = get_allocation(client, parsed_args.allocation)
+        resource = client.resources.get(parsed_args.resource_id)
+        allocations = client.allocations.list(
+            parent_request=allocation.id)
+        allocations.insert(0, allocation)
+
+        quota_history = []
+        for allocation in allocations:
+            quotas = client.quotas.list(allocation=allocation.id,
+                                        resource=resource.id)
+            if quotas:
+                quotas[0].allocation_id = allocation.id
+                quotas[0].modified_time = allocation.modified_time
+                quota_history.append(quotas[0])
+        columns = ['allocation_id', 'modified_time', 'requested_quota',
+                   'quota']
+
+        return (
+            columns,
+            (osc_utils.get_item_properties(r, columns) for r in quota_history)
+        )

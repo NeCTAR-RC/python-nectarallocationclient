@@ -31,6 +31,7 @@ entry_points = {
         'allocation service-type list = nectarallocationclient.osc.v1.service_types:ListServiceTypes',
         'allocation service-type show = nectarallocationclient.osc.v1.service_types:ShowServiceType',
         'allocation quota list = nectarallocationclient.osc.v1.quotas:ListQuotas',
+        'allocation quota history = nectarallocationclient.osc.v1.quotas:QuotaHistory',
         'allocation resource list = nectarallocationclient.osc.v1.resources:ListResources',
         'allocation resource show = nectarallocationclient.osc.v1.resources:ShowResource',
     ]
