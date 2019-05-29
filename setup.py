@@ -42,7 +42,7 @@ entry_points = {
 
 setup(
     name='nectarallocationclient',
-    version='0.5.0',
+    version='0.6.0',
     description=('Client for the Nectar Allocation system'),
     author='Sam Morrison',
     author_email='sorrison@gmail.com',
