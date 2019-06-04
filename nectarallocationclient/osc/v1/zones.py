@@ -64,3 +64,21 @@ class ListZones(command.Lister):
             columns,
             (utils.get_item_properties(r, columns) for r in zones)
         )
+
+
+class ListComputeHomes(command.Lister):
+    """List zones available to a allocation home"""
+
+    log = logging.getLogger(__name__ + '.ListComputeHomes')
+
+    def take_action(self, parsed_args):
+        self.log.debug('take_action(%s)', parsed_args)
+
+        client = self.app.client_manager.allocation
+        zones = client.zones.compute_homes()
+        columns = ['Allocation Home', 'Zones']
+
+        return (
+            columns,
+            zones.items()
+        )

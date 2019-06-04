@@ -28,6 +28,7 @@ entry_points = {
         'allocation set = nectarallocationclient.osc.v1.allocations:UpdateAllocation',
         'allocation zone list = nectarallocationclient.osc.v1.zones:ListZones',
         'allocation zone show = nectarallocationclient.osc.v1.zones:ShowZone',
+        'allocation zone compute-homes = nectarallocationclient.osc.v1.zones:ListComputeHomes',
         'allocation service-type list = nectarallocationclient.osc.v1.service_types:ListServiceTypes',
         'allocation service-type show = nectarallocationclient.osc.v1.service_types:ShowServiceType',
         'allocation quota list = nectarallocationclient.osc.v1.quotas:ListQuotas',
