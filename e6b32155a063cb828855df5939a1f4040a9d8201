@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b74e89d8_cd6bda05",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000104
+      },
+      "writtenOn": "2019-06-11T05:34:49Z",
+      "side": 1,
+      "message": "allocation",
+      "range": {
+        "startLine": 10,
+        "startChar": 8,
+        "endLine": 10,
+        "endChar": 17
+      },
+      "revId": "e6b32155a063cb828855df5939a1f4040a9d8201",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d180a750_0e56b9a3",
+        "filename": "nectarallocationclient/osc/v1/zones.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000104
+      },
+      "writtenOn": "2019-06-11T05:34:49Z",
+      "side": 1,
+      "message": "NIT: an",
+      "range": {
+        "startLine": 70,
+        "startChar": 31,
+        "endLine": 70,
+        "endChar": 32
+      },
+      "revId": "e6b32155a063cb828855df5939a1f4040a9d8201",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    }
+  ]
+}
