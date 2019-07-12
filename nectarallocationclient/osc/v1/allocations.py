@@ -188,12 +188,6 @@ class CreateAllocation(AllocationShowOne):
             help='Allocation home'
         )
         parser.add_argument(
-            '--start-date',
-            metavar='<YYYY-MM-DD>',
-            required=True,
-            help='Start date - YYYY-MM-DD'
-        )
-        parser.add_argument(
             '--use-case',
             metavar='<user-case>',
             required=True,
@@ -203,7 +197,7 @@ class CreateAllocation(AllocationShowOne):
             '--estimated-number-users',
             metavar='<users>',
             help='Estimated number of users',
-            default=1,
+            default=3,
             type=int,
         )
         parser.add_argument(
@@ -293,7 +287,6 @@ class CreateAllocation(AllocationShowOne):
         fields = {
             'project_name': parsed_args.name,
             'project_description': parsed_args.description,
-            'start_date': parsed_args.start_date,
             'convert_trial_project': parsed_args.convert_trial_project,
             'allocation_home': parsed_args.home,
             'use_case': parsed_args.use_case,

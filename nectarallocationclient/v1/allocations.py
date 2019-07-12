@@ -176,8 +176,8 @@ class AllocationManager(base.Manager):
         return self._update('/allocations/%s/' % allocation_id, data=kwargs)
 
     def create(self, project_name, project_description,
-               start_date, allocation_home, use_case,
-               estimated_number_users=1, estimated_project_duration=6,
+               allocation_home, use_case,
+               estimated_number_users=1, estimated_project_duration=3,
                field_of_research_1=None, field_of_research_2=None,
                field_of_research_3=None,
                for_percentage_1=0, for_percentage_2=0, for_percentage_3=0,
@@ -187,7 +187,6 @@ class AllocationManager(base.Manager):
         data = {
             'project_name': project_name,
             'project_description': project_description,
-            'start_date': start_date,
             'convert_trial_project': convert_trial_project,
             'allocation_home': allocation_home,
             'use_case': use_case,
