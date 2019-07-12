@@ -79,7 +79,6 @@ class AllocationsTest(utils.TestCase):
         data = {
             'project_name': 'foo',
             'project_description': 'bar',
-            'start_date': '2018-03-03',
             'allocation_home': 'somewhere',
             'use_case': 'testing',
             'estimated_number_users': 2,
@@ -107,13 +106,12 @@ class AllocationsTest(utils.TestCase):
         data = {
             'project_name': 'foo',
             'project_description': 'bar',
-            'start_date': '2018-03-03',
             'allocation_home': 'somewhere',
             'use_case': 'testing',
         }
         defaults = {
             'estimated_number_users': 1,
-            'estimated_project_duration': 6,
+            'estimated_project_duration': 3,
             'field_of_research_1': None,
             'field_of_research_2': None,
             'field_of_research_3': None,
