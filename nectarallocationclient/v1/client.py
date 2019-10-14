@@ -21,6 +21,7 @@ from nectarallocationclient.v1 import publications
 from nectarallocationclient.v1 import quotas
 from nectarallocationclient.v1 import resources
 from nectarallocationclient.v1 import service_types
+from nectarallocationclient.v1 import sites
 from nectarallocationclient.v1 import zones
 
 
@@ -46,4 +47,5 @@ class Client(object):
         self.quotas = quotas.QuotaManager(self.http_client)
         self.resources = resources.ResourceManager(self.http_client)
         self.service_types = service_types.ServiceTypeManager(self.http_client)
+        self.sites = sites.SiteManager(self.http_client)
         self.zones = zones.ZoneManager(self.http_client)

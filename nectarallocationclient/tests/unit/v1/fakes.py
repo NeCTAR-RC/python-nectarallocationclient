@@ -23,6 +23,7 @@ from nectarallocationclient.v1 import client
 from nectarallocationclient.v1 import quotas
 from nectarallocationclient.v1 import resources
 from nectarallocationclient.v1 import service_types
+from nectarallocationclient.v1 import sites
 from nectarallocationclient.v1 import zones
 
 
@@ -84,6 +85,7 @@ class FakeClient(fakes.FakeClient, client.Client):
         self.resources = resources.ResourceManager(self.http_client)
         self.service_types = service_types.ServiceTypeManager(self.http_client)
         self.zones = zones.ZoneManager(self.http_client)
+        self.sites = sites.SiteManager(self.http_client)
 
 
 class FakeSessionClient(base_client.SessionClient):
@@ -399,6 +401,29 @@ class FakeSessionClient(base_client.SessionClient):
                     "help_text": "The maximum number of instances",
                     "service_type": "compute"
                 })
+
+    def get_sites(self, **kw):
+        sites = [
+            {
+                "name": "kanmantoo",
+                "display_name": "Kanmantoo",
+                "enabled": False
+            },
+            {
+                "name": "gundawindi",
+                "display_name": "Gundawindi",
+                "enabled": True
+            }
+        ]
+        return (200, {}, sites)
+
+    def get_sites_kanmantoo(self, **kw):
+        return (200, {},
+            {
+                "name": "kanmantoo",
+                "display_name": "Kanmantoo",
+                "enabled": False
+            })
 
     def get_zones(self, **kw):
         zones = [

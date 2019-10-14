@@ -37,13 +37,15 @@ entry_points = {
         'allocation resource show = nectarallocationclient.osc.v1.resources:ShowResource',
         'allocation grant list = nectarallocationclient.osc.v1.grants:ListGrants',
         'allocation grant show = nectarallocationclient.osc.v1.grants:ShowGrant',
+        'allocation site list = nectarallocationclient.osc.v1.sites:ListSites',
+        'allocation site show = nectarallocationclient.osc.v1.sites:ShowSite',
     ]
 }
 
 
 setup(
     name='nectarallocationclient',
-    version='0.7.0',
+    version='0.8.0',
     description=('Client for the Nectar Allocation system'),
     author='Sam Morrison',
     author_email='sorrison@gmail.com',

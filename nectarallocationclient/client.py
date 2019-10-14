@@ -27,7 +27,7 @@ def Client(version, *args, **kwargs):
 class SessionClient(adapter.Adapter):
 
     client_name = 'python-nectarallocationclient'
-    client_version = '0.7'
+    client_version = '0.8'
 
     def request(self, url, method, **kwargs):
         project_id = self.get_project_id()
