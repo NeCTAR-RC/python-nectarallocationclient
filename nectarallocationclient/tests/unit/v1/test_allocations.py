@@ -79,7 +79,8 @@ class AllocationsTest(utils.TestCase):
         data = {
             'project_name': 'foo',
             'project_description': 'bar',
-            'allocation_home': 'somewhere',
+            'associated_site': 'qcif',
+            'national': True,
             'use_case': 'testing',
             'estimated_number_users': 2,
             'estimated_project_duration': 4,
@@ -106,7 +107,6 @@ class AllocationsTest(utils.TestCase):
         data = {
             'project_name': 'foo',
             'project_description': 'bar',
-            'allocation_home': 'somewhere',
             'use_case': 'testing',
         }
         defaults = {
@@ -124,6 +124,8 @@ class AllocationsTest(utils.TestCase):
             'usage_pattterns': '',
             'convert_trial_project': False,
             'notifications': True,
+            'associated_site': None,
+            'national': False,
         }
 
         a = self.cs.allocations.create(**data)

@@ -195,3 +195,7 @@ def from_response(response, url, method=None):
 
 class AllocationDoesNotExist(NotFound):
     pass
+
+
+class SiteDoesNotExist(NotFound):
+    pass
