@@ -181,11 +181,19 @@ class CreateAllocation(AllocationShowOne):
             required=True,
             help='Description of the allocation to create'
         )
+        # Note that we do not support the 'allocation_home' compatibility
+        # attribute in OSC.  It is only supported at the API level.
         parser.add_argument(
-            '--home',
-            metavar='<home>',
+            '--associated-site',
+            metavar='<site>',
             required=True,
-            help='Allocation home'
+            help="Associated site.  Note: an associated site should be "
+            "specified for both 'national' and 'local' funded allocations"
+        )
+        parser.add_argument(
+            '--national',
+            action='store_true',
+            help="Allocation is 'national' funded. (default: false)"
         )
         parser.add_argument(
             '--use-case',
@@ -288,7 +296,8 @@ class CreateAllocation(AllocationShowOne):
             'project_name': parsed_args.name,
             'project_description': parsed_args.description,
             'convert_trial_project': parsed_args.convert_trial_project,
-            'allocation_home': parsed_args.home,
+            'associated_site': parsed_args.associated_site,
+            'national': parsed_args.national,
             'use_case': parsed_args.use_case,
             'estimated_number_users': parsed_args.estimated_number_users,
             'estimated_project_duration': parsed_args.estimated_duration,
