@@ -175,20 +175,20 @@ class AllocationManager(base.Manager):
     def update(self, allocation_id, **kwargs):
         return self._update('/allocations/%s/' % allocation_id, data=kwargs)
 
-    def create(self, project_name, project_description,
-               allocation_home, use_case,
+    def create(self, project_name, project_description, use_case,
                estimated_number_users=1, estimated_project_duration=3,
                field_of_research_1=None, field_of_research_2=None,
                field_of_research_3=None,
                for_percentage_1=0, for_percentage_2=0, for_percentage_3=0,
                geographic_requirements='', ncris_support='', nectar_support='',
                usage_pattterns='', convert_trial_project=False,
-               notifications=True):
+               associated_site=None, national=False, notifications=True):
         data = {
             'project_name': project_name,
             'project_description': project_description,
             'convert_trial_project': convert_trial_project,
-            'allocation_home': allocation_home,
+            'associated_site': associated_site,
+            'national': national,
             'use_case': use_case,
             'estimated_number_users': estimated_number_users,
             'estimated_project_duration': estimated_project_duration,
