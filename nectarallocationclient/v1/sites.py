@@ -18,7 +18,13 @@ class Site(base.Resource):
     pass
 
 
-class SiteManager(base.BasicManager):
+class SiteManager(base.ManagerWithFind):
 
     base_url = 'sites'
     resource_class = Site
+
+    def list(self, **kwargs):
+        return self._list('/sites/', params=kwargs)
+
+    def get(self, allocation_id):
+        return self._get('/sites/%s/' % allocation_id)
