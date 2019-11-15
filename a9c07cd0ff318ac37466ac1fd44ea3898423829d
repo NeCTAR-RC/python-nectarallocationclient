@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "234f0b82_03e6aee2",
+        "filename": "nectarallocationclient/v1/allocations.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-11-15T05:18:20Z",
+      "side": 0,
+      "message": "We need to handle this case in a backwards compatible way.\n\nCould leave this argument in here and default it to None.\nIf they give a value for allocation_home and don\u0027t give an associated_site then we can assume its an old consumer that hasn\u0027t updated their code and we can set associated_site and national based on what they give us for allocation_home.\n\nAlso if they do provide it we can give them some kind of warning that this argument is no longer supported",
+      "range": {
+        "startLine": 179,
+        "startChar": 15,
+        "endLine": 179,
+        "endChar": 31
+      },
+      "revId": "a9c07cd0ff318ac37466ac1fd44ea3898423829d",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    }
+  ]
+}
