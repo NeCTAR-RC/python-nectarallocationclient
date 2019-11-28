@@ -23,6 +23,7 @@ entry_points = {
         'allocation show = nectarallocationclient.osc.v1.allocations:ShowAllocation',
         'allocation amend = nectarallocationclient.osc.v1.allocations:AmendAllocation',
         'allocation approve = nectarallocationclient.osc.v1.allocations:ApproveAllocation',
+        'allocation delete = nectarallocationclient.osc.v1.allocations:DeleteAllocation',
         'allocation history = nectarallocationclient.osc.v1.allocations:AllocationHistory',
         'allocation create = nectarallocationclient.osc.v1.allocations:CreateAllocation',
         'allocation set = nectarallocationclient.osc.v1.allocations:UpdateAllocation',

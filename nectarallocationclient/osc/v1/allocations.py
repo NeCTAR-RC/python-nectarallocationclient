@@ -99,6 +99,19 @@ class AmendAllocation(AllocationShowOne):
         return self._show_allocation(allocation)
 
 
+class DeleteAllocation(AllocationShowOne):
+    """Delete allocation"""
+
+    log = logging.getLogger(__name__ + '.DeleteAllocation')
+
+    def take_action(self, parsed_args):
+        self.log.debug('take_action(%s)', parsed_args)
+        client = self.app.client_manager.allocation
+        allocation = get_allocation(client, parsed_args.allocation)
+        allocation = client.allocations.delete(allocation.id)
+        return self._show_allocation(allocation)
+
+
 class ListAllocations(command.Lister):
     """List allocations."""
 
