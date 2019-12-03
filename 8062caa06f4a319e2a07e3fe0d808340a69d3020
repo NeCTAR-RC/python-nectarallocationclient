@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1d3fd272_fc625ef2",
+        "filename": "nectarallocationclient/tests/unit/v1/test_allocations.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-03T21:53:04Z",
+      "side": 1,
+      "message": "could do with a test case to ensure the old way of specifying allocation_home works still",
+      "revId": "8062caa06f4a319e2a07e3fe0d808340a69d3020",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "82fe082a_cfe18309",
+        "filename": "nectarallocationclient/v1/allocations.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-03T21:53:04Z",
+      "side": 1,
+      "message": "this looks like an unrelated change? use_case is required I\u0027m pretty sure?",
+      "range": {
+        "startLine": 180,
+        "startChar": 45,
+        "endLine": 180,
+        "endChar": 51
+      },
+      "revId": "8062caa06f4a319e2a07e3fe0d808340a69d3020",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e9145ec_914d21cc",
+        "filename": "nectarallocationclient/v1/allocations.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-03T21:53:04Z",
+      "side": 1,
+      "message": "what is allocation_home is set to national? I think in that case we\u0027d need to return a 409 or something?",
+      "range": {
+        "startLine": 191,
+        "startChar": 13,
+        "endLine": 191,
+        "endChar": 45
+      },
+      "revId": "8062caa06f4a319e2a07e3fe0d808340a69d3020",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c9de88d7_dab6408d",
+        "filename": "nectarallocationclient/v1/allocations.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-03T21:53:04Z",
+      "side": 1,
+      "message": "I think we prob want to sent the associated_sites ID here as opposed to the object itself?",
+      "range": {
+        "startLine": 201,
+        "startChar": 31,
+        "endLine": 201,
+        "endChar": 47
+      },
+      "revId": "8062caa06f4a319e2a07e3fe0d808340a69d3020",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    }
+  ]
+}
