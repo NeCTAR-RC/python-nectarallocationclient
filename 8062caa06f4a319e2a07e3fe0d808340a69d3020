@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e7f53d7e_c2e47da6",
+        "filename": "nectarallocationclient/tests/unit/v1/test_allocations.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000157
+      },
+      "writtenOn": "2019-12-04T03:25:15Z",
+      "side": 1,
+      "message": "I tried writing one, but I couldn\u0027t figure out what the existing tests were doing.  I\u0027ll have another go at it.",
+      "parentUuid": "1d3fd272_fc625ef2",
+      "revId": "8062caa06f4a319e2a07e3fe0d808340a69d3020",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "82fe082a_cfe18309",
         "filename": "nectarallocationclient/v1/allocations.py",
         "patchSetId": 4
@@ -42,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "a590b707_b89c30af",
+        "filename": "nectarallocationclient/v1/allocations.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000157
+      },
+      "writtenOn": "2019-12-04T03:25:15Z",
+      "side": 1,
+      "message": "We will need to change the argument order then.  That is a breaking change.",
+      "parentUuid": "82fe082a_cfe18309",
+      "range": {
+        "startLine": 180,
+        "startChar": 45,
+        "endLine": 180,
+        "endChar": 51
+      },
+      "revId": "8062caa06f4a319e2a07e3fe0d808340a69d3020",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3e9145ec_914d21cc",
         "filename": "nectarallocationclient/v1/allocations.py",
         "patchSetId": 4
@@ -53,6 +95,30 @@
       "writtenOn": "2019-12-03T21:53:04Z",
       "side": 1,
       "message": "what is allocation_home is set to national? I think in that case we\u0027d need to return a 409 or something?",
+      "range": {
+        "startLine": 191,
+        "startChar": 13,
+        "endLine": 191,
+        "endChar": 45
+      },
+      "revId": "8062caa06f4a319e2a07e3fe0d808340a69d3020",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "39183bf7_ad2aceea",
+        "filename": "nectarallocationclient/v1/allocations.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000157
+      },
+      "writtenOn": "2019-12-04T03:25:15Z",
+      "side": 1,
+      "message": "Possible.  It breaks compatibility though.  Also, my plan was to allow the incomplete info at this point and have the \u003e\u003eserver\u003c\u003c reject this at the approve step.  The code for doing that is already there.\n\nSo what is the real goal of this compatibility thing.  To implement a read-write \u0027allocation_home\u0027 field, or a read-only one?  Because a read-write one is (frankly) not possible.",
+      "parentUuid": "3e9145ec_914d21cc",
       "range": {
         "startLine": 191,
         "startChar": 13,
@@ -85,6 +151,30 @@
       "revId": "8062caa06f4a319e2a07e3fe0d808340a69d3020",
       "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "978120e5_817d1ace",
+        "filename": "nectarallocationclient/v1/allocations.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000157
+      },
+      "writtenOn": "2019-12-04T03:25:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9de88d7_dab6408d",
+      "range": {
+        "startLine": 201,
+        "startChar": 31,
+        "endLine": 201,
+        "endChar": 47
+      },
+      "revId": "8062caa06f4a319e2a07e3fe0d808340a69d3020",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
     }
   ]
 }
