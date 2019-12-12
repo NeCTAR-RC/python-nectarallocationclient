@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b2c20e0b_33af06a6",
+        "filename": "nectarallocationclient/osc/v1/allocations.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000157
+      },
+      "writtenOn": "2019-12-12T23:49:46Z",
+      "side": 1,
+      "message": "Does Sam agree with that?",
+      "parentUuid": "3108d7a3_bbb13f40",
+      "range": {
+        "startLine": 200,
+        "startChar": 15,
+        "endLine": 200,
+        "endChar": 25
+      },
+      "revId": "5158c4bd11909110773f4d977b546e7e7db9fb5b",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "12c28981_c5a3949d",
         "filename": "nectarallocationclient/v1/allocations.py",
         "patchSetId": 6
@@ -45,6 +69,30 @@
       "revId": "5158c4bd11909110773f4d977b546e7e7db9fb5b",
       "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7de81f3_b3f2f8a4",
+        "filename": "nectarallocationclient/v1/allocations.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000157
+      },
+      "writtenOn": "2019-12-12T23:49:46Z",
+      "side": 1,
+      "message": "Agreed.  But that code shouldn\u0027t be there at all.  The compatibility logic is now all server-side, and we \u003edo\u003c support setting \u0027allocation_home\u0027 to \u0027unassigned\u0027 etc.",
+      "parentUuid": "12c28981_c5a3949d",
+      "range": {
+        "startLine": 188,
+        "startChar": 8,
+        "endLine": 188,
+        "endChar": 34
+      },
+      "revId": "5158c4bd11909110773f4d977b546e7e7db9fb5b",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
     }
   ]
 }
