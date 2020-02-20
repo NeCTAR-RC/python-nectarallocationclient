@@ -52,28 +52,6 @@ For more information on this keystoneauth API, see `Using Sessions`_.
 
 .. _Using Sessions: https://docs.openstack.org/keystoneauth/latest/using-sessions.html
 
-Alternatively you can create a client using your credentials:
-
-    >>> from nectarallocationclient import client
-    >>> nectar = client.Client(VERSION, USERNAME, PASSWORD, PROJECT_NAME, AUTH_URL)
-
-
-It is also possible to use an instance as a context manager in which case
-there will be a session kept alive for the duration of the with statement::
-
-    >>> from nectarallocationclient import client
-    >>> with client.Client(VERSION, USERNAME, PASSWORD,
-    ...                    PROJECT_ID, AUTH_URL) as nectar:
-    ...     nectar.allocations.list()
-    ...     nectar.allocations.get(123)
-    ...
-
-It is also possible to have a permanent (process-long) connection pool,
-by passing a connection_pool=True::
-
-    >>> from nectarallocationclient import client
-    >>> nectar = client.Client(VERSION, USERNAME, PASSWORD, PROJECT_ID,
-    ...                      AUTH_URL, connection_pool=True)
 
 Then call methods on its managers::
 
