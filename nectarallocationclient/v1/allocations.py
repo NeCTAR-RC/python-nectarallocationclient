@@ -73,6 +73,8 @@ class Allocation(base.Resource):
         for quota in quotas:
             quota_resource = quota.resource.split('.')[1]
             kwargs[quota_resource] = quota.quota
+        if not kwargs.get('cores') or not kwargs.get('instances'):
+            return {}
         if 'ram' not in kwargs or int(kwargs['ram']) == 0:
             kwargs['ram'] = kwargs['cores'] * 4
         return kwargs
