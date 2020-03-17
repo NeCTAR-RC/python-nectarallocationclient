@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "17e5087e_9824ea9c",
+        "filename": "nectarallocationclient/v1/allocations.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000157
+      },
+      "writtenOn": "2020-03-17T23:15:53Z",
+      "side": 1,
+      "message": "Should be be testing instance quota too.",
+      "revId": "9d2a38a988f461af3c1ac9001be828f3eb870e15",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    }
+  ]
+}
