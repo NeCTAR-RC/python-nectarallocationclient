@@ -145,6 +145,18 @@ class Allocation(base.Resource):
             kwargs['subnet'] = kwargs['network']
         return kwargs
 
+    def get_allocated_octavia_quota(self):
+        # Get LB quota from network group for now
+        quotas = self.get_quota('network')
+        if not quotas:
+            return {}
+        kwargs = {}
+        for quota in quotas:
+            quota_resource = quota.resource.split('.')[1]
+            if quota_resource == 'loadbalancer':
+                kwargs['load_balancers'] = quota.quota
+        return kwargs
+
 
 class AllocationManager(base.Manager):
 

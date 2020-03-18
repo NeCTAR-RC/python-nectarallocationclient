@@ -41,7 +41,50 @@ CALLBACK_RE = re.compile(r"^get_http:__nectarallocation_api:8774_v\d(_\d)?$")
 
 generic_allocation = {
     "id": 123,
-    "quotas": [],
+    "quotas": [
+        {
+            "zone": "nectar",
+            "resource": "compute.cores",
+            "quota": 4,
+            "id": 1
+        },
+        {
+            "zone": "nectar",
+            "resource": "compute.ram",
+            "quota": 50,
+            "id": 2
+        },
+        {
+            "zone": "nectar",
+            "resource": "compute.instances",
+            "quota": 2,
+            "id": 3
+        },
+        {
+            "zone": "nectar",
+            "resource": "network.floatingip",
+            "quota": 5,
+            "id": 4
+        },
+        {
+            "zone": "nectar",
+            "resource": "network.loadbalancer",
+            "quota": 7,
+            "id": 5
+        },
+        {
+            "zone": "nectar",
+            "resource": "network.network",
+            "quota": 4,
+            "id": 6
+        },
+        {
+            "zone": "nectar",
+            "resource": "network.router",
+            "quota": 3,
+            "id": 7
+        }
+    ],
     "status": "A",
     "submit_date": "2018-07-03",
     "modified_time": "2018-07-03T07:36:48Z",
@@ -274,40 +317,7 @@ class FakeSessionClient(base_client.SessionClient):
         return (200, {}, allocations)
 
     def get_allocations_123(self, **kw):
-        return (200, {},
-                {"id": 123,
-                 "quotas": [],
-                 "status": "A",
-                 "submit_date": "2018-07-03",
-                 "modified_time": "2018-07-03T07:36:48Z",
-                 "project_name": "rest-test3",
-                 "project_description": "testing rest",
-                 "contact_email": "user@fake.org",
-                 "start_date": "2018-07-04",
-                 "end_date": "2018-08-04",
-                 "estimated_project_duration": 1,
-                 "convert_trial_project": False,
-                 "approver_email": "user@fake.org",
-                 "use_case": "test",
-                 "usage_patterns": "",
-                 "allocation_home": "uom",
-                 "geographic_requirements": "",
-                 "project_id": None,
-                 "estimated_number_users": 1,
-                 "field_of_research_1": None,
-                 "for_percentage_1": 100,
-                 "field_of_research_2": None,
-                 "for_percentage_2": 0,
-                 "field_of_research_3": None,
-                 "for_percentage_3": 0,
-                 "nectar_support": "",
-                 "ncris_support": "",
-                 "funding_national_percent": 100,
-                 "funding_node": None,
-                 "provisioned": False,
-                 "notifications": True,
-                 "parent_request": None
-                })
+        return (200, {}, generic_allocation)
 
     def patch_allocations_123(self, data, **kw):
         return (202, {'notes': 'test'},
