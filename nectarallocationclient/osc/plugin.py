@@ -38,7 +38,9 @@ def make_client(instance):
         instance._api_version[API_NAME],
         API_VERSIONS)
 
-    client = plugin_client(session=instance.session)
+    endpoint = instance._cli_options.allocation_endpoint
+    client = plugin_client(session=instance.session,
+                           endpoint_override=endpoint)
     return client
 
 
@@ -59,4 +61,8 @@ def build_option_parser(parser):
         help='Nectar Allocation API version, default='
              + DEFAULT_API_VERSION
              + ' (Env: OS_ALLOCATION_API_VERSION)')
+    parser.add_argument(
+        '--os-allocation-endpoint',
+        metavar='<allocation-endpoint>',
+        help='Nectar Allocation API endpoint')
     return parser
