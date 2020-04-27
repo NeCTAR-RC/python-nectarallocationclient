@@ -46,7 +46,8 @@ entry_points = {
 
 setup(
     name='nectarallocationclient',
-    version='1.1.0',
+    version_format='{tag}',
+    setup_requires=['very-good-setuptools-git-version'],
     description=('Client for the Nectar Allocation system'),
     author='Sam Morrison',
     author_email='sorrison@gmail.com',
