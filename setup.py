@@ -37,7 +37,7 @@ entry_points = {
 
 setuptools.setup(
     name='nectarallocationclient',
-    version='1.2.0',
+    version='1.3.0',
     description=('Client for the Nectar Allocation system'),
     author='Sam Morrison',
     author_email='sorrison@gmail.com',

@@ -143,6 +143,7 @@ class Allocation(base.Resource):
             kwargs[quota_resource] = quota.quota
         if 'network' in kwargs:
             kwargs['subnet'] = kwargs['network']
+        kwargs.pop('loadbalancer', None)
         return kwargs
 
     def get_allocated_octavia_quota(self):
