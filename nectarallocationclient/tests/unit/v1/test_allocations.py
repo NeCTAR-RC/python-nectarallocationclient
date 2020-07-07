@@ -152,8 +152,8 @@ class AllocationsTest(utils.TestCase):
     def test_get_allocated_neutron_quota(self):
         a = self.cs.allocations.get(123)
         quota = a.get_allocated_neutron_quota()
-        self.assertEqual({'floatingip': 5, 'loadbalancer': 7,
-                          'network': 4, 'router': 3, 'subnet': 4},
+        self.assertEqual({'floatingip': 5, 'network': 4, 'router': 3,
+                          'subnet': 4},
                          quota)
 
     def test_get_allocated_octavia_quota(self):
