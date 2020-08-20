@@ -197,7 +197,7 @@ class AllocationManager(base.Manager):
                field_of_research_3=None,
                for_percentage_1=0, for_percentage_2=0, for_percentage_3=0,
                geographic_requirements='', ncris_support='', nectar_support='',
-               usage_pattterns='', convert_trial_project=False,
+               usage_patterns='', convert_trial_project=False,
                associated_site=None, national=False, notifications=True):
         # Backwards compatibility logic for 'allocation_home' is handled
         # server-side. Maybe we should warn the app that they are
@@ -225,7 +225,7 @@ class AllocationManager(base.Manager):
             'geographic_requirements': geographic_requirements,
             'ncris_support': ncris_support,
             'nectar_support': nectar_support,
-            'usage_pattterns': usage_pattterns,
+            'usage_patterns': usage_patterns,
             'notifications': notifications,
         }
         return self._create('/allocations/', data=data)

@@ -289,9 +289,9 @@ class CreateAllocation(AllocationShowOne):
             help='Nectar support'
         )
         parser.add_argument(
-            '--usage-pattterns',
+            '--usage-patterns',
             metavar='<details>',
-            help='Usage pattterns'
+            help='Usage patterns'
         )
         parser.add_argument(
             '--notifications',
@@ -323,7 +323,7 @@ class CreateAllocation(AllocationShowOne):
             'geographic_requirements': parsed_args.geographic_requirements,
             'ncris_support': parsed_args.ncris_support,
             'nectar_support': parsed_args.nectar_support,
-            'usage_pattterns': parsed_args.usage_pattterns,
+            'usage_patterns': parsed_args.usage_patterns,
             'notifications': parsed_args.notifications,
         }
 

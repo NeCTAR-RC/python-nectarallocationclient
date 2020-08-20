@@ -93,7 +93,7 @@ class AllocationsTest(utils.TestCase):
             'geographic_requirements': 'near the beach',
             'ncris_support': 'some',
             'nectar_support': 'little',
-            'usage_pattterns': 'sporadic',
+            'usage_patterns': 'sporadic',
             'convert_trial_project': True,
             'notifications': False,
         }
@@ -121,7 +121,7 @@ class AllocationsTest(utils.TestCase):
             'geographic_requirements': '',
             'ncris_support': '',
             'nectar_support': '',
-            'usage_pattterns': '',
+            'usage_patterns': '',
             'convert_trial_project': False,
             'notifications': True,
             'associated_site': None,
