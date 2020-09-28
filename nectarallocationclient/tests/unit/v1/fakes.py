@@ -121,6 +121,7 @@ generic_allocation = {
     "notes": "test",
     "provisioned": False,
     "notifications": True,
+    "managed": True,
     "parent_request": None}
 
 

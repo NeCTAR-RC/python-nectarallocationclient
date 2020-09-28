@@ -96,6 +96,7 @@ class AllocationsTest(utils.TestCase):
             'usage_patterns': 'sporadic',
             'convert_trial_project': True,
             'notifications': False,
+            'managed': False,
         }
 
         a = self.cs.allocations.create(**data)
@@ -126,6 +127,8 @@ class AllocationsTest(utils.TestCase):
             'notifications': True,
             'associated_site': None,
             'national': False,
+            'notifications': True,
+            'managed': True,
         }
 
         a = self.cs.allocations.create(**data)
