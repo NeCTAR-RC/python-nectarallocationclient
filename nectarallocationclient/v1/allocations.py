@@ -198,7 +198,8 @@ class AllocationManager(base.Manager):
                for_percentage_1=0, for_percentage_2=0, for_percentage_3=0,
                geographic_requirements='', ncris_support='', nectar_support='',
                usage_patterns='', convert_trial_project=False,
-               associated_site=None, national=False, notifications=True):
+               associated_site=None, national=False, notifications=True,
+               managed=True):
         # Backwards compatibility logic for 'allocation_home' is handled
         # server-side. Maybe we should warn the app that they are
         # using a deprecated feature
@@ -227,6 +228,7 @@ class AllocationManager(base.Manager):
             'nectar_support': nectar_support,
             'usage_patterns': usage_patterns,
             'notifications': notifications,
+            'managed': managed,
         }
         return self._create('/allocations/', data=data)
 
