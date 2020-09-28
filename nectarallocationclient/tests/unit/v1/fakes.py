@@ -83,6 +83,12 @@ generic_allocation = {
             "resource": "network.router",
             "quota": 3,
             "id": 7
+        },
+        {
+            "zone": "nectar",
+            "resource": "container-infra.clusters",
+            "quota": 1,
+            "id": 8
         }
     ],
     "status": "A",

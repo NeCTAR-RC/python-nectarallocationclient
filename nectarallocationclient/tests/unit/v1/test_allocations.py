@@ -160,3 +160,8 @@ class AllocationsTest(utils.TestCase):
         a = self.cs.allocations.get(123)
         quota = a.get_allocated_octavia_quota()
         self.assertEqual({'load_balancers': 7}, quota)
+
+    def test_get_allocated_magnum_quota(self):
+        a = self.cs.allocations.get(123)
+        quota = a.get_allocated_magnum_quota()
+        self.assertEqual({'clusters': 1}, quota)

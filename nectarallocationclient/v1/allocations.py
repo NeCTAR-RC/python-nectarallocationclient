@@ -158,6 +158,16 @@ class Allocation(base.Resource):
                 kwargs['load_balancers'] = quota.quota
         return kwargs
 
+    def get_allocated_magnum_quota(self):
+        quotas = self.get_quota('container-infra')
+        if not quotas:
+            return {}
+        kwargs = {}
+        for quota in quotas:
+            quota_resource = quota.resource.split('.')[1]
+            kwargs[quota_resource] = quota.quota
+        return kwargs
+
 
 class AllocationManager(base.Manager):
 
