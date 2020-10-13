@@ -137,7 +137,8 @@ class ListAllocations(command.Lister):
 
         allocations = client.allocations.list(**filters)
         columns = ['id', 'project_name',
-                   'contact_email', 'status_display']
+                   'contact_email', 'status_display', 'national',
+                   'associated_site']
 
         return (
             columns,
@@ -168,7 +169,8 @@ class AllocationHistory(command.Lister):
             parent_request=allocation.id)
         allocations.insert(0, allocation)
         columns = ['id', 'modified_time', 'status_display', 'start_date',
-                   'end_date', 'contact_email']
+                   'end_date', 'contact_email', 'national',
+                   'associated_site']
 
         return (
             columns,
