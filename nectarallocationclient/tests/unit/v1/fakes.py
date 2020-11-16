@@ -89,7 +89,13 @@ generic_allocation = {
             "resource": "container-infra.clusters",
             "quota": 1,
             "id": 8
-        }
+        },
+        {
+            "zone": "nectar",
+            "resource": "database.ram",
+            "quota": 8,
+            "id": 8
+        },
     ],
     "status": "A",
     "submit_date": "2018-07-03",

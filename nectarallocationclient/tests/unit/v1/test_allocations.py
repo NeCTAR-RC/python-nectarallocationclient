@@ -168,3 +168,8 @@ class AllocationsTest(utils.TestCase):
         a = self.cs.allocations.get(123)
         quota = a.get_allocated_magnum_quota()
         self.assertEqual({'clusters': 1}, quota)
+
+    def test_get_allocated_trove_quota(self):
+        a = self.cs.allocations.get(123)
+        quota = a.get_allocated_trove_quota()
+        self.assertEqual({'volumes': 40, 'ram': 8}, quota)
