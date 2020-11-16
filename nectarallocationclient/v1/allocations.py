@@ -117,8 +117,8 @@ class Allocation(base.Resource):
 
         if 'volumes' not in kwargs:
             kwargs['volumes'] = int(kwargs['instances']) * 20
-        if 'instances' not in kwargs:
-            kwargs['instances'] = 2
+        if 'ram' not in kwargs or int(kwargs['ram']) == 0:
+            kwargs['ram'] = 8
         return kwargs
 
     def get_allocated_manila_quota(self):
