@@ -11,8 +11,8 @@
 #    under the License.
 
 import re
+from unittest import mock
 
-import mock
 from six.moves.urllib import parse
 
 from nectarallocationclient import client as base_client

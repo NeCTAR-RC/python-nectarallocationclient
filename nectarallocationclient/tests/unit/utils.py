@@ -13,10 +13,10 @@
 import os
 
 import fixtures
-import mock
 import requests
 from requests_mock.contrib import fixture as requests_mock_fixture
 import testtools
+from unittest import mock
 
 
 def _patch_mock_to_raise_for_invalid_assert_calls():
