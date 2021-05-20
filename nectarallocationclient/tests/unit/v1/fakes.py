@@ -10,6 +10,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import copy
 import re
 from unittest import mock
 
@@ -331,6 +332,19 @@ class FakeSessionClient(base_client.SessionClient):
 
     def get_allocations_123(self, **kw):
         return (200, {}, generic_allocation)
+
+    def get_allocations_124(self, **kw):
+        allocation_124 = copy.deepcopy(generic_allocation)
+        allocation_124['id'] = 124
+        allocation_124['quotas'][1]['quota'] = 0   # RAM
+        return (200, {}, allocation_124)
+
+    def get_allocations_125(self, **kw):
+        allocation_125 = copy.deepcopy(generic_allocation)
+        allocation_125['id'] = 125
+        allocation_125['quotas'][0]['quota'] = -1  # VCPUs
+        allocation_125['quotas'][1]['quota'] = 0   # RAM
+        return (200, {}, allocation_125)
 
     def patch_allocations_123(self, data, **kw):
         return (202, {'notes': 'test'},

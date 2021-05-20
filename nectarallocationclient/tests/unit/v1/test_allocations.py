@@ -152,6 +152,24 @@ class AllocationsTest(utils.TestCase):
         self.cs.assert_called('POST', '/allocations/123/amend/')
         self.assertIsInstance(a, allocations.Allocation)
 
+    def test_get_allocated_nova_quota(self):
+        a = self.cs.allocations.get(123)
+        quota = a.get_allocated_nova_quota()
+        self.assertEqual({'cores': 4, 'instances': 2, 'ram': 50},
+                         quota)
+
+    def test_get_allocated_nova_quota_default_ram(self):
+        a = self.cs.allocations.get(124)
+        quota = a.get_allocated_nova_quota()
+        self.assertEqual({'cores': 4, 'instances': 2, 'ram': 16},
+                         quota)
+
+    def test_get_allocated_nova_quota_unlimited_default_ram(self):
+        a = self.cs.allocations.get(125)
+        quota = a.get_allocated_nova_quota()
+        self.assertEqual({'cores': -1, 'instances': 2, 'ram': -1},
+                         quota)
+
     def test_get_allocated_neutron_quota(self):
         a = self.cs.allocations.get(123)
         quota = a.get_allocated_neutron_quota()

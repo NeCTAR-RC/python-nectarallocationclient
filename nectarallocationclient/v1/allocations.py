@@ -76,7 +76,10 @@ class Allocation(base.Resource):
         if not kwargs.get('cores') or not kwargs.get('instances'):
             return {}
         if 'ram' not in kwargs or int(kwargs['ram']) == 0:
-            kwargs['ram'] = kwargs['cores'] * 4
+            if kwargs['cores'] == -1:
+                kwargs['ram'] = -1
+            else:
+                kwargs['ram'] = kwargs['cores'] * 4
         return kwargs
 
     def get_allocated_cinder_quota(self):
