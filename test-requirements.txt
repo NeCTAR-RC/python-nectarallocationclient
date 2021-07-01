@@ -4,3 +4,4 @@ coverage
 mock
 requests-mock
 testtools
+stestr

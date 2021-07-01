@@ -33,6 +33,7 @@ htmlcov
 .venv/*
 cover/*
 coverage.xml
+.stestr/*
 
 # Translations
 *.mo
