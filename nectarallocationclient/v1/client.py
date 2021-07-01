@@ -15,6 +15,7 @@ from nectarallocationclient import client
 from nectarallocationclient import exceptions
 from nectarallocationclient.v1 import allocations
 from nectarallocationclient.v1 import chiefinvestigators
+from nectarallocationclient.v1 import facilities
 from nectarallocationclient.v1 import grants
 from nectarallocationclient.v1 import institutions
 from nectarallocationclient.v1 import publications
@@ -41,6 +42,7 @@ class Client(object):
         self.allocations = allocations.AllocationManager(self.http_client)
         self.chiefinvestigators = \
                 chiefinvestigators.ChiefInvestigatorManager(self.http_client)
+        self.facilities = facilities.FacilityManager(self.http_client)
         self.grants = grants.GrantManager(self.http_client)
         self.institutions = institutions.InstitutionManager(self.http_client)
         self.publications = publications.PublicationManager(self.http_client)
