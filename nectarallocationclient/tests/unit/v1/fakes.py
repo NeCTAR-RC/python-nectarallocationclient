@@ -21,6 +21,7 @@ from nectarallocationclient.tests.unit import fakes
 from nectarallocationclient.tests.unit import utils
 from nectarallocationclient.v1 import allocations
 from nectarallocationclient.v1 import client
+from nectarallocationclient.v1 import facilities
 from nectarallocationclient.v1 import quotas
 from nectarallocationclient.v1 import resources
 from nectarallocationclient.v1 import service_types
@@ -143,6 +144,7 @@ class FakeClient(fakes.FakeClient, client.Client):
         self.service_types = service_types.ServiceTypeManager(self.http_client)
         self.zones = zones.ZoneManager(self.http_client)
         self.sites = sites.SiteManager(self.http_client)
+        self.facilities = facilities.FacilityManager(self.http_client)
 
 
 class FakeSessionClient(base_client.SessionClient):
@@ -460,6 +462,26 @@ class FakeSessionClient(base_client.SessionClient):
                 "name": "kanmantoo",
                 "display_name": "Kanmantoo",
                 "enabled": False
+            })
+
+    def get_ncris_facilities(self, **kw):
+        facilities = [
+            {
+                "name": "Applied Magic Facility",
+                "short_name": "AMF",
+            },
+            {
+                "name": "Pure Magic Facility",
+                "short_name": "PMF",
+            }
+        ]
+        return (200, {}, facilities)
+
+    def get_ncris_facilities_AMF(self, **kw):
+        return (200, {},
+            {
+                "name": "Applied Magic Facility",
+                "short_name": "AMF",
             })
 
     def get_zones(self, **kw):
