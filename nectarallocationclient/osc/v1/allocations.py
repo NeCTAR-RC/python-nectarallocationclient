@@ -37,6 +37,9 @@ def get_allocation(client, id_or_name):
             allocations = client.allocations.list(**filters)
             if len(allocations) == 1:
                 return allocations[0]
+            elif len(allocations) > 1:
+                raise exceptions.CommandError(
+                    "'%s' matches more than one allocation" % id_or_name)
             else:
                 raise exceptions.NotFound()
     except exceptions.NotFound as ex:
