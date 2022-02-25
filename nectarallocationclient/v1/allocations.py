@@ -65,6 +65,17 @@ class Allocation(base.Resource):
         except KeyError:
             return []
 
+    def get_allocated_cloudkitty_quota(self):
+        quotas = self.get_quota('rating')
+        if not quotas:
+            return {}
+        kwargs = {}
+        for quota in quotas:
+            quota_resource = quota.resource.split('.')[1]
+            kwargs[quota_resource] = quota.quota
+
+        return kwargs
+
     def get_allocated_nova_quota(self):
         quotas = self.get_quota('compute')
         if not quotas:

@@ -191,3 +191,8 @@ class AllocationsTest(utils.TestCase):
         a = self.cs.allocations.get(123)
         quota = a.get_allocated_trove_quota()
         self.assertEqual({'volumes': 40, 'ram': 8}, quota)
+
+    def test_get_allocated_cloudkitty_quota(self):
+        a = self.cs.allocations.get(123)
+        quota = a.get_allocated_cloudkitty_quota()
+        self.assertEqual({'budget': 56}, quota)

@@ -96,7 +96,13 @@ generic_allocation = {
             "zone": "nectar",
             "resource": "database.ram",
             "quota": 8,
-            "id": 8
+            "id": 9
+        },
+        {
+            "zone": "nectar",
+            "resource": "rating.budget",
+            "quota": 56,
+            "id": 10
         },
     ],
     "status": "A",
