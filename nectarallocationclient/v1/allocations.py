@@ -182,6 +182,18 @@ class Allocation(base.Resource):
             kwargs[quota_resource] = quota.quota
         return kwargs
 
+    def get_allocated_warre_quota(self):
+        quotas = self.get_quota('nectar-reservation')
+        if not quotas:
+            return {}
+        kwargs = {}
+        for quota in quotas:
+            quota_resource = quota.resource.split('.')[1]
+            if quota_resource == 'days':
+                kwargs['hours'] = quota.quota * 24
+            kwargs[quota_resource] = quota.quota
+        return kwargs
+
 
 class AllocationManager(base.Manager):
 

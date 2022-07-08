@@ -104,6 +104,24 @@ generic_allocation = {
             "quota": 56,
             "id": 10
         },
+        {
+            "zone": "nectar",
+            "resource": "nectar-reservation.reservation",
+            "quota": 10,
+            "id": 11
+        },
+        {
+            "zone": "nectar",
+            "resource": "nectar-reservation.days",
+            "quota": 2,
+            "id": 12
+        },
+        {
+            "zone": "nectar",
+            "resource": "nectar-reservation.flavor:gpu-v1",
+            "quota": True,
+            "id": 13
+        },
     ],
     "status": "A",
     "submit_date": "2018-07-03",

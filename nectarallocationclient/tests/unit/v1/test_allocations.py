@@ -196,3 +196,9 @@ class AllocationsTest(utils.TestCase):
         a = self.cs.allocations.get(123)
         quota = a.get_allocated_cloudkitty_quota()
         self.assertEqual({'budget': 56}, quota)
+
+    def test_get_allocated_warre_quota(self):
+        a = self.cs.allocations.get(123)
+        quota = a.get_allocated_warre_quota()
+        self.assertEqual({'days': 2, 'flavor:gpu-v1': True, 'hours': 48,
+                          'reservation': 10}, quota)
