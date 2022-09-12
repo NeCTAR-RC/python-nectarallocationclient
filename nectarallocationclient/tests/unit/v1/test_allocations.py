@@ -152,6 +152,13 @@ class AllocationsTest(utils.TestCase):
         self.cs.assert_called('POST', '/allocations/123/amend/')
         self.assertIsInstance(a, allocations.Allocation)
 
+    def test_approver_info(self):
+        res = self.cs.allocations.get_approver_info(123)
+        self.cs.assert_called('GET', '/allocations/123/approver_info/')
+        self.assertEqual(res, {'approval_urgency': 'N/A',
+                               'expiry_state': 'None',
+                               'concerned_sites': ['ardc']})
+
     def test_get_allocated_nova_quota(self):
         a = self.cs.allocations.get(123)
         quota = a.get_allocated_nova_quota()

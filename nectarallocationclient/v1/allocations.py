@@ -49,6 +49,9 @@ class Allocation(base.Resource):
         LOG.debug("%s: Deleting allocation", self.id)
         return self.manager.delete(self.id)
 
+    def get_approver_info(self):
+        return self.manager.get_approver_info(self.id)
+
     def get_quota(self, service_type):
         if self._quota_cache is None:
             service_types = {}
@@ -276,3 +279,7 @@ class AllocationManager(base.Manager):
 
     def amend(self, allocation_id):
         return self._create('/allocations/%s/amend/' % allocation_id)
+
+    def get_approver_info(self, allocation_id):
+        return self._get('/allocations/%s/approver_info/' % allocation_id,
+                         return_raw=True)

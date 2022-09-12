@@ -421,6 +421,11 @@ class FakeSessionClient(base_client.SessionClient):
     def post_allocations_123_amend(self, **kw):
         return (202, {}, generic_allocation)
 
+    def get_allocations_123_approver_info(self, **kw):
+        return (200, {}, {'approval_urgency': 'N/A',
+                          'expiry_state': 'None',
+                          'concerned_sites': ['ardc']})
+
     def get_resources(self, **kw):
         resources = [
             {
