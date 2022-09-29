@@ -22,7 +22,7 @@ class ServiceType(base.Resource):
         self.resources = []
         for resource in self.resource_set:
             self.resources.append(resources.Resource(manager, resource))
-        del(self.resource_set)
+        del self.resource_set
 
     def __repr__(self):
         return "<ServiceType %s>" % (self.catalog_name)

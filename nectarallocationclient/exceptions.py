@@ -138,7 +138,7 @@ _code_map = dict(
 
 
 def from_response(response, url, method=None):
-    """Return an instance of one of the ClientException on an requests response.
+    """Produce a populated exception instance from a request response.
     Usage::
         resp = requests.request(...)
         if resp.status_code != 200:
