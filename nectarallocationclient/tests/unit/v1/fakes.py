@@ -22,6 +22,7 @@ from nectarallocationclient.tests.unit import utils
 from nectarallocationclient.v1 import allocations
 from nectarallocationclient.v1 import client
 from nectarallocationclient.v1 import facilities
+from nectarallocationclient.v1 import organisations
 from nectarallocationclient.v1 import quotas
 from nectarallocationclient.v1 import resources
 from nectarallocationclient.v1 import service_types
@@ -168,6 +169,8 @@ class FakeClient(fakes.FakeClient, client.Client):
         self.service_types = service_types.ServiceTypeManager(self.http_client)
         self.zones = zones.ZoneManager(self.http_client)
         self.sites = sites.SiteManager(self.http_client)
+        self.organisations = organisations.OrganisationManager(
+            self.http_client)
         self.facilities = facilities.FacilityManager(self.http_client)
 
 
@@ -492,6 +495,41 @@ class FakeSessionClient(base_client.SessionClient):
                 "display_name": "Kanmantoo",
                 "enabled": False
             })
+
+    def get_organisations(self, **kw):
+        orgs = [
+            {
+                "id": 1,
+                "short_name": "KU",
+                "full_name": "Kanmantoo University",
+                "ror_name": "https://ror.org/11111111",
+                "enabled": True
+            },
+            {
+                "id": 2,
+                "short_name": "GU",
+                "full_name": "Gundawindi University",
+                "ror_name": "https://ror.org/11111112",
+                "enabled": True
+            }
+        ]
+        return (200, {}, orgs)
+
+    def get_organisations_1(self, **kw):
+        return (200, {},
+            {
+                "id": 1,
+                "short_name": "KU",
+                "full_name": "Kanmantoo University",
+                "ror_name": "https://ror.org/11111111",
+                "enabled": True
+            })
+
+    def post_organisations_2_approve(self, **kw):
+        return (200, {}, {})
+
+    def post_organisations_2_decline(self, **kw):
+        return (200, {}, {})
 
     def get_ncris_facilities(self, **kw):
         facilities = [

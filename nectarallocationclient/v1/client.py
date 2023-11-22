@@ -17,7 +17,7 @@ from nectarallocationclient.v1 import allocations
 from nectarallocationclient.v1 import chiefinvestigators
 from nectarallocationclient.v1 import facilities
 from nectarallocationclient.v1 import grants
-from nectarallocationclient.v1 import institutions
+from nectarallocationclient.v1 import organisations
 from nectarallocationclient.v1 import publications
 from nectarallocationclient.v1 import quotas
 from nectarallocationclient.v1 import resources
@@ -41,10 +41,11 @@ class Client(object):
             session, service_type=service_type, **kwargs)
         self.allocations = allocations.AllocationManager(self.http_client)
         self.chiefinvestigators = \
-                chiefinvestigators.ChiefInvestigatorManager(self.http_client)
+            chiefinvestigators.ChiefInvestigatorManager(self.http_client)
         self.facilities = facilities.FacilityManager(self.http_client)
         self.grants = grants.GrantManager(self.http_client)
-        self.institutions = institutions.InstitutionManager(self.http_client)
+        self.organisations = \
+            organisations.OrganisationManager(self.http_client)
         self.publications = publications.PublicationManager(self.http_client)
         self.quotas = quotas.QuotaManager(self.http_client)
         self.resources = resources.ResourceManager(self.http_client)

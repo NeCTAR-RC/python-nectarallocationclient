@@ -13,6 +13,7 @@
 
 from nectarallocationclient import exceptions
 from nectarallocationclient.v1 import allocations
+from nectarallocationclient.v1 import organisations
 
 from nectarallocationclient.tests.unit import utils
 from nectarallocationclient.tests.unit.v1 import fakes
@@ -97,9 +98,48 @@ class AllocationsTest(utils.TestCase):
             'convert_trial_project': True,
             'notifications': False,
             'managed': False,
+            'supported_organisations': [1, 2]
         }
 
         a = self.cs.allocations.create(**data)
+        self.cs.assert_called('POST', '/allocations/',
+                              data=data)
+        self.assertIsInstance(a, allocations.Allocation)
+
+    def test_create_2(self):
+
+        class FakeOrganisation(organisations.Organisation):
+            def __init__(self, id):
+                self.id = id
+
+        org_1 = FakeOrganisation(1)
+        org_2 = FakeOrganisation(2)
+        data = {
+            'project_name': 'foo',
+            'project_description': 'bar',
+            'associated_site': 'qcif',
+            'national': True,
+            'use_case': 'testing',
+            'estimated_number_users': 2,
+            'estimated_project_duration': 4,
+            'field_of_research_1': 1222,
+            'field_of_research_2': 1333,
+            'field_of_research_3': 4555,
+            'for_percentage_1': 60,
+            'for_percentage_2': 30,
+            'for_percentage_3': 10,
+            'geographic_requirements': 'near the beach',
+            'ncris_support': 'some',
+            'nectar_support': 'little',
+            'usage_patterns': 'sporadic',
+            'convert_trial_project': True,
+            'notifications': False,
+            'managed': False,
+            'supported_organisations': [org_1, org_2]
+        }
+
+        a = self.cs.allocations.create(**data)
+        data['supported_organisations'] = [org_1.id, org_2.id]
         self.cs.assert_called('POST', '/allocations/',
                               data=data)
         self.assertIsInstance(a, allocations.Allocation)
@@ -129,6 +169,7 @@ class AllocationsTest(utils.TestCase):
             'national': False,
             'notifications': True,
             'managed': True,
+            'supported_organisations': []
         }
 
         a = self.cs.allocations.create(**data)

@@ -18,6 +18,7 @@ from osc_lib import utils as osc_utils
 
 from nectarallocationclient import exceptions
 from nectarallocationclient.osc import utils
+from nectarallocationclient.osc.v1 import organisations
 
 
 def get_allocation(client, id_or_name):
@@ -53,7 +54,7 @@ class AllocationShowOne(command.ShowOne):
         parser.add_argument(
             'allocation',
             metavar='<allocation>',
-            help=('ID or Name of allocation to display details for')
+            help=('ID or Name of allocation')
         )
         return parser
 
@@ -304,12 +305,21 @@ class CreateAllocation(AllocationShowOne):
             default=True,
             help='Send allocations (default:True)'
         )
+        parser.add_argument(
+            '--supported-organisation',
+            metavar='<organisations>',
+            action='append',
+            default=[],
+            help='Supported organisation (repeat as required)'
+        )
         return parser
 
     def take_action(self, parsed_args):
         self.log.debug('take_action(%s)', parsed_args)
 
         client = self.app.client_manager.allocation
+        orgs = [organisations.get_organisation(client, org)
+                for org in parsed_args.supported_organisation]
         fields = {
             'project_name': parsed_args.name,
             'project_description': parsed_args.description,
@@ -330,6 +340,7 @@ class CreateAllocation(AllocationShowOne):
             'nectar_support': parsed_args.nectar_support,
             'usage_patterns': parsed_args.usage_patterns,
             'notifications': parsed_args.notifications,
+            'supported_organisations': orgs,
         }
 
         allocation = client.allocations.create(**fields)
