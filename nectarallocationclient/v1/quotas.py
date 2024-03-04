@@ -44,7 +44,7 @@ class QuotaManager(base.Manager):
         self._delete('/%s/%s/' % (self.base_url, quota_id))
 
     def create(self, allocation, resource, zone, quota, requested_quota=None):
-        if type(zone) == zones.Zone:
+        if isinstance(zone, zones.Zone):
             zone = zone.name
         data = {
             'allocation': base.getid(allocation),
