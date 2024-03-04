@@ -20,6 +20,7 @@ from nectarallocationclient import client as base_client
 from nectarallocationclient.tests.unit import fakes
 from nectarallocationclient.tests.unit import utils
 from nectarallocationclient.v1 import allocations
+from nectarallocationclient.v1 import bundles
 from nectarallocationclient.v1 import client
 from nectarallocationclient.v1 import facilities
 from nectarallocationclient.v1 import organisations
@@ -151,6 +152,7 @@ class FakeClient(fakes.FakeClient, client.Client):
         client.Client.__init__(self, session=mock.Mock())
         self.http_client = FakeSessionClient(**kwargs)
         self.allocations = allocations.AllocationManager(self.http_client)
+        self.bundles = bundles.BundleManager(self.http_client)
         self.quotas = quotas.QuotaManager(self.http_client)
         self.resources = resources.ResourceManager(self.http_client)
         self.service_types = service_types.ServiceTypeManager(self.http_client)
@@ -481,6 +483,79 @@ class FakeSessionClient(base_client.SessionClient):
                 "name": "kanmantoo",
                 "display_name": "Kanmantoo",
                 "enabled": False
+            })
+
+    def get_bundles(self, **kw):
+        bundles = [
+            {
+                "id": 1,
+                "name": "silver",
+                "descriptiono": "Biger",
+                "zone": "foo",
+                "su_per_year": 1000,
+                "order": 1,
+                "quotas": [
+                    {
+                        "zone": "nectar",
+                        "resource": "compute.cores",
+                        "quota": 4,
+                    },
+                    {
+                        "zone": "nectar",
+                        "resource": "compute.ram",
+                        "quota": 50,
+                    },
+                ]
+            },
+            {
+                "id": 2,
+                "name": "gold",
+                "descriptiono": "large and powerful",
+                "zone": "var",
+                "su_per_year": 2000,
+                "order": 2,
+                "quotas": [
+                    {
+                        "zone": "nectar",
+                        "resource": "compute.instances",
+                        "quota": 2,
+                    },
+                    {
+                        "zone": "nectar",
+                        "resource": "network.floatingip",
+                        "quota": 5,
+                    },
+                    {
+                        "zone": "nectar",
+                        "resource": "network.loadbalancer",
+                        "quota": 7,
+                    }
+                ]
+            }
+        ]
+        return (200, {}, bundles)
+
+    def get_bundles_1(self, **kw):
+        return (200, {},
+            {
+                "id": 1,
+                "name": "bronze",
+                "descriptiono": "large and powerful",
+                "zone": "var",
+                "su_per_year": 3000,
+                "order": 2,
+                "quotas": [
+                    {
+                        "zone": "nectar",
+                        "resource": "compute.cores",
+                        "quota": 4,
+                    },
+                    {
+                        "zone": "nectar",
+                        "resource": "compute.ram",
+                        "quota": 50,
+                    },
+                ]
             })
 
     def get_organisations(self, **kw):

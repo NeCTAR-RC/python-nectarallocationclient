@@ -174,7 +174,7 @@ class AllocationHistory(command.Lister):
         allocations.insert(0, allocation)
         columns = ['id', 'modified_time', 'status_display', 'start_date',
                    'end_date', 'contact_email', 'national',
-                   'associated_site']
+                   'associated_site', 'bundle']
 
         return (
             columns,
@@ -312,6 +312,12 @@ class CreateAllocation(AllocationShowOne):
             default=[],
             help='Supported organisation (repeat as required)'
         )
+        parser.add_argument(
+            '--bundle',
+            metavar='<bundle>',
+            default=None,
+            help='Resource Bundle'
+        )
         return parser
 
     def take_action(self, parsed_args):
@@ -340,6 +346,7 @@ class CreateAllocation(AllocationShowOne):
             'nectar_support': parsed_args.nectar_support,
             'usage_patterns': parsed_args.usage_patterns,
             'notifications': parsed_args.notifications,
+            'bundle': parsed_args.bundle,
             'supported_organisations': orgs,
         }
 

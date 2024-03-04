@@ -98,6 +98,7 @@ class AllocationsTest(utils.TestCase):
             'convert_trial_project': True,
             'notifications': False,
             'managed': False,
+            'bundle': 'gold',
             'supported_organisations': [1, 2]
         }
 
@@ -135,6 +136,7 @@ class AllocationsTest(utils.TestCase):
             'convert_trial_project': True,
             'notifications': False,
             'managed': False,
+            'bundle': 'silter',
             'supported_organisations': [org_1, org_2]
         }
 
@@ -169,6 +171,7 @@ class AllocationsTest(utils.TestCase):
             'national': False,
             'notifications': True,
             'managed': True,
+            'bundle': None,
             'supported_organisations': []
         }
 

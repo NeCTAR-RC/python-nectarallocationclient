@@ -38,13 +38,16 @@ entry_points = {
         'allocation organisation create = nectarallocationclient.osc.v1.organisations:CreateOrganisation',
         'allocation organisation approve = nectarallocationclient.osc.v1.organisations:ApproveOrganisation',
         'allocation organisation decline = nectarallocationclient.osc.v1.organisations:DeclineOrganisation',
+        'allocation bundle list = nectarallocationclient.osc.v1.bundles:ListBundles',
+        'allocation bundle show = nectarallocationclient.osc.v1.bundles:ShowBundle',
+        'allocation bundle quotas = nectarallocationclient.osc.v1.bundles:ShowBundleQuotas',
     ]
 }
 
 
 setuptools.setup(
     name='nectarallocationclient',
-    version='1.9.0',
+    version='1.10.0',
     description=('Client for the Nectar Allocation system'),
     author='Sam Morrison',
     author_email='sorrison@gmail.com',

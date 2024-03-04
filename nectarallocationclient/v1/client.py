@@ -14,6 +14,7 @@
 from nectarallocationclient import client
 from nectarallocationclient import exceptions
 from nectarallocationclient.v1 import allocations
+from nectarallocationclient.v1 import bundles
 from nectarallocationclient.v1 import chiefinvestigators
 from nectarallocationclient.v1 import facilities
 from nectarallocationclient.v1 import grants
@@ -40,6 +41,7 @@ class Client(object):
         self.http_client = client.SessionClient(
             session, service_type=service_type, **kwargs)
         self.allocations = allocations.AllocationManager(self.http_client)
+        self.bundles = bundles.BundleManager(self.http_client)
         self.chiefinvestigators = \
             chiefinvestigators.ChiefInvestigatorManager(self.http_client)
         self.facilities = facilities.FacilityManager(self.http_client)

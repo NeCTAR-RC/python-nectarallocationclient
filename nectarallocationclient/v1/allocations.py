@@ -238,7 +238,7 @@ class AllocationManager(base.Manager):
                geographic_requirements='', ncris_support='', nectar_support='',
                usage_patterns='', convert_trial_project=False,
                associated_site=None, national=False, notifications=True,
-               managed=True, supported_organisations=[]):
+               managed=True, supported_organisations=[], bundle=None):
         # Backwards compatibility logic for 'allocation_home' is handled
         # server-side. Maybe we should warn the app that they are
         # using a deprecated feature
@@ -268,6 +268,7 @@ class AllocationManager(base.Manager):
             'usage_patterns': usage_patterns,
             'notifications': notifications,
             'managed': managed,
+            'bundle': bundle,
             'supported_organisations': [
                 base.getid(x) for x in supported_organisations]
         }
