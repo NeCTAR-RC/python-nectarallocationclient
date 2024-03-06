@@ -49,79 +49,66 @@ generic_allocation = {
             "zone": "nectar",
             "resource": "compute.cores",
             "quota": 4,
-            "id": 1
         },
         {
             "zone": "nectar",
             "resource": "compute.ram",
             "quota": 50,
-            "id": 2
         },
         {
             "zone": "nectar",
             "resource": "compute.instances",
             "quota": 2,
-            "id": 3
         },
         {
             "zone": "nectar",
             "resource": "network.floatingip",
             "quota": 5,
-            "id": 4
         },
         {
             "zone": "nectar",
             "resource": "network.loadbalancer",
             "quota": 7,
-            "id": 5
         },
         {
             "zone": "nectar",
             "resource": "network.network",
             "quota": 4,
-            "id": 6
         },
         {
             "zone": "nectar",
             "resource": "network.router",
             "quota": 3,
-            "id": 7
         },
         {
             "zone": "nectar",
             "resource": "container-infra.clusters",
             "quota": 1,
-            "id": 8
         },
         {
             "zone": "nectar",
             "resource": "database.ram",
             "quota": 8,
-            "id": 9
         },
         {
             "zone": "nectar",
             "resource": "rating.budget",
             "quota": 56,
-            "id": 10
         },
         {
             "zone": "nectar",
             "resource": "nectar-reservation.reservation",
             "quota": 10,
-            "id": 11
         },
         {
             "zone": "nectar",
             "resource": "nectar-reservation.days",
             "quota": 2,
-            "id": 12
         },
         {
             "zone": "nectar",
             "resource": "nectar-reservation.flavor:gpu-v1",
             "quota": True,
-            "id": 13
         },
     ],
     "status": "A",
