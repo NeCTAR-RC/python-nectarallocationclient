@@ -14,7 +14,7 @@ import copy
 import re
 
 import mock
-from six.moves.urllib import parse
+from urllib import parse
 
 from nectarallocationclient import client as base_client
 from nectarallocationclient.tests.unit import fakes
