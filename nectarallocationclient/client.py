@@ -14,6 +14,7 @@
 from keystoneauth1 import adapter
 from oslo_utils import importutils
 
+import nectarallocationclient
 from nectarallocationclient import exceptions
 
 
@@ -27,7 +28,7 @@ def Client(version, *args, **kwargs):
 class SessionClient(adapter.Adapter):
 
     client_name = 'python-nectarallocationclient'
-    client_version = '1.10.0'
+    client_version = nectarallocationclient.__version__
 
     def request(self, url, method, **kwargs):
         project_id = self.get_project_id()
