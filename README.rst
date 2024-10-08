@@ -1,11 +1,9 @@
-=============================================
- The :mod:`nectarallocationclient` Python API
-=============================================
+========================================
+ The `nectarallocationclient` Python API
+========================================
 
-.. module:: nectarallocationclient
-   :synopsis: A client for the Nectar Allocation API.
+A client for the Nectar Allocation API.
 
-.. currentmodule:: nectarallocationclient
 
 Usage
 -----
@@ -33,16 +31,16 @@ parameter. Similarly, if your cloud uses keystone v3 and you have a DOMAIN_NAME
 or DOMAIN_ID, provide it as `user_domain_(name|id)` and if you are using a
 PROJECT_NAME also provide the domain information as `project_domain_(name|id)`.
 
-nectarallocationclient adds 'python-nectarallocationclient' and its version to the user-agent string
-that keystoneauth produces. If you are creating an application using nectarallocationclient
-and want to register a name and version in the user-agent string, pass those
-to the Session::
+nectarallocationclient adds 'python-nectarallocationclient' and its version to
+the user-agent string that keystoneauth produces. If you are creating an
+application using nectarallocationclient and want to register a name and
+version in the user-agent string, pass those to the Session::
 
     >>> sess = session.Session(
     ...     auth=auth, app_name'nodepool', app_version'1.2.3')
 
-If you are making a library that consumes nectarallocationclient but is not an end-user
-application, you can append a (name, version) tuple to the session's
+If you are making a library that consumes nectarallocationclient but is not an
+end-user application, you can append a (name, version) tuple to the session's
 `additional_user_agent` property::
 
     >>> sess = session.Session(auth=auth)
