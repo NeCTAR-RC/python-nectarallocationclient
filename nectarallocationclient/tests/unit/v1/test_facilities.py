@@ -18,9 +18,8 @@ from nectarallocationclient.tests.unit.v1 import fakes
 
 
 class FacilitiesTest(utils.TestCase):
-
     def setUp(self):
-        super(FacilitiesTest, self).setUp()
+        super().setUp()
         self.cs = fakes.FakeClient()
 
     def test_facility_list(self):

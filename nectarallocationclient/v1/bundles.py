@@ -19,7 +19,6 @@ class BundleQuota(base.Resource):
 
 
 class Bundle(base.Resource):
-
     def __init__(self, manager, info, loaded=False, resp=None):
         super().__init__(manager, info, loaded, resp)
         raw_quotas = self.quotas
@@ -29,6 +28,5 @@ class Bundle(base.Resource):
 
 
 class BundleManager(base.BasicManager):
-
     base_url = 'bundles'
     resource_class = Bundle

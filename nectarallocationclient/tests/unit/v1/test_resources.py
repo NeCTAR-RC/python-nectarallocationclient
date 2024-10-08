@@ -18,9 +18,8 @@ from nectarallocationclient.tests.unit.v1 import fakes
 
 
 class ResourcesTest(utils.TestCase):
-
     def setUp(self):
-        super(ResourcesTest, self).setUp()
+        super().setUp()
         self.cs = fakes.FakeClient()
 
     def test_resource_list(self):

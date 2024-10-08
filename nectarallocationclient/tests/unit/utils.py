@@ -11,9 +11,9 @@
 #    under the License.
 
 import os
+from unittest import mock
 
 import fixtures
-import mock
 import requests
 from requests_mock.contrib import fixture as requests_mock_fixture
 import testtools
@@ -26,16 +26,21 @@ def _patch_mock_to_raise_for_invalid_assert_calls():
                 'assert_called_with',
                 'assert_called_once_with',
                 'assert_has_calls',
-                'assert_any_calls']
+                'assert_any_calls',
+            ]
 
             if name.startswith('assert') and name not in valid_asserts:
-                raise AttributeError('%s is not a valid mock assert method'
-                                     % name)
+                raise AttributeError(
+                    f'{name} is not a valid mock assert method'
+                )
 
             return wrapped(_self, name)
+
         return wrapper
+
     mock.Mock.__getattr__ = raise_for_invalid_assert_calls(
-        mock.Mock.__getattr__)
+        mock.Mock.__getattr__
+    )
 
 
 # NOTE(gibi): needs to be called only once at import time
@@ -49,13 +54,17 @@ class TestCase(testtools.TestCase):
     }
 
     def setUp(self):
-        super(TestCase, self).setUp()
-        if (os.environ.get('OS_STDOUT_CAPTURE') == 'True'
-                or os.environ.get('OS_STDOUT_CAPTURE') == '1'):
+        super().setUp()
+        if (
+            os.environ.get('OS_STDOUT_CAPTURE') == 'True'
+            or os.environ.get('OS_STDOUT_CAPTURE') == '1'
+        ):
             stdout = self.useFixture(fixtures.StringStream('stdout')).stream
             self.useFixture(fixtures.MonkeyPatch('sys.stdout', stdout))
-        if (os.environ.get('OS_STDERR_CAPTURE') == 'True'
-                or os.environ.get('OS_STDERR_CAPTURE') == '1'):
+        if (
+            os.environ.get('OS_STDERR_CAPTURE') == 'True'
+            or os.environ.get('OS_STDERR_CAPTURE') == '1'
+        ):
             stderr = self.useFixture(fixtures.StringStream('stderr')).stream
             self.useFixture(fixtures.MonkeyPatch('sys.stderr', stderr))
 
@@ -71,7 +80,7 @@ class TestResponse(requests.Response):
     """
 
     def __init__(self, data):
-        super(TestResponse, self).__init__()
+        super().__init__()
         self._text = None
         if isinstance(data, dict):
             self.status_code = data.get('status_code')

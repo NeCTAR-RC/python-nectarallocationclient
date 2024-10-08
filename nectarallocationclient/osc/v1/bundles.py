@@ -31,7 +31,7 @@ class ListBundles(command.Lister):
         columns = ['id', 'name', 'su_per_year']
         return (
             columns,
-            (osc_utils.get_item_properties(s, columns) for s in bundles)
+            (osc_utils.get_item_properties(s, columns) for s in bundles),
         )
 
 
@@ -42,11 +42,7 @@ class ShowBundleQuotas(command.Lister):
 
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
-        parser.add_argument(
-            'id',
-            metavar='<id>',
-            help=('ID of bundle')
-        )
+        parser.add_argument('id', metavar='<id>', help=('ID of bundle'))
         return parser
 
     def take_action(self, parsed_args):
@@ -60,7 +56,7 @@ class ShowBundleQuotas(command.Lister):
         columns = ['resource', 'quota']
         return (
             columns,
-            (osc_utils.get_item_properties(s, columns) for s in bundle.quotas)
+            (osc_utils.get_item_properties(s, columns) for s in bundle.quotas),
         )
 
 
@@ -71,11 +67,7 @@ class ShowBundle(command.ShowOne):
 
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
-        parser.add_argument(
-            'id',
-            metavar='<id>',
-            help=('ID of bundle')
-        )
+        parser.add_argument('id', metavar='<id>', help=('ID of bundle'))
         return parser
 
     def take_action(self, parsed_args):

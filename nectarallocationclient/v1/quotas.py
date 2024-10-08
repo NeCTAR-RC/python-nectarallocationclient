@@ -20,7 +20,6 @@ class Quota(base.Resource):
 
 
 class QuotaManager(base.Manager):
-
     base_url = 'quotas'
     resource_class = Quota
 
@@ -35,13 +34,13 @@ class QuotaManager(base.Manager):
         if service_type:
             kwargs['group__service_type'] = service_type
 
-        return self._list('/%s/' % self.base_url, params=kwargs)
+        return self._list(f'/{self.base_url}/', params=kwargs)
 
     def get(self, quota_id):
-        return self._get('/%s/%s/' % (self.base_url, quota_id))
+        return self._get(f'/{self.base_url}/{quota_id}/')
 
     def delete(self, quota_id):
-        self._delete('/%s/%s/' % (self.base_url, quota_id))
+        self._delete(f'/{self.base_url}/{quota_id}/')
 
     def create(self, allocation, resource, zone, quota, requested_quota=None):
         if isinstance(zone, zones.Zone):
@@ -53,4 +52,4 @@ class QuotaManager(base.Manager):
             'quota': quota,
             'requested_quota': requested_quota or quota,
         }
-        return self._create('/%s/' % self.base_url, data=data)
+        return self._create(f'/{self.base_url}/', data=data)

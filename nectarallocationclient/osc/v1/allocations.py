@@ -33,14 +33,17 @@ def get_allocation(client, id_or_name):
         if _is_int(id_or_name):
             return client.allocations.get(id_or_name)
         else:
-            filters = {'parent_request__isnull': True,
-                       'project_name': id_or_name}
+            filters = {
+                'parent_request__isnull': True,
+                'project_name': id_or_name,
+            }
             allocations = client.allocations.list(**filters)
             if len(allocations) == 1:
                 return allocations[0]
             elif len(allocations) > 1:
                 raise exceptions.CommandError(
-                    "'%s' matches more than one allocation" % id_or_name)
+                    f"'{id_or_name}' matches more than one allocation"
+                )
             else:
                 raise exceptions.NotFound()
     except exceptions.NotFound as ex:
@@ -48,13 +51,12 @@ def get_allocation(client, id_or_name):
 
 
 class AllocationShowOne(command.ShowOne):
-
     def get_parser(self, prog_name):
-        parser = super(AllocationShowOne, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.add_argument(
             'allocation',
             metavar='<allocation>',
-            help=('ID or Name of allocation')
+            help=('ID or Name of allocation'),
         )
         return parser
 
@@ -122,13 +124,15 @@ class ListAllocations(command.Lister):
     log = logging.getLogger(__name__ + '.ListAllocations')
 
     def get_parser(self, prog_name):
-        parser = super(ListAllocations, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.add_argument(
             '--filter',
             metavar='<filter>',
             action='append',
-            help=("Filter allocation, use key=value, can be specified "
-                  "multiple times")
+            help=(
+                "Filter allocation, use key=value, can be specified "
+                "multiple times"
+            ),
         )
         return parser
 
@@ -140,13 +144,18 @@ class ListAllocations(command.Lister):
         filters.update(utils.format_parameters(parsed_args.filter))
 
         allocations = client.allocations.list(**filters)
-        columns = ['id', 'project_name',
-                   'contact_email', 'status_display', 'national',
-                   'associated_site']
+        columns = [
+            'id',
+            'project_name',
+            'contact_email',
+            'status_display',
+            'national',
+            'associated_site',
+        ]
 
         return (
             columns,
-            (osc_utils.get_item_properties(r, columns) for r in allocations)
+            (osc_utils.get_item_properties(r, columns) for r in allocations),
         )
 
 
@@ -156,11 +165,11 @@ class AllocationHistory(command.Lister):
     log = logging.getLogger(__name__ + '.ListAllocations')
 
     def get_parser(self, prog_name):
-        parser = super(AllocationHistory, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.add_argument(
             'allocation',
             metavar='<allocation>',
-            help=('ID or Name of allocation to display history for')
+            help=('ID or Name of allocation to display history for'),
         )
         return parser
 
@@ -169,16 +178,23 @@ class AllocationHistory(command.Lister):
 
         client = self.app.client_manager.allocation
         allocation = get_allocation(client, parsed_args.allocation)
-        allocations = client.allocations.list(
-            parent_request=allocation.id)
+        allocations = client.allocations.list(parent_request=allocation.id)
         allocations.insert(0, allocation)
-        columns = ['id', 'modified_time', 'status_display', 'start_date',
-                   'end_date', 'contact_email', 'national',
-                   'associated_site', 'bundle']
+        columns = [
+            'id',
+            'modified_time',
+            'status_display',
+            'start_date',
+            'end_date',
+            'contact_email',
+            'national',
+            'associated_site',
+            'bundle',
+        ]
 
         return (
             columns,
-            (osc_utils.get_item_properties(r, columns) for r in allocations)
+            (osc_utils.get_item_properties(r, columns) for r in allocations),
         )
 
 
@@ -190,15 +206,13 @@ class CreateAllocation(AllocationShowOne):
     def get_parser(self, prog_name):
         parser = super(AllocationShowOne, self).get_parser(prog_name)
         parser.add_argument(
-            'name',
-            metavar='<name>',
-            help='Name of the allocation to create'
+            'name', metavar='<name>', help='Name of the allocation to create'
         )
         parser.add_argument(
             '--description',
             metavar='<description>',
             required=True,
-            help='Description of the allocation to create'
+            help='Description of the allocation to create',
         )
         # Note that we do not support the 'allocation_home' compatibility
         # attribute in OSC.  It is only supported at the API level.
@@ -207,18 +221,15 @@ class CreateAllocation(AllocationShowOne):
             metavar='<site>',
             required=True,
             help="Associated site.  Note: an associated site should be "
-            "specified for both 'national' and 'local' funded allocations"
+            "specified for both 'national' and 'local' funded allocations",
         )
         parser.add_argument(
             '--national',
             action='store_true',
-            help="Allocation is 'national' funded. (default: false)"
+            help="Allocation is 'national' funded. (default: false)",
         )
         parser.add_argument(
-            '--use-case',
-            metavar='<user-case>',
-            required=True,
-            help='Use case'
+            '--use-case', metavar='<user-case>', required=True, help='Use case'
         )
         parser.add_argument(
             '--estimated-number-users',
@@ -277,46 +288,40 @@ class CreateAllocation(AllocationShowOne):
             '--convert-trial-project',
             action='store_true',
             help="""Convert Project Trial of user to this allocation
-                 (default:False)"""
+                 (default:False)""",
         )
         parser.add_argument(
             '--geographic-requirements',
             metavar='<requirements>',
-            help='Geographic requirements'
+            help='Geographic requirements',
         )
         parser.add_argument(
-            '--ncris-support',
-            metavar='<details>',
-            help='NCRIS Support'
+            '--ncris-support', metavar='<details>', help='NCRIS Support'
         )
         parser.add_argument(
-            '--nectar-support',
-            metavar='<details>',
-            help='Nectar support'
+            '--nectar-support', metavar='<details>', help='Nectar support'
         )
         parser.add_argument(
-            '--usage-patterns',
-            metavar='<details>',
-            help='Usage patterns'
+            '--usage-patterns', metavar='<details>', help='Usage patterns'
         )
         parser.add_argument(
             '--notifications',
             action='store_true',
             default=True,
-            help='Send allocations (default:True)'
+            help='Send allocations (default:True)',
         )
         parser.add_argument(
             '--supported-organisation',
             metavar='<organisations>',
             action='append',
             default=[],
-            help='Supported organisation (repeat as required)'
+            help='Supported organisation (repeat as required)',
         )
         parser.add_argument(
             '--bundle',
             metavar='<bundle>',
             default=None,
-            help='Resource Bundle'
+            help='Resource Bundle',
         )
         return parser
 
@@ -324,8 +329,10 @@ class CreateAllocation(AllocationShowOne):
         self.log.debug('take_action(%s)', parsed_args)
 
         client = self.app.client_manager.allocation
-        orgs = [organisations.get_organisation(client, org)
-                for org in parsed_args.supported_organisation]
+        orgs = [
+            organisations.get_organisation(client, org)
+            for org in parsed_args.supported_organisation
+        ]
         fields = {
             'project_name': parsed_args.name,
             'project_description': parsed_args.description,
@@ -360,13 +367,16 @@ class UpdateAllocation(AllocationShowOne):
     log = logging.getLogger(__name__ + '.UpdateAllocation')
 
     def get_parser(self, prog_name):
-        parser = super(UpdateAllocation, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.add_argument(
             '--property',
             metavar='<key=value>',
             action='append',
-            help=('Properties to set on the allocation. This can be '
-                  'specified multiple times'))
+            help=(
+                'Properties to set on the allocation. This can be '
+                'specified multiple times'
+            ),
+        )
         return parser
 
     def take_action(self, parsed_args):

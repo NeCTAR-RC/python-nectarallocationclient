@@ -22,9 +22,19 @@ class OrganisationManager(base.BasicManager):
     base_url = 'organisations'
     resource_class = Organisation
 
-    def create(self, ror_id='', full_name=None, short_name=None,
-               url='', country='AU', proposed_by=None, vetted_by=None,
-               parent=None, precedes=None, enabled=True):
+    def create(
+        self,
+        ror_id='',
+        full_name=None,
+        short_name=None,
+        url='',
+        country='AU',
+        proposed_by=None,
+        vetted_by=None,
+        parent=None,
+        precedes=None,
+        enabled=True,
+    ):
         data = {
             'ror_id': ror_id,
             'full_name': full_name,
@@ -37,10 +47,10 @@ class OrganisationManager(base.BasicManager):
             'vetted_by': vetted_by,
             'enabled': enabled,
         }
-        return self._create("/%s/" % self.base_url, data=data)
+        return self._create(f"/{self.base_url}/", data=data)
 
     def approve(self, id):
-        self._create("/%s/%s/approve/" % (self.base_url, id))
+        self._create(f"/{self.base_url}/{id}/approve/")
 
     def decline(self, id):
-        self._create("/%s/%s/decline/" % (self.base_url, id))
+        self._create(f"/{self.base_url}/{id}/decline/")

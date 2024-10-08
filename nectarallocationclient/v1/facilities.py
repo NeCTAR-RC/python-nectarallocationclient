@@ -19,6 +19,5 @@ class Facility(base.Resource):
 
 
 class FacilityManager(base.BasicManager):
-
     base_url = 'ncris-facilities'
     resource_class = Facility

@@ -19,6 +19,5 @@ class Site(base.Resource):
 
 
 class SiteManager(base.BasicManager):
-
     base_url = 'sites'
     resource_class = Site

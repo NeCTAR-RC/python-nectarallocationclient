@@ -19,9 +19,8 @@ class Zone(base.Resource):
 
 
 class ZoneManager(base.BasicManager):
-
     base_url = 'zones'
     resource_class = Zone
 
     def compute_homes(self):
-        return self._get('/%s/compute_homes/' % self.base_url, return_raw=True)
+        return self._get(f'/{self.base_url}/compute_homes/', return_raw=True)

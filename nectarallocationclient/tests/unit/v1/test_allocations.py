@@ -20,9 +20,8 @@ from nectarallocationclient.tests.unit.v1 import fakes
 
 
 class AllocationsTest(utils.TestCase):
-
     def setUp(self):
-        super(AllocationsTest, self).setUp()
+        super().setUp()
         self.cs = fakes.FakeClient()
 
     def test_allocation_list(self):
@@ -34,8 +33,9 @@ class AllocationsTest(utils.TestCase):
 
     def test_allocation_list_filter(self):
         al = self.cs.allocations.list(project_id='123')
-        self.cs.assert_called('GET', '/allocations/',
-                              params={'project_id': '123'})
+        self.cs.assert_called(
+            'GET', '/allocations/', params={'project_id': '123'}
+        )
         for a in al:
             self.assertIsInstance(a, allocations.Allocation)
             self.assertEqual('123', a.project_id)
@@ -49,23 +49,23 @@ class AllocationsTest(utils.TestCase):
 
     def test_allocation_get_current(self):
         a = self.cs.allocations.get_current(project_id='123')
-        params = {'project_id': '123',
-                  'parent_request__isnull': True}
+        params = {'project_id': '123', 'parent_request__isnull': True}
         self.cs.assert_called('GET', '/allocations/', params=params)
         self.assertIsInstance(a, allocations.Allocation)
         self.assertEqual(587, a.id)
 
     def test_allocation_get_current_404(self):
-        self.assertRaises(exceptions.AllocationDoesNotExist,
-                         self.cs.allocations.get_current, project_id='XYZ')
-        params = {'project_id': 'XYZ',
-                  'parent_request__isnull': True}
+        self.assertRaises(
+            exceptions.AllocationDoesNotExist,
+            self.cs.allocations.get_current,
+            project_id='XYZ',
+        )
+        params = {'project_id': 'XYZ', 'parent_request__isnull': True}
         self.cs.assert_called('GET', '/allocations/', params=params)
 
     def test_get_last_approved(self):
         a = self.cs.allocations.get_last_approved(project_id='123')
-        params = {'project_id': '123',
-                  'status': 'A'}
+        params = {'project_id': '123', 'status': 'A'}
         self.cs.assert_called('GET', '/allocations/', params=params)
         self.assertIsInstance(a, allocations.Allocation)
         self.assertEqual('A', a.status)
@@ -99,16 +99,14 @@ class AllocationsTest(utils.TestCase):
             'notifications': False,
             'managed': False,
             'bundle': 'gold',
-            'supported_organisations': [1, 2]
+            'supported_organisations': [1, 2],
         }
 
         a = self.cs.allocations.create(**data)
-        self.cs.assert_called('POST', '/allocations/',
-                              data=data)
+        self.cs.assert_called('POST', '/allocations/', data=data)
         self.assertIsInstance(a, allocations.Allocation)
 
     def test_create_2(self):
-
         class FakeOrganisation(organisations.Organisation):
             def __init__(self, id):
                 self.id = id
@@ -137,13 +135,12 @@ class AllocationsTest(utils.TestCase):
             'notifications': False,
             'managed': False,
             'bundle': 'silter',
-            'supported_organisations': [org_1, org_2]
+            'supported_organisations': [org_1, org_2],
         }
 
         a = self.cs.allocations.create(**data)
         data['supported_organisations'] = [org_1.id, org_2.id]
-        self.cs.assert_called('POST', '/allocations/',
-                              data=data)
+        self.cs.assert_called('POST', '/allocations/', data=data)
         self.assertIsInstance(a, allocations.Allocation)
 
     def test_create_defaults(self):
@@ -169,16 +166,14 @@ class AllocationsTest(utils.TestCase):
             'notifications': True,
             'associated_site': None,
             'national': False,
-            'notifications': True,
             'managed': True,
             'bundle': None,
-            'supported_organisations': []
+            'supported_organisations': [],
         }
 
         a = self.cs.allocations.create(**data)
         data.update(defaults)
-        self.cs.assert_called('POST', '/allocations/',
-                              data=data)
+        self.cs.assert_called('POST', '/allocations/', data=data)
         self.assertIsInstance(a, allocations.Allocation)
 
     def test_approve(self):
@@ -199,34 +194,36 @@ class AllocationsTest(utils.TestCase):
     def test_approver_info(self):
         res = self.cs.allocations.get_approver_info(123)
         self.cs.assert_called('GET', '/allocations/123/approver_info/')
-        self.assertEqual(res, {'approval_urgency': 'N/A',
-                               'expiry_state': 'None',
-                               'concerned_sites': ['ardc']})
+        self.assertEqual(
+            res,
+            {
+                'approval_urgency': 'N/A',
+                'expiry_state': 'None',
+                'concerned_sites': ['ardc'],
+            },
+        )
 
     def test_get_allocated_nova_quota(self):
         a = self.cs.allocations.get(123)
         quota = a.get_allocated_nova_quota()
-        self.assertEqual({'cores': 4, 'instances': 2, 'ram': 50},
-                         quota)
+        self.assertEqual({'cores': 4, 'instances': 2, 'ram': 50}, quota)
 
     def test_get_allocated_nova_quota_default_ram(self):
         a = self.cs.allocations.get(124)
         quota = a.get_allocated_nova_quota()
-        self.assertEqual({'cores': 4, 'instances': 2, 'ram': 16},
-                         quota)
+        self.assertEqual({'cores': 4, 'instances': 2, 'ram': 16}, quota)
 
     def test_get_allocated_nova_quota_unlimited_default_ram(self):
         a = self.cs.allocations.get(125)
         quota = a.get_allocated_nova_quota()
-        self.assertEqual({'cores': -1, 'instances': 2, 'ram': -1},
-                         quota)
+        self.assertEqual({'cores': -1, 'instances': 2, 'ram': -1}, quota)
 
     def test_get_allocated_neutron_quota(self):
         a = self.cs.allocations.get(123)
         quota = a.get_allocated_neutron_quota()
-        self.assertEqual({'floatingip': 5, 'network': 4, 'router': 3,
-                          'subnet': 4},
-                         quota)
+        self.assertEqual(
+            {'floatingip': 5, 'network': 4, 'router': 3, 'subnet': 4}, quota
+        )
 
     def test_get_allocated_octavia_quota(self):
         a = self.cs.allocations.get(123)
@@ -251,5 +248,7 @@ class AllocationsTest(utils.TestCase):
     def test_get_allocated_warre_quota(self):
         a = self.cs.allocations.get(123)
         quota = a.get_allocated_warre_quota()
-        self.assertEqual({'days': 2, 'flavor:gpu-v1': True, 'hours': 48,
-                          'reservation': 10}, quota)
+        self.assertEqual(
+            {'days': 2, 'flavor:gpu-v1': True, 'hours': 48, 'reservation': 10},
+            quota,
+        )

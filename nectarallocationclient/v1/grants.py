@@ -19,15 +19,22 @@ class Grant(base.Resource):
 
 
 class GrantManager(base.BasicManager):
-
     base_url = 'grants'
     resource_class = Grant
 
     def delete(self, resource_id):
-        self._delete('/%s/%s/' % (self.base_url, resource_id))
+        self._delete(f'/{self.base_url}/{resource_id}/')
 
-    def create(self, allocation, grant_type, funding_body_scheme, grant_id,
-               first_year_funded, last_year_funded, total_funding):
+    def create(
+        self,
+        allocation,
+        grant_type,
+        funding_body_scheme,
+        grant_id,
+        first_year_funded,
+        last_year_funded,
+        total_funding,
+    ):
         data = {
             'allocation': base.getid(allocation),
             'grant_type': grant_type,
@@ -35,6 +42,6 @@ class GrantManager(base.BasicManager):
             'grant_id': grant_id,
             'first_year_funded': first_year_funded,
             'last_year_funded': last_year_funded,
-            'total_funding': total_funding
+            'total_funding': total_funding,
         }
-        return self._create('/%s/' % self.base_url, data=data)
+        return self._create(f'/{self.base_url}/', data=data)

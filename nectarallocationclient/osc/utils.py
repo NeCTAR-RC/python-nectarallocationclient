@@ -31,7 +31,7 @@ def format_parameters(params, parse_semicolon=True):
         try:
             (n, v) = p.split(('='), 1)
         except ValueError:
-            msg = 'Malformed parameter(%s). Use the key=value format.' % p
+            msg = f'Malformed parameter({p}). Use the key=value format.'
             raise exceptions.CommandError(msg)
 
         if n not in parameters:

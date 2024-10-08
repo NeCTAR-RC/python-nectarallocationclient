@@ -18,9 +18,8 @@ from nectarallocationclient.tests.unit.v1 import fakes
 
 
 class OrganisationsTest(utils.TestCase):
-
     def setUp(self):
-        super(OrganisationsTest, self).setUp()
+        super().setUp()
         self.cs = fakes.FakeClient()
 
     def test_organisations_list(self):
@@ -32,7 +31,7 @@ class OrganisationsTest(utils.TestCase):
 
     def test_organisation_get(self):
         org = self.cs.organisations.get('1')
-        self.cs.assert_called('GET', '/organisations/%s/' % org.id)
+        self.cs.assert_called('GET', f'/organisations/{org.id}/')
         self.assertIsInstance(org, organisations.Organisation)
         self.assertEqual('KU', org.short_name)
         self.assertEqual('Kanmantoo University', org.full_name)

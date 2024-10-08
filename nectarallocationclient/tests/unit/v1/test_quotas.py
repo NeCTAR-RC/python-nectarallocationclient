@@ -18,9 +18,8 @@ from nectarallocationclient.tests.unit.v1 import fakes
 
 
 class QuotasTest(utils.TestCase):
-
     def setUp(self):
-        super(QuotasTest, self).setUp()
+        super().setUp()
         self.cs = fakes.FakeClient()
 
     def test_quota_list(self):
@@ -41,10 +40,18 @@ class QuotasTest(utils.TestCase):
         self.cs.assert_called('DELETE', '/quotas/1/')
 
     def test_quota_create(self):
-        q = self.cs.quotas.create(allocation=2, resource=4, quota=3,
-                                  zone='foo')
-        self.cs.assert_called('POST', '/quotas/',
-                              data={'allocation': 2, 'resource': 4,
-                                    'zone': 'foo', 'quota': 3,
-                                    'requested_quota': 3})
+        q = self.cs.quotas.create(
+            allocation=2, resource=4, quota=3, zone='foo'
+        )
+        self.cs.assert_called(
+            'POST',
+            '/quotas/',
+            data={
+                'allocation': 2,
+                'resource': 4,
+                'zone': 'foo',
+                'quota': 3,
+                'requested_quota': 3,
+            },
+        )
         self.assertIsInstance(q, quotas.Quota)

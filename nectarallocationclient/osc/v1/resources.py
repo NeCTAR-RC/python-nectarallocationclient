@@ -25,11 +25,11 @@ class ShowResource(command.ShowOne):
     log = logging.getLogger(__name__ + '.ShowResource')
 
     def get_parser(self, prog_name):
-        parser = super(ShowResource, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.add_argument(
             'resource_id',
             metavar='<resource_id>',
-            help=('ID of resource to display details for')
+            help=('ID of resource to display details for'),
         )
 
         return parser
@@ -58,10 +58,17 @@ class ListResources(command.Lister):
         client = self.app.client_manager.allocation
         resources = client.resources.list()
 
-        columns = ['id', 'service_type', 'name', 'quota_name', 'unit',
-                   'requestable', 'resource_type']
+        columns = [
+            'id',
+            'service_type',
+            'name',
+            'quota_name',
+            'unit',
+            'requestable',
+            'resource_type',
+        ]
 
         return (
             columns,
-            (utils.get_item_properties(r, columns) for r in resources)
+            (utils.get_item_properties(r, columns) for r in resources),
         )

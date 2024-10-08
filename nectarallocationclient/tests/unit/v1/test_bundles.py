@@ -18,9 +18,8 @@ from nectarallocationclient.tests.unit.v1 import fakes
 
 
 class BundlesTest(utils.TestCase):
-
     def setUp(self):
-        super(BundlesTest, self).setUp()
+        super().setUp()
         self.cs = fakes.FakeClient()
 
     def test_bundle_list(self):

@@ -30,19 +30,27 @@ def getid(obj):
         return obj
 
 
-class Manager(object):
+class Manager:
     """Interacts with type of API
     Managers interact with a particular type of API (instances, types, etc.)
     and provide CRUD operations for them.
     """
+
     resource_class = None
 
     def __init__(self, api):
         self.api = api
 
-    def _list(self, url, response_key='results', obj_class=None,
-              items=None, headers=None, params=None, limit=None):
-
+    def _list(
+        self,
+        url,
+        response_key='results',
+        obj_class=None,
+        items=None,
+        headers=None,
+        params=None,
+        limit=None,
+    ):
         if items is None:
             items = []
         if headers is None:
@@ -60,13 +68,21 @@ class Manager(object):
         if all([isinstance(res, str) for res in data]):
             new_items = data
         else:
-            new_items = [obj_class(self, res, loaded=True)
-                         for res in data if res]
+            new_items = [
+                obj_class(self, res, loaded=True) for res in data if res
+            ]
 
         items = items + new_items
         if 'next' in body and body['next']:
-            items = self._list(body['next'], response_key, obj_class, items,
-                               headers, None, limit)
+            items = self._list(
+                body['next'],
+                response_key,
+                obj_class,
+                items,
+                headers,
+                None,
+                limit,
+            )
 
         return ListWithMeta(items, resp)
 
@@ -77,8 +93,9 @@ class Manager(object):
 
         return self.convert_into_with_meta(body, resp)
 
-    def _update(self, url, data, response_key=None, return_raw=False,
-                headers=None):
+    def _update(
+        self, url, data, response_key=None, return_raw=False, headers=None
+    ):
         if headers is None:
             headers = {}
         resp, body = self.api.patch(url, data=data, headers=headers)
@@ -94,8 +111,9 @@ class Manager(object):
         else:
             return StrWithMeta(body, resp)
 
-    def _update_all(self, url, data, response_key=None, return_raw=False,
-                    headers=None):
+    def _update_all(
+        self, url, data, response_key=None, return_raw=False, headers=None
+    ):
         if headers is None:
             headers = {}
         resp, body = self.api.put(url, data=data, headers=headers)
@@ -111,8 +129,9 @@ class Manager(object):
         else:
             return StrWithMeta(body, resp)
 
-    def _create(self, url, data=None, response_key=None, return_raw=False,
-                headers=None):
+    def _create(
+        self, url, data=None, response_key=None, return_raw=False, headers=None
+    ):
         if headers is None:
             headers = {}
         if data:
@@ -138,8 +157,9 @@ class Manager(object):
             return self.convert_into_with_meta(body, resp)
 
         if response_key:
-            return self.resource_class(self, body[response_key], loaded=True,
-                                       resp=resp)
+            return self.resource_class(
+                self, body[response_key], loaded=True, resp=resp
+            )
         return self.resource_class(self, body, loaded=True, resp=resp)
 
     def convert_into_with_meta(self, item, resp):
@@ -173,7 +193,7 @@ class ManagerWithFind(Manager, metaclass=abc.ABCMeta):
         num = len(matches)
 
         if num == 0:
-            msg = "No %s matching %s." % (self.resource_class.__name__, kwargs)
+            msg = f"No {self.resource_class.__name__} matching {kwargs}."
             raise exceptions.NotFound(msg)
         elif num > 1:
             raise exceptions.NoUniqueMatch
@@ -190,8 +210,9 @@ class ManagerWithFind(Manager, metaclass=abc.ABCMeta):
 
         for obj in self.list():
             try:
-                if all(getattr(obj, attr) == value
-                       for (attr, value) in searches):
+                if all(
+                    getattr(obj, attr) == value for (attr, value) in searches
+                ):
                     found.append(obj)
             except AttributeError:
                 continue
@@ -200,16 +221,16 @@ class ManagerWithFind(Manager, metaclass=abc.ABCMeta):
 
 
 class BasicManager(ManagerWithFind):
-
     def list(self, **kwargs):
-        return self._list('/%s/' % self.base_url, params=kwargs)
+        return self._list(f'/{self.base_url}/', params=kwargs)
 
     def get(self, resource_id):
-        return self._get('/%s/%s/' % (self.base_url, resource_id))
+        return self._get(f'/{self.base_url}/{resource_id}/')
 
 
-class RequestIdMixin(object):
+class RequestIdMixin:
     """Wrapper class to expose x-openstack-request-id to the caller."""
+
     def request_ids_setup(self):
         self.x_openstack_request_ids = []
 
@@ -233,9 +254,11 @@ class RequestIdMixin(object):
         if isinstance(resp, Response):
             # Extract 'X-Openstack-Request-Id' from headers if
             # response is a Response object.
-            request_id = (resp.headers.get('Openstack-Request-Id')
-                          or resp.headers.get('x-openstack-request-id')
-                          or resp.headers.get('x-compute-request-id'))
+            request_id = (
+                resp.headers.get('Openstack-Request-Id')
+                or resp.headers.get('x-openstack-request-id')
+                or resp.headers.get('x-compute-request-id')
+            )
         else:
             # If resp is of type string or None.
             request_id = resp
@@ -262,7 +285,7 @@ class Resource(RequestIdMixin):
         self.append_request_ids(resp)
 
     def _add_details(self, info):
-        for (k, v) in info.items():
+        for k, v in info.items():
             try:
                 setattr(self, k, v)
                 self._info[k] = v
@@ -285,10 +308,13 @@ class Resource(RequestIdMixin):
             return self.__dict__[k]
 
     def __repr__(self):
-        reprkeys = sorted(k for k in self.__dict__.keys() if k[0] != '_'
-                          and k not in ('manager', 'x_openstack_request_ids'))
-        info = ", ".join("%s=%s" % (k, getattr(self, k)) for k in reprkeys)
-        return "<%s %s>" % (self.__class__.__name__, info)
+        reprkeys = sorted(
+            k
+            for k in self.__dict__.keys()
+            if k[0] != '_' and k not in ('manager', 'x_openstack_request_ids')
+        )
+        info = ", ".join(f"{k}={getattr(self, k)}" for k in reprkeys)
+        return f"<{self.__class__.__name__} {info}>"
 
     def get(self):
         # set_loaded() first ... so if we have to bail, we know we tried.
@@ -323,21 +349,21 @@ class Resource(RequestIdMixin):
 
 class ListWithMeta(list, RequestIdMixin):
     def __init__(self, values, resp):
-        super(ListWithMeta, self).__init__(values)
+        super().__init__(values)
         self.request_ids_setup()
         self.append_request_ids(resp)
 
 
 class DictWithMeta(dict, RequestIdMixin):
     def __init__(self, values, resp):
-        super(DictWithMeta, self).__init__(values)
+        super().__init__(values)
         self.request_ids_setup()
         self.append_request_ids(resp)
 
 
 class TupleWithMeta(tuple, RequestIdMixin):
     def __new__(cls, values, resp):
-        return super(TupleWithMeta, cls).__new__(cls, values)
+        return super().__new__(cls, values)
 
     def __init__(self, values, resp):
         self.request_ids_setup()
@@ -346,7 +372,7 @@ class TupleWithMeta(tuple, RequestIdMixin):
 
 class StrWithMeta(str, RequestIdMixin):
     def __new__(cls, value, resp):
-        return super(StrWithMeta, cls).__new__(cls, value)
+        return super().__new__(cls, value)
 
     def __init__(self, values, resp):
         self.request_ids_setup()
@@ -355,7 +381,7 @@ class StrWithMeta(str, RequestIdMixin):
 
 class BytesWithMeta(bytes, RequestIdMixin):
     def __new__(cls, value, resp):
-        return super(BytesWithMeta, cls).__new__(cls, value)
+        return super().__new__(cls, value)
 
     def __init__(self, values, resp):
         self.request_ids_setup()

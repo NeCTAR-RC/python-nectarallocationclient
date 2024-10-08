@@ -27,7 +27,7 @@ from nectarallocationclient.v1 import sites
 from nectarallocationclient.v1 import zones
 
 
-class Client(object):
+class Client:
     """Client for the Nectar Allocations v1 API
     :param string session: session
     :type session: :py:class:`keystoneauth.adapter.Adapter`
@@ -37,17 +37,21 @@ class Client(object):
         """Initialize a new client for the Nectar Allocations v1 API."""
         if session is None:
             raise exceptions.ClientException(
-                message='Session is required argument')
+                message='Session is required argument'
+            )
         self.http_client = client.SessionClient(
-            session, service_type=service_type, **kwargs)
+            session, service_type=service_type, **kwargs
+        )
         self.allocations = allocations.AllocationManager(self.http_client)
         self.bundles = bundles.BundleManager(self.http_client)
-        self.chiefinvestigators = \
-            chiefinvestigators.ChiefInvestigatorManager(self.http_client)
+        self.chiefinvestigators = chiefinvestigators.ChiefInvestigatorManager(
+            self.http_client
+        )
         self.facilities = facilities.FacilityManager(self.http_client)
         self.grants = grants.GrantManager(self.http_client)
-        self.organisations = \
-            organisations.OrganisationManager(self.http_client)
+        self.organisations = organisations.OrganisationManager(
+            self.http_client
+        )
         self.publications = publications.PublicationManager(self.http_client)
         self.quotas = quotas.QuotaManager(self.http_client)
         self.resources = resources.ResourceManager(self.http_client)

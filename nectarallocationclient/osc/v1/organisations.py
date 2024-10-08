@@ -26,21 +26,21 @@ def get_organisation(client, arg):
             return client.organisations.get(arg)
         except exceptions.NotFound:
             raise exceptions.CommandError(
-                "Organisation with id '%s' not found" % arg)
+                f"Organisation with id '{arg}' not found"
+            )
     elif re.match(r'^https?://ror\.org/.+$', arg):
         filters = [{'ror_id__iexact': arg}]
     else:
-        filters = [{'full_name__iexact': arg},
-                   {'short_name__iexact': arg}]
+        filters = [{'full_name__iexact': arg}, {'short_name__iexact': arg}]
     for f in filters:
         orgs = client.organisations.list(**f)
         if len(orgs) == 1:
             return orgs[0]
         elif len(orgs) > 0:
             raise exceptions.CommandError(
-                "'%s' matches more than one organisation" % arg)
-    raise exceptions.CommandError(
-        "No organisation matches for '%s'" % arg)
+                f"'{arg}' matches more than one organisation"
+            )
+    raise exceptions.CommandError(f"No organisation matches for '{arg}'")
 
 
 def show_organisation(cmd, organisation):
@@ -54,7 +54,7 @@ class ListOrganisations(command.Lister):
     log = logging.getLogger(__name__ + '.ListOrganisations')
 
     def get_parser(self, prog_name):
-        parser = super(ListOrganisations, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         return parser
 
     def take_action(self, parsed_args):
@@ -64,7 +64,7 @@ class ListOrganisations(command.Lister):
         columns = ['id', 'ror_id', 'full_name', 'short_name', 'country']
         return (
             columns,
-            (osc_utils.get_item_properties(o, columns) for o in orgs)
+            (osc_utils.get_item_properties(o, columns) for o in orgs),
         )
 
 
@@ -74,11 +74,11 @@ class ShowOrganisation(command.ShowOne):
     log = logging.getLogger(__name__ + '.ShowOrganisation')
 
     def get_parser(self, prog_name):
-        parser = super(ShowOrganisation, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.add_argument(
             'organisation',
             metavar='<organisation>',
-            help=('ID, ror_id or name of organisation')
+            help=('ID, ror_id or name of organisation'),
         )
         return parser
 
@@ -99,11 +99,11 @@ class ApproveOrganisation(command.Command):
     log = logging.getLogger(__name__ + '.ApproveOrganisation')
 
     def get_parser(self, prog_name):
-        parser = super(ApproveOrganisation, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.add_argument(
             'organisation',
             metavar='<organisation>',
-            help=('ID, ror_id or name of organisation')
+            help=('ID, ror_id or name of organisation'),
         )
         return parser
 
@@ -120,11 +120,11 @@ class DeclineOrganisation(command.Command):
     log = logging.getLogger(__name__ + '.DeclineOrganisation')
 
     def get_parser(self, prog_name):
-        parser = super(DeclineOrganisation, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.add_argument(
             'organisation',
             metavar='<organisation>',
-            help=('ID, ror_id or name of of organisation')
+            help=('ID, ror_id or name of of organisation'),
         )
         return parser
 
@@ -141,31 +141,29 @@ class CreateOrganisation(command.ShowOne):
     log = logging.getLogger(__name__ + '.CreateOrganisationation')
 
     def get_parser(self, prog_name):
-        parser = super(CreateOrganisation, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.add_argument(
             'short_name',
             metavar='<short_name>',
-            help='Short name of the organisation'
+            help='Short name of the organisation',
         )
         parser.add_argument(
             'full_name',
             metavar='<full_name>',
-            help='Full name of the organisation'
+            help='Full name of the organisation',
         )
         parser.add_argument(
             'ror_id',
             metavar='<ror_id>',
-            help='ROR id (URL) for the organisation'
+            help='ROR id (URL) for the organisation',
         )
         parser.add_argument(
-            'url',
-            metavar='<url>',
-            help='URL for the (local) organisation'
+            'url', metavar='<url>', help='URL for the (local) organisation'
         )
         parser.add_argument(
             'country',
             metavar='<country>',
-            help='Two letter country code for the organisation'
+            help='Two letter country code for the organisation',
         )
         return parser
 

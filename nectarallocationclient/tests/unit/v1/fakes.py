@@ -13,7 +13,7 @@
 import copy
 import re
 
-import mock
+from unittest import mock
 from urllib import parse
 
 from nectarallocationclient import client as base_client
@@ -35,7 +35,8 @@ from nectarallocationclient.v1 import zones
 # checks version number (vX or vX.X where X is a number)
 # and also checks if the id is on the end
 ENDPOINT_RE = re.compile(
-    r"^get_http:__nectarallocation_api:8774_v\d(_\d)?_\w{32}$")
+    r"^get_http:__nectarallocation_api:8774_v\d(_\d)?_\w{32}$"
+)
 
 # accepts formats like v2 or v2.1
 ENDPOINT_TYPE_RE = re.compile(r"^v\d(\.\d)?$")
@@ -143,11 +144,11 @@ generic_allocation = {
     "provisioned": False,
     "notifications": True,
     "managed": True,
-    "parent_request": None}
+    "parent_request": None,
+}
 
 
 class FakeClient(fakes.FakeClient, client.Client):
-
     def __init__(self, *args, **kwargs):
         client.Client.__init__(self, session=mock.Mock())
         self.http_client = FakeSessionClient(**kwargs)
@@ -159,14 +160,13 @@ class FakeClient(fakes.FakeClient, client.Client):
         self.zones = zones.ZoneManager(self.http_client)
         self.sites = sites.SiteManager(self.http_client)
         self.organisations = organisations.OrganisationManager(
-            self.http_client)
+            self.http_client
+        )
         self.facilities = facilities.FacilityManager(self.http_client)
 
 
 class FakeSessionClient(base_client.SessionClient):
-
     def __init__(self, *args, **kwargs):
-
         self.callstack = []
         self.visited = []
         self.auth = mock.Mock()
@@ -210,25 +210,29 @@ class FakeSessionClient(base_client.SessionClient):
             munged_url = munged_url.replace('@', '_')
             munged_url = munged_url.replace('%20', '_')
             munged_url = munged_url.replace('%3A', '_')
-            callback = "%s_%s" % (method.lower(), munged_url)
+            callback = f"{method.lower()}_{munged_url}"
 
         if not hasattr(self, callback):
-            raise AssertionError('Called unknown API method: %s %s, '
-                                 'expected fakes method name: %s' %
-                                 (method, url, callback))
+            raise AssertionError(
+                f'Called unknown API method: {method} {url}, '
+                f'expected fakes method name: {callback}'
+            )
 
         # Note the call
         self.visited.append(callback)
-        self.callstack.append((method, url, kwargs.get('data'),
-                               kwargs.get('params')))
+        self.callstack.append(
+            (method, url, kwargs.get('data'), kwargs.get('params'))
+        )
 
         status, headers, data = getattr(self, callback)(**kwargs)
 
-        r = utils.TestResponse({
-            "status_code": status,
-            "text": data,
-            "headers": headers,
-        })
+        r = utils.TestResponse(
+            {
+                "status_code": status,
+                "text": data,
+                "headers": headers,
+            }
+        )
         return r, data
 
     def get_allocations(self, **kw):
@@ -266,7 +270,7 @@ class FakeSessionClient(base_client.SessionClient):
                 "funding_node": None,
                 "provisioned": False,
                 "notifications": True,
-                "parent_request": None
+                "parent_request": None,
             },
             {
                 "id": 596,
@@ -300,7 +304,7 @@ class FakeSessionClient(base_client.SessionClient):
                 "funding_node": None,
                 "provisioned": False,
                 "notifications": True,
-                "parent_request": 587
+                "parent_request": 587,
             },
             {
                 "id": 581,
@@ -334,17 +338,19 @@ class FakeSessionClient(base_client.SessionClient):
                 "funding_node": None,
                 "provisioned": False,
                 "notifications": True,
-                "parent_request": None
-            }
+                "parent_request": None,
+            },
         ]
         no_parent = params.get('parent_request__isnull')
         project_id = params.get('project_id')
         if project_id:
-            allocations = [a for a in allocations
-                           if a['project_id'] == project_id]
+            allocations = [
+                a for a in allocations if a['project_id'] == project_id
+            ]
         if no_parent:
-            allocations = [a for a in allocations
-                           if a['parent_request'] is None]
+            allocations = [
+                a for a in allocations if a['parent_request'] is None
+            ]
 
         return (200, {}, allocations)
 
@@ -354,52 +360,56 @@ class FakeSessionClient(base_client.SessionClient):
     def get_allocations_124(self, **kw):
         allocation_124 = copy.deepcopy(generic_allocation)
         allocation_124['id'] = 124
-        allocation_124['quotas'][1]['quota'] = 0   # RAM
+        allocation_124['quotas'][1]['quota'] = 0  # RAM
         return (200, {}, allocation_124)
 
     def get_allocations_125(self, **kw):
         allocation_125 = copy.deepcopy(generic_allocation)
         allocation_125['id'] = 125
         allocation_125['quotas'][0]['quota'] = -1  # VCPUs
-        allocation_125['quotas'][1]['quota'] = 0   # RAM
+        allocation_125['quotas'][1]['quota'] = 0  # RAM
         return (200, {}, allocation_125)
 
     def patch_allocations_123(self, data, **kw):
-        return (202, {'notes': 'test'},
-                {"id": 123,
-                 "quotas": [],
-                 "status": "A",
-                 "submit_date": "2018-07-03",
-                 "modified_time": "2018-07-03T07:36:48Z",
-                 "project_name": "rest-test3",
-                 "project_description": "testing rest",
-                 "contact_email": "user@fake.org",
-                 "start_date": "2018-07-04",
-                 "end_date": "2018-08-04",
-                 "estimated_project_duration": 1,
-                 "convert_trial_project": False,
-                 "approver_email": "user@fake.org",
-                 "use_case": "test",
-                 "usage_patterns": "",
-                 "allocation_home": "uom",
-                 "geographic_requirements": "",
-                 "project_id": None,
-                 "estimated_number_users": 1,
-                 "field_of_research_1": None,
-                 "for_percentage_1": 100,
-                 "field_of_research_2": None,
-                 "for_percentage_2": 0,
-                 "field_of_research_3": None,
-                 "for_percentage_3": 0,
-                 "nectar_support": "",
-                 "ncris_support": "",
-                 "funding_national_percent": 100,
-                 "funding_node": None,
-                 "notes": "test",
-                 "provisioned": False,
-                 "notifications": True,
-                 "parent_request": None
-                })
+        return (
+            202,
+            {'notes': 'test'},
+            {
+                "id": 123,
+                "quotas": [],
+                "status": "A",
+                "submit_date": "2018-07-03",
+                "modified_time": "2018-07-03T07:36:48Z",
+                "project_name": "rest-test3",
+                "project_description": "testing rest",
+                "contact_email": "user@fake.org",
+                "start_date": "2018-07-04",
+                "end_date": "2018-08-04",
+                "estimated_project_duration": 1,
+                "convert_trial_project": False,
+                "approver_email": "user@fake.org",
+                "use_case": "test",
+                "usage_patterns": "",
+                "allocation_home": "uom",
+                "geographic_requirements": "",
+                "project_id": None,
+                "estimated_number_users": 1,
+                "field_of_research_1": None,
+                "for_percentage_1": 100,
+                "field_of_research_2": None,
+                "for_percentage_2": 0,
+                "field_of_research_3": None,
+                "for_percentage_3": 0,
+                "nectar_support": "",
+                "ncris_support": "",
+                "funding_national_percent": 100,
+                "funding_node": None,
+                "notes": "test",
+                "provisioned": False,
+                "notifications": True,
+                "parent_request": None,
+            },
+        )
 
     def post_allocations(self, **kw):
         return (200, {}, generic_allocation)
@@ -414,9 +424,15 @@ class FakeSessionClient(base_client.SessionClient):
         return (202, {}, generic_allocation)
 
     def get_allocations_123_approver_info(self, **kw):
-        return (200, {}, {'approval_urgency': 'N/A',
-                          'expiry_state': 'None',
-                          'concerned_sites': ['ardc']})
+        return (
+            200,
+            {},
+            {
+                'approval_urgency': 'N/A',
+                'expiry_state': 'None',
+                'concerned_sites': ['ardc'],
+            },
+        )
 
     def get_resources(self, **kw):
         resources = [
@@ -427,7 +443,7 @@ class FakeSessionClient(base_client.SessionClient):
                 "unit": "GB",
                 "requestable": True,
                 "help_text": None,
-                "service_type": "volume"
+                "service_type": "volume",
             },
             {
                 "id": 7,
@@ -436,7 +452,7 @@ class FakeSessionClient(base_client.SessionClient):
                 "unit": "GB",
                 "requestable": True,
                 "help_text": None,
-                "service_type": "object"
+                "service_type": "object",
             },
             {
                 "id": 10,
@@ -445,52 +461,58 @@ class FakeSessionClient(base_client.SessionClient):
                 "unit": "Servers",
                 "requestable": True,
                 "help_text": "The maximum number of database instances",
-                "service_type": "database"
-            }
+                "service_type": "database",
+            },
         ]
         return (200, {}, resources)
 
     def get_resources_1(self, **kw):
-        return (200, {},
-                {
-                    "id": 1,
-                    "name": "Instances",
-                    "quota_name": "instances",
-                    "unit": "servers",
-                    "requestable": True,
-                    "help_text": "The maximum number of instances",
-                    "service_type": "compute"
-                })
+        return (
+            200,
+            {},
+            {
+                "id": 1,
+                "name": "Instances",
+                "quota_name": "instances",
+                "unit": "servers",
+                "requestable": True,
+                "help_text": "The maximum number of instances",
+                "service_type": "compute",
+            },
+        )
 
     def get_sites(self, **kw):
         sites = [
             {
                 "name": "kanmantoo",
                 "display_name": "Kanmantoo",
-                "enabled": False
+                "enabled": False,
             },
             {
                 "name": "gundawindi",
                 "display_name": "Gundawindi",
-                "enabled": True
-            }
+                "enabled": True,
+            },
         ]
         return (200, {}, sites)
 
     def get_sites_kanmantoo(self, **kw):
-        return (200, {},
+        return (
+            200,
+            {},
             {
                 "name": "kanmantoo",
                 "display_name": "Kanmantoo",
-                "enabled": False
-            })
+                "enabled": False,
+            },
+        )
 
     def get_bundles(self, **kw):
         bundles = [
             {
                 "id": 1,
                 "name": "silver",
-                "descriptiono": "Biger",
+                "descriptiono": "Bigger",
                 "zone": "foo",
                 "su_per_year": 1000,
                 "order": 1,
@@ -505,7 +527,7 @@ class FakeSessionClient(base_client.SessionClient):
                         "resource": "compute.ram",
                         "quota": 50,
                     },
-                ]
+                ],
             },
             {
                 "id": 2,
@@ -529,14 +551,16 @@ class FakeSessionClient(base_client.SessionClient):
                         "zone": "nectar",
                         "resource": "network.loadbalancer",
                         "quota": 7,
-                    }
-                ]
-            }
+                    },
+                ],
+            },
         ]
         return (200, {}, bundles)
 
     def get_bundles_1(self, **kw):
-        return (200, {},
+        return (
+            200,
+            {},
             {
                 "id": 1,
                 "name": "bronze",
@@ -555,8 +579,9 @@ class FakeSessionClient(base_client.SessionClient):
                         "resource": "compute.ram",
                         "quota": 50,
                     },
-                ]
-            })
+                ],
+            },
+        )
 
     def get_organisations(self, **kw):
         orgs = [
@@ -565,27 +590,30 @@ class FakeSessionClient(base_client.SessionClient):
                 "short_name": "KU",
                 "full_name": "Kanmantoo University",
                 "ror_name": "https://ror.org/11111111",
-                "enabled": True
+                "enabled": True,
             },
             {
                 "id": 2,
                 "short_name": "GU",
                 "full_name": "Gundawindi University",
                 "ror_name": "https://ror.org/11111112",
-                "enabled": True
-            }
+                "enabled": True,
+            },
         ]
         return (200, {}, orgs)
 
     def get_organisations_1(self, **kw):
-        return (200, {},
+        return (
+            200,
+            {},
             {
                 "id": 1,
                 "short_name": "KU",
                 "full_name": "Kanmantoo University",
                 "ror_name": "https://ror.org/11111111",
-                "enabled": True
-            })
+                "enabled": True,
+            },
+        )
 
     def post_organisations_2_approve(self, **kw):
         return (200, {}, {})
@@ -602,36 +630,29 @@ class FakeSessionClient(base_client.SessionClient):
             {
                 "name": "Pure Magic Facility",
                 "short_name": "PMF",
-            }
+            },
         ]
         return (200, {}, facilities)
 
     def get_ncris_facilities_AMF(self, **kw):
-        return (200, {},
+        return (
+            200,
+            {},
             {
                 "name": "Applied Magic Facility",
                 "short_name": "AMF",
-            })
+            },
+        )
 
     def get_zones(self, **kw):
         zones = [
-            {
-                "name": "australia",
-                "display_name": "Australia"
-            },
-            {
-                "name": "new-zealand",
-                "display_name": "New Zealand"
-            }
+            {"name": "australia", "display_name": "Australia"},
+            {"name": "new-zealand", "display_name": "New Zealand"},
         ]
         return (200, {}, zones)
 
     def get_zones_australia(self, **kw):
-        return (200, {},
-            {
-                "name": "australia",
-                "display_name": "Australia"
-            })
+        return (200, {}, {"name": "australia", "display_name": "Australia"})
 
     def get_quotas(self, **kw):
         quotas = [
@@ -641,7 +662,7 @@ class FakeSessionClient(base_client.SessionClient):
                 "allocation": 22,
                 "requested_quota": 10,
                 "quota": 10,
-                "resource": 4
+                "resource": 4,
             },
             {
                 "id": 3,
@@ -649,31 +670,38 @@ class FakeSessionClient(base_client.SessionClient):
                 "allocation": 19,
                 "requested_quota": 20,
                 "quota": 20,
-                "resource": 7
-            }
+                "resource": 7,
+            },
         ]
         return (200, {}, quotas)
 
     def get_quotas_1(self, **kw):
-        return (200, {},
+        return (
+            200,
+            {},
             {
                 "id": 1,
                 "zone": "foo",
                 "allocation": 22,
                 "requested_quota": 10,
                 "quota": 10,
-                "resource": 4
-            })
+                "resource": 4,
+            },
+        )
 
     def delete_quotas_1(self, **kw):
         return (204, {}, '')
 
     def post_quotas(self, **kwargs):
-        return (201, {}, {
-            "id": 95,
-            "zone": "foo",
-            "allocation": 2,
-            "requested_quota": 3,
-            "quota": 3,
-            "resource": 4
-        })
+        return (
+            201,
+            {},
+            {
+                "id": 95,
+                "zone": "foo",
+                "allocation": 2,
+                "requested_quota": 3,
+                "quota": 3,
+                "resource": 4,
+            },
+        )

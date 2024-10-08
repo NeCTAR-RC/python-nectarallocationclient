@@ -25,7 +25,7 @@ class ListFacilities(command.Lister):
     log = logging.getLogger(__name__ + '.ListFacilities')
 
     def get_parser(self, prog_name):
-        parser = super(ListFacilities, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         return parser
 
     def take_action(self, parsed_args):
@@ -35,7 +35,7 @@ class ListFacilities(command.Lister):
         columns = ['id', 'short_name', 'name']
         return (
             columns,
-            (osc_utils.get_item_properties(s, columns) for s in sites)
+            (osc_utils.get_item_properties(s, columns) for s in sites),
         )
 
 
@@ -45,11 +45,9 @@ class ShowFacility(command.ShowOne):
     log = logging.getLogger(__name__ + '.ShowFacility')
 
     def get_parser(self, prog_name):
-        parser = super(ShowFacility, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.add_argument(
-            'id',
-            metavar='<id>',
-            help=('ID of NCRIS Facility')
+            'id', metavar='<id>', help=('ID of NCRIS Facility')
         )
         return parser
 

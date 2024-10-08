@@ -18,9 +18,8 @@ from nectarallocationclient.tests.unit.v1 import fakes
 
 
 class SitesTest(utils.TestCase):
-
     def setUp(self):
-        super(SitesTest, self).setUp()
+        super().setUp()
         self.cs = fakes.FakeClient()
 
     def test_site_list(self):

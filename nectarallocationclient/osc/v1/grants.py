@@ -26,11 +26,11 @@ class ListGrants(command.Lister):
     log = logging.getLogger(__name__ + '.ListGrants')
 
     def get_parser(self, prog_name):
-        parser = super(ListGrants, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.add_argument(
             'allocation',
             metavar='<allocation>',
-            help=('ID or Name of allocation to display details for')
+            help=('ID or Name of allocation to display details for'),
         )
         return parser
 
@@ -39,11 +39,18 @@ class ListGrants(command.Lister):
         client = self.app.client_manager.allocation
         allocation = get_allocation(client, parsed_args.allocation)
         grants = client.grants.list(allocation=allocation.id)
-        columns = ['id', 'grant_id', 'grant_type', 'funding_body_scheme',
-                   'first_year_funded', 'last_year_funded', 'total_funding']
+        columns = [
+            'id',
+            'grant_id',
+            'grant_type',
+            'funding_body_scheme',
+            'first_year_funded',
+            'last_year_funded',
+            'total_funding',
+        ]
         return (
             columns,
-            (osc_utils.get_item_properties(q, columns) for q in grants)
+            (osc_utils.get_item_properties(q, columns) for q in grants),
         )
 
 
@@ -53,12 +60,8 @@ class ShowGrant(command.ShowOne):
     log = logging.getLogger(__name__ + '.ShowGrant')
 
     def get_parser(self, prog_name):
-        parser = super(ShowGrant, self).get_parser(prog_name)
-        parser.add_argument(
-            'id',
-            metavar='<id>',
-            help=('ID of grant')
-        )
+        parser = super().get_parser(prog_name)
+        parser.add_argument('id', metavar='<id>', help=('ID of grant'))
         return parser
 
     def take_action(self, parsed_args):

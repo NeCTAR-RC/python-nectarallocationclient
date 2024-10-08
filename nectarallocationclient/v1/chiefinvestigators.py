@@ -19,15 +19,22 @@ class ChiefInvestigator(base.Resource):
 
 
 class ChiefInvestigatorManager(base.BasicManager):
-
     base_url = 'chiefinvestigators'
     resource_class = ChiefInvestigator
 
     def delete(self, resource_id):
-        self._delete('/%s/%s/' % (self.base_url, resource_id))
+        self._delete(f'/{self.base_url}/{resource_id}/')
 
-    def create(self, allocation, title, given_name, surname, email,
-               primary_organisation, additional_researchers=''):
+    def create(
+        self,
+        allocation,
+        title,
+        given_name,
+        surname,
+        email,
+        primary_organisation,
+        additional_researchers='',
+    ):
         data = {
             'allocation': base.getid(allocation),
             'title': title,
@@ -35,6 +42,6 @@ class ChiefInvestigatorManager(base.BasicManager):
             'surname': surname,
             'email': email,
             'primary_organisation': primary_organisation,
-            'additional_researchers': additional_researchers
+            'additional_researchers': additional_researchers,
         }
-        return self._create('/%s/' % self.base_url, data=data)
+        return self._create(f'/{self.base_url}/', data=data)

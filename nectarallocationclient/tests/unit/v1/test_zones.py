@@ -18,9 +18,8 @@ from nectarallocationclient.tests.unit.v1 import fakes
 
 
 class ZonesTest(utils.TestCase):
-
     def setUp(self):
-        super(ZonesTest, self).setUp()
+        super().setUp()
         self.cs = fakes.FakeClient()
 
     def test_zone_list(self):

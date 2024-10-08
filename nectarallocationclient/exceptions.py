@@ -14,11 +14,11 @@
 
 class ClientException(Exception):
     """The base exception class for all exceptions this library raises."""
+
     message = 'Unknown Error'
     http_status = 'N/A'
 
-    def __init__(self, message=None, request_id=None,
-                 url=None, method=None):
+    def __init__(self, message=None, request_id=None, url=None, method=None):
         self.message = message or self.__class__.message
         self.request_id = request_id
         self.url = url
@@ -30,25 +30,26 @@ class ClientException(Exception):
         return self.http_status
 
     def __str__(self):
-        formatted_string = "%s (HTTP %s)" % (self.message, self.http_status)
+        formatted_string = f"{self.message} (HTTP {self.http_status})"
         if self.request_id:
-            formatted_string += " (Request-ID: %s)" % self.request_id
+            formatted_string += f" (Request-ID: {self.request_id})"
 
         return formatted_string
 
 
 class RetryAfterException(ClientException):
     """The base exception for ClientExceptions that use Retry-After header."""
+
     def __init__(self, *args, **kwargs):
         try:
             self.retry_after = int(kwargs.pop('retry_after'))
         except (KeyError, ValueError):
             self.retry_after = 0
 
-        super(RetryAfterException, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
-class MutipleMeaningException(object):
+class MultipleMeaningException:
     """An mixin for exception that can be enhanced by reading the details"""
 
 
@@ -58,12 +59,14 @@ class CommandError(Exception):
 
 class BadRequest(ClientException):
     """HTTP 400 - Bad request: you sent some malformed data."""
+
     http_status = 400
     message = "Bad request"
 
 
 class Unauthorized(ClientException):
     """HTTP 401 - Unauthorized: bad credentials."""
+
     http_status = 401
     message = "Unauthorized"
 
@@ -72,30 +75,35 @@ class Forbidden(ClientException):
     """HTTP 403 - Forbidden:
     your credentials don't give you access to this resource.
     """
+
     http_status = 403
     message = "Forbidden"
 
 
 class NotFound(ClientException):
     """HTTP 404 - Not found"""
+
     http_status = 404
     message = "Not found"
 
 
 class MethodNotAllowed(ClientException):
     """HTTP 405 - Method Not Allowed"""
+
     http_status = 405
     message = "Method Not Allowed"
 
 
 class NotAcceptable(ClientException):
     """HTTP 406 - Not Acceptable"""
+
     http_status = 406
     message = "Not Acceptable"
 
 
 class Conflict(ClientException):
     """HTTP 409 - Conflict"""
+
     http_status = 409
     message = "Conflict"
 
@@ -104,6 +112,7 @@ class OverLimit(RetryAfterException):
     """HTTP 413 - Over limit:
     you're over the API limits for this time period.
     """
+
     http_status = 413
     message = "Over limit"
 
@@ -112,6 +121,7 @@ class RateLimit(RetryAfterException):
     """HTTP 429 - Rate limit:
     you've sent too many requests for this time period.
     """
+
     http_status = 429
     message = "Rate limit"
 
@@ -124,17 +134,28 @@ class NotImplemented(ClientException):
     """HTTP 501 - Not Implemented:
     the server does not support this operation.
     """
+
     http_status = 501
     message = "Not Implemented"
 
 
-_error_classes = [BadRequest, Unauthorized, Forbidden, NotFound,
-                  MethodNotAllowed, NotAcceptable, Conflict, OverLimit,
-                  RateLimit, NotImplemented]
+_error_classes = [
+    BadRequest,
+    Unauthorized,
+    Forbidden,
+    NotFound,
+    MethodNotAllowed,
+    NotAcceptable,
+    Conflict,
+    OverLimit,
+    RateLimit,
+    NotImplemented,
+]
 _error_classes_enhanced = {}
 _code_map = dict(
     (c.http_status, (c, _error_classes_enhanced.get(c, [])))
-    for c in _error_classes)
+    for c in _error_classes
+)
 
 
 def from_response(response, url, method=None):
@@ -146,8 +167,9 @@ def from_response(response, url, method=None):
     """
 
     if response.status_code:
-        cls, enhanced_classes = _code_map.get(response.status_code,
-                                              (ClientException, []))
+        cls, enhanced_classes = _code_map.get(
+            response.status_code, (ClientException, [])
+        )
 
     req_id = response.headers.get("x-openstack-request-id")
     content_type = response.headers.get("Content-Type", "").split(";")[0]

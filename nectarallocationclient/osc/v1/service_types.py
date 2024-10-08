@@ -25,11 +25,11 @@ class ShowServiceType(command.ShowOne):
     log = logging.getLogger(__name__ + '.ShowServiceType')
 
     def get_parser(self, prog_name):
-        parser = super(ShowServiceType, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.add_argument(
             'service_type',
             metavar='<service_type>',
-            help=('ID of service_type to display details for')
+            help=('ID of service_type to display details for'),
         )
 
         return parser
@@ -62,5 +62,5 @@ class ListServiceTypes(command.Lister):
 
         return (
             columns,
-            (utils.get_item_properties(r, columns) for r in service_types)
+            (utils.get_item_properties(r, columns) for r in service_types),
         )

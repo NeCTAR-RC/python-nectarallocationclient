@@ -25,11 +25,11 @@ class ShowZone(command.ShowOne):
     log = logging.getLogger(__name__ + '.ShowZone')
 
     def get_parser(self, prog_name):
-        parser = super(ShowZone, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.add_argument(
             'zone',
             metavar='<zone>',
-            help=('ID of zone to display details for')
+            help=('ID of zone to display details for'),
         )
 
         return parser
@@ -62,7 +62,7 @@ class ListZones(command.Lister):
 
         return (
             columns,
-            (utils.get_item_properties(r, columns) for r in zones)
+            (utils.get_item_properties(r, columns) for r in zones),
         )
 
 
@@ -78,7 +78,4 @@ class ListComputeHomes(command.Lister):
         zones = client.zones.compute_homes()
         columns = ['Allocation Home', 'Zones']
 
-        return (
-            columns,
-            zones.items()
-        )
+        return (columns, zones.items())

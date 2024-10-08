@@ -23,9 +23,8 @@ LOG = logging.getLogger(__name__)
 
 
 class Allocation(base.Resource):
-
     def __init__(self, manager, info, loaded=False, resp=None):
-        super(Allocation, self).__init__(manager, info, loaded, resp)
+        super().__init__(manager, info, loaded, resp)
         raw_quotas = self.quotas
         self.quotas = []
         self._quota_cache = None
@@ -33,7 +32,7 @@ class Allocation(base.Resource):
             self.quotas.append(quotas.Quota(manager, quota))
 
     def __repr__(self):
-        return "<Allocation %s (%s)>" % (self.id, self.project_name)
+        return f"<Allocation {self.id} ({self.project_name})>"
 
     def approve(self):
         return self.manager.approve(self.id)
@@ -104,9 +103,9 @@ class Allocation(base.Resource):
         if not quotas:
             return {}
         for quota in quotas:
-            kwargs["volumes_%s" % (quota.zone)] = quota.quota
-            kwargs["gigabytes_%s" % (quota.zone)] = quota.quota
-            kwargs["snapshots_%s" % (quota.zone)] = quota.quota
+            kwargs[f"volumes_{quota.zone}"] = quota.quota
+            kwargs[f"gigabytes_{quota.zone}"] = quota.quota
+            kwargs[f"snapshots_{quota.zone}"] = quota.quota
             total += quota.quota
         kwargs['volumes'] = total
         kwargs['gigabytes'] = total
@@ -140,13 +139,17 @@ class Allocation(base.Resource):
 
     def get_allocated_manila_quota(self):
         kwargs = {}
-        kwargs = {'shares': 0, 'gigabytes': 0,
-                  'snapshots': 0, 'snapshot_gigabytes': 0}
+        kwargs = {
+            'shares': 0,
+            'gigabytes': 0,
+            'snapshots': 0,
+            'snapshot_gigabytes': 0,
+        }
 
         quotas = self.get_quota('share')
         for quota in quotas:
             quota_resource = quota.resource.split('.')[1]
-            kwargs["%s_%s" % (quota_resource, quota.zone)] = quota.quota
+            kwargs[f"{quota_resource}_{quota.zone}"] = quota.quota
             kwargs[quota_resource] += quota.quota
         return kwargs
 
@@ -199,14 +202,13 @@ class Allocation(base.Resource):
 
 
 class AllocationManager(base.Manager):
-
     resource_class = Allocation
 
     def list(self, **kwargs):
         return self._list('/allocations/', params=kwargs)
 
     def get(self, allocation_id):
-        return self._get('/allocations/%s/' % allocation_id)
+        return self._get(f'/allocations/{allocation_id}/')
 
     def get_current(self, **kwargs):
         kwargs['parent_request__isnull'] = True
@@ -218,7 +220,7 @@ class AllocationManager(base.Manager):
             raise exceptions.AllocationDoesNotExist()
         else:
             ids = [x.id for x in allocations]
-            raise ValueError("More than one allocation returned: %s" % ids)
+            raise ValueError(f"More than one allocation returned: {ids}")
 
     def get_last_approved(self, **kwargs):
         allocations = self.list(status=states.APPROVED, **kwargs)
@@ -227,18 +229,34 @@ class AllocationManager(base.Manager):
         raise exceptions.AllocationDoesNotExist()
 
     def update(self, allocation_id, **kwargs):
-        return self._update('/allocations/%s/' % allocation_id, data=kwargs)
+        return self._update(f'/allocations/{allocation_id}/', data=kwargs)
 
-    def create(self, project_name, project_description,
-               allocation_home=None, use_case=None,
-               estimated_number_users=1, estimated_project_duration=3,
-               field_of_research_1=None, field_of_research_2=None,
-               field_of_research_3=None,
-               for_percentage_1=0, for_percentage_2=0, for_percentage_3=0,
-               geographic_requirements='', ncris_support='', nectar_support='',
-               usage_patterns='', convert_trial_project=False,
-               associated_site=None, national=False, notifications=True,
-               managed=True, supported_organisations=[], bundle=None):
+    def create(
+        self,
+        project_name,
+        project_description,
+        allocation_home=None,
+        use_case=None,
+        estimated_number_users=1,
+        estimated_project_duration=3,
+        field_of_research_1=None,
+        field_of_research_2=None,
+        field_of_research_3=None,
+        for_percentage_1=0,
+        for_percentage_2=0,
+        for_percentage_3=0,
+        geographic_requirements='',
+        ncris_support='',
+        nectar_support='',
+        usage_patterns='',
+        convert_trial_project=False,
+        associated_site=None,
+        national=False,
+        notifications=True,
+        managed=True,
+        supported_organisations=[],
+        bundle=None,
+    ):
         # Backwards compatibility logic for 'allocation_home' is handled
         # server-side. Maybe we should warn the app that they are
         # using a deprecated feature
@@ -270,19 +288,21 @@ class AllocationManager(base.Manager):
             'managed': managed,
             'bundle': bundle,
             'supported_organisations': [
-                base.getid(x) for x in supported_organisations]
+                base.getid(x) for x in supported_organisations
+            ],
         }
         return self._create('/allocations/', data=data)
 
     def approve(self, allocation_id):
-        return self._create('/allocations/%s/approve/' % allocation_id)
+        return self._create(f'/allocations/{allocation_id}/approve/')
 
     def delete(self, allocation_id):
-        return self._create('/allocations/%s/delete/' % allocation_id)
+        return self._create(f'/allocations/{allocation_id}/delete/')
 
     def amend(self, allocation_id):
-        return self._create('/allocations/%s/amend/' % allocation_id)
+        return self._create(f'/allocations/{allocation_id}/amend/')
 
     def get_approver_info(self, allocation_id):
-        return self._get('/allocations/%s/approver_info/' % allocation_id,
-                         return_raw=True)
+        return self._get(
+            f'/allocations/{allocation_id}/approver_info/', return_raw=True
+        )

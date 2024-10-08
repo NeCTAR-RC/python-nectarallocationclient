@@ -19,6 +19,5 @@ class Resource(base.Resource):
 
 
 class ResourceManager(base.BasicManager):
-
     base_url = 'resources'
     resource_class = Resource

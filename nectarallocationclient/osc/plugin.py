@@ -34,13 +34,13 @@ def make_client(instance):
     :param ClientManager instance: The ClientManager that owns the new client
     """
     plugin_client = utils.get_client_class(
-        API_NAME,
-        instance._api_version[API_NAME],
-        API_VERSIONS)
+        API_NAME, instance._api_version[API_NAME], API_VERSIONS
+    )
 
     endpoint = instance._cli_options.allocation_endpoint
-    client = plugin_client(session=instance.session,
-                           endpoint_override=endpoint)
+    client = plugin_client(
+        session=instance.session, endpoint_override=endpoint
+    )
     return client
 
 
@@ -59,10 +59,12 @@ def build_option_parser(parser):
         '--os-allocation-api-version',
         metavar='<allocation-api-version>',
         help='Nectar Allocation API version, default='
-             + DEFAULT_API_VERSION
-             + ' (Env: OS_ALLOCATION_API_VERSION)')
+        + DEFAULT_API_VERSION
+        + ' (Env: OS_ALLOCATION_API_VERSION)',
+    )
     parser.add_argument(
         '--os-allocation-endpoint',
         metavar='<allocation-endpoint>',
-        help='Nectar Allocation API endpoint')
+        help='Nectar Allocation API endpoint',
+    )
     return parser
