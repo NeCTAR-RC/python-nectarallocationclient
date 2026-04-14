@@ -72,9 +72,9 @@ class FakeClient:
         """
         expected = (method, url)
 
-        assert (
-            self.http_client.callstack
-        ), "Expected {} {} but no calls were made.".format(*expected)
+        assert self.http_client.callstack, (
+            "Expected {} {} but no calls were made.".format(*expected)
+        )
 
         called = self.http_client.callstack[pos][0:2]
 
@@ -113,9 +113,9 @@ class FakeClient:
         """
         expected = (method, url)
 
-        assert (
-            self.http_client.callstack
-        ), "Expected {} {} but no calls were made.".format(*expected)
+        assert self.http_client.callstack, (
+            "Expected {} {} but no calls were made.".format(*expected)
+        )
 
         found = False
         for entry in self.http_client.callstack:
@@ -144,9 +144,9 @@ class FakeClient:
         """
         not_expected = (method, url, data)
         for entry in self.http_client.callstack:
-            assert (
-                not_expected != entry[0:3]
-            ), 'API {} {} data={} was called.'.format(*not_expected)
+            assert not_expected != entry[0:3], (
+                'API {} {} data={} was called.'.format(*not_expected)
+            )
 
     def clear_callstack(self):
         self.http_client.callstack = []
