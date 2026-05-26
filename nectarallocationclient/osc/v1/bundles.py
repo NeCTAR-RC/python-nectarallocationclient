@@ -17,6 +17,7 @@ from osc_lib.command import command
 from osc_lib import utils as osc_utils
 
 from nectarallocationclient import exceptions
+from nectarallocationclient.osc import utils
 
 
 class ListBundles(command.Lister):
@@ -81,4 +82,73 @@ class ShowBundle(command.ShowOne):
         bundle_dict = bundle.to_dict()
         # Don't display quotas in bundle show
         bundle_dict.pop('quotas')
+        return self.dict2columns(bundle_dict)
+
+
+class CreateBundle(command.ShowOne):
+    """Create a bundle."""
+
+    log = logging.getLogger(__name__ + '.CreateBundle')
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument(
+            'name', metavar='<name>', help='Name of the bundle'
+        )
+        parser.add_argument('zone', metavar='<zone>', help='Zone name')
+        parser.add_argument(
+            'order', metavar='<order>', type=int, help='Display order'
+        )
+        parser.add_argument(
+            'su_per_year',
+            metavar='<su_per_year>',
+            type=int,
+            help='SU budget per year',
+        )
+        parser.add_argument(
+            '--description', metavar='<description>', default='', help='Desc'
+        )
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug('take_action(%s)', parsed_args)
+        client = self.app.client_manager.allocation
+        bundle = client.bundles.create(
+            name=parsed_args.name,
+            description=parsed_args.description,
+            zone=parsed_args.zone,
+            order=parsed_args.order,
+            su_per_year=parsed_args.su_per_year,
+        )
+        bundle_dict = bundle.to_dict()
+        bundle_dict.pop('quotas', None)
+        return self.dict2columns(bundle_dict)
+
+
+class SetBundle(command.ShowOne):
+    """Update a bundle."""
+
+    log = logging.getLogger(__name__ + '.SetBundle')
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument('id', metavar='<id>', help=('ID of bundle'))
+        parser.add_argument(
+            '--property',
+            metavar='<key=value>',
+            action='append',
+            help=(
+                'Property to set on the bundle. This can be '
+                'specified multiple times'
+            ),
+        )
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug('take_action(%s)', parsed_args)
+        client = self.app.client_manager.allocation
+        fields = utils.format_parameters(parsed_args.property)
+        bundle = client.bundles.update(parsed_args.id, **fields)
+        bundle_dict = bundle.to_dict()
+        bundle_dict.pop('quotas', None)
         return self.dict2columns(bundle_dict)

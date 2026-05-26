@@ -49,6 +49,9 @@ class OrganisationManager(base.BasicManager):
         }
         return self._create(f"/{self.base_url}/", data=data)
 
+    def update(self, resource_id, **kwargs):
+        return self._update(f"/{self.base_url}/{resource_id}/", data=kwargs)
+
     def approve(self, id):
         self._create(f"/{self.base_url}/{id}/approve/")
 

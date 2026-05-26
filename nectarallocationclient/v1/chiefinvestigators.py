@@ -25,6 +25,9 @@ class ChiefInvestigatorManager(base.BasicManager):
     def delete(self, resource_id):
         self._delete(f'/{self.base_url}/{resource_id}/')
 
+    def update(self, resource_id, **kwargs):
+        return self._update(f'/{self.base_url}/{resource_id}/', data=kwargs)
+
     def create(
         self,
         allocation,

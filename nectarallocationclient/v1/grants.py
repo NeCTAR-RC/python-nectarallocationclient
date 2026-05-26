@@ -29,19 +29,21 @@ class GrantManager(base.BasicManager):
         self,
         allocation,
         grant_type,
-        funding_body_scheme,
-        grant_id,
+        grant_subtype,
         first_year_funded,
         last_year_funded,
         total_funding,
+        funding_body_scheme='',
+        grant_id='',
     ):
         data = {
             'allocation': base.getid(allocation),
             'grant_type': grant_type,
-            'funding_body_scheme': funding_body_scheme,
-            'grant_id': grant_id,
+            'grant_subtype': grant_subtype,
             'first_year_funded': first_year_funded,
             'last_year_funded': last_year_funded,
             'total_funding': total_funding,
+            'funding_body_scheme': funding_body_scheme,
+            'grant_id': grant_id,
         }
         return self._create(f'/{self.base_url}/', data=data)

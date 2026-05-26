@@ -30,3 +30,16 @@ class Bundle(base.Resource):
 class BundleManager(base.BasicManager):
     base_url = 'bundles'
     resource_class = Bundle
+
+    def create(self, name, description, zone, order, su_per_year):
+        data = {
+            'name': name,
+            'description': description,
+            'zone': base.getid(zone),
+            'order': order,
+            'su_per_year': su_per_year,
+        }
+        return self._create(f'/{self.base_url}/', data=data)
+
+    def update(self, resource_id, **kwargs):
+        return self._update(f'/{self.base_url}/{resource_id}/', data=kwargs)

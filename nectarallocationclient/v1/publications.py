@@ -25,9 +25,11 @@ class PublicationManager(base.BasicManager):
     def delete(self, resource_id):
         self._delete(f'/{self.base_url}/{resource_id}/')
 
-    def create(self, allocation, publication):
+    def create(self, allocation, output_type, publication='', doi=''):
         data = {
             'allocation': base.getid(allocation),
+            'output_type': output_type,
             'publication': publication,
+            'doi': doi,
         }
         return self._create(f'/{self.base_url}/', data=data)

@@ -34,3 +34,14 @@ class SitesTest(utils.TestCase):
         self.cs.assert_called('GET', '/sites/kanmantoo/')
         self.assertIsInstance(a, sites.Site)
         self.assertEqual('kanmantoo', a.name)
+
+    def test_site_create(self):
+        a = self.cs.sites.create(name='newsite', display_name='New Site')
+        self.cs.assert_called('POST', '/sites/')
+        self.assertIsInstance(a, sites.Site)
+        self.assertEqual('newsite', a.name)
+
+    def test_site_update(self):
+        a = self.cs.sites.update('kanmantoo', enabled=True)
+        self.cs.assert_called('PATCH', '/sites/kanmantoo/')
+        self.assertTrue(a.enabled)

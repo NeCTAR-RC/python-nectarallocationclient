@@ -35,3 +35,16 @@ class FacilitiesTest(utils.TestCase):
         self.assertIsInstance(a, facilities.Facility)
         self.assertEqual('AMF', a.short_name)
         self.assertEqual('Applied Magic Facility', a.name)
+
+    def test_facility_create(self):
+        a = self.cs.facilities.create(
+            name='New Magic Facility', short_name='NMF'
+        )
+        self.cs.assert_called('POST', '/ncris-facilities/')
+        self.assertIsInstance(a, facilities.Facility)
+        self.assertEqual('NMF', a.short_name)
+
+    def test_facility_update(self):
+        a = self.cs.facilities.update('AMF', name='Applied Magic Facility')
+        self.cs.assert_called('PATCH', '/ncris-facilities/AMF/')
+        self.assertEqual('AMF', a.short_name)

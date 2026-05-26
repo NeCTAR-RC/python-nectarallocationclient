@@ -45,3 +45,8 @@ class OrganisationsTest(utils.TestCase):
         res = self.cs.organisations.decline('2')
         self.cs.assert_called('POST', '/organisations/2/decline/')
         self.assertIsNone(res)
+
+    def test_organisation_update(self):
+        org = self.cs.organisations.update('1', enabled=False)
+        self.cs.assert_called('PATCH', '/organisations/1/')
+        self.assertFalse(org.enabled)

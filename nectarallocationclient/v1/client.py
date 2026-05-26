@@ -14,6 +14,8 @@
 from nectarallocationclient import client
 from nectarallocationclient import exceptions
 from nectarallocationclient.v1 import allocations
+from nectarallocationclient.v1 import approvers
+from nectarallocationclient.v1 import ardc_projects
 from nectarallocationclient.v1 import bundles
 from nectarallocationclient.v1 import chiefinvestigators
 from nectarallocationclient.v1 import facilities
@@ -43,6 +45,8 @@ class Client:
             session, service_type=service_type, **kwargs
         )
         self.allocations = allocations.AllocationManager(self.http_client)
+        self.approvers = approvers.ApproverManager(self.http_client)
+        self.ardc_projects = ardc_projects.ARDCProjectManager(self.http_client)
         self.bundles = bundles.BundleManager(self.http_client)
         self.chiefinvestigators = chiefinvestigators.ChiefInvestigatorManager(
             self.http_client

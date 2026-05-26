@@ -34,3 +34,14 @@ class ZonesTest(utils.TestCase):
         self.cs.assert_called('GET', '/zones/australia/')
         self.assertIsInstance(a, zones.Zone)
         self.assertEqual('australia', a.name)
+
+    def test_zone_create(self):
+        a = self.cs.zones.create(name='tasmania', display_name='Tasmania')
+        self.cs.assert_called('POST', '/zones/')
+        self.assertIsInstance(a, zones.Zone)
+        self.assertEqual('tasmania', a.name)
+
+    def test_zone_update(self):
+        a = self.cs.zones.update('australia', display_name='Oz')
+        self.cs.assert_called('PATCH', '/zones/australia/')
+        self.assertEqual('Oz', a.display_name)

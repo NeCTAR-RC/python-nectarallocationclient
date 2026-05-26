@@ -21,3 +21,27 @@ class Resource(base.Resource):
 class ResourceManager(base.BasicManager):
     base_url = 'resources'
     resource_class = Resource
+
+    def create(
+        self,
+        name,
+        service_type,
+        quota_name,
+        unit,
+        requestable=True,
+        resource_type='integer',
+        help_text='',
+    ):
+        data = {
+            'name': name,
+            'service_type': base.getid(service_type),
+            'quota_name': quota_name,
+            'unit': unit,
+            'requestable': requestable,
+            'resource_type': resource_type,
+            'help_text': help_text,
+        }
+        return self._create(f'/{self.base_url}/', data=data)
+
+    def update(self, resource_id, **kwargs):
+        return self._update(f'/{self.base_url}/{resource_id}/', data=kwargs)

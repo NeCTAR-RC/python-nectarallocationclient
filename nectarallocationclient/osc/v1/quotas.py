@@ -16,6 +16,7 @@ import logging
 from osc_lib.command import command
 from osc_lib import utils as osc_utils
 
+from nectarallocationclient import exceptions
 from nectarallocationclient.osc.v1.allocations import get_allocation
 
 
@@ -107,3 +108,65 @@ class QuotaHistory(command.Lister):
             columns,
             (osc_utils.get_item_properties(r, columns) for r in quota_history),
         )
+
+
+class CreateQuota(command.ShowOne):
+    """Create a quota for an allocation."""
+
+    log = logging.getLogger(__name__ + '.CreateQuota')
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument(
+            'allocation',
+            metavar='<allocation>',
+            help=('ID or Name of allocation'),
+        )
+        parser.add_argument(
+            'resource',
+            metavar='<resource>',
+            help='Resource ID',
+        )
+        parser.add_argument('zone', metavar='<zone>', help='Zone name')
+        parser.add_argument(
+            'quota', metavar='<quota>', type=int, help='Approved quota value'
+        )
+        parser.add_argument(
+            '--requested-quota',
+            metavar='<requested_quota>',
+            type=int,
+            help='Requested quota value (defaults to the approved quota)',
+        )
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug('take_action(%s)', parsed_args)
+        client = self.app.client_manager.allocation
+        allocation = get_allocation(client, parsed_args.allocation)
+        quota = client.quotas.create(
+            allocation=allocation.id,
+            resource=parsed_args.resource,
+            zone=parsed_args.zone,
+            quota=parsed_args.quota,
+            requested_quota=parsed_args.requested_quota,
+        )
+        return self.dict2columns(quota.to_dict())
+
+
+class DeleteQuota(command.Command):
+    """Delete a quota."""
+
+    log = logging.getLogger(__name__ + '.DeleteQuota')
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument('id', metavar='<id>', help=('ID of quota'))
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug('take_action(%s)', parsed_args)
+        client = self.app.client_manager.allocation
+        try:
+            client.quotas.delete(parsed_args.id)
+        except exceptions.NotFound as ex:
+            raise exceptions.CommandError(str(ex))

@@ -37,3 +37,20 @@ class BundlesTest(utils.TestCase):
         self.assertEqual(2, len(b.quotas))
         for bq in b.quotas:
             self.assertIsInstance(bq, bundles.BundleQuota)
+
+    def test_bundle_create(self):
+        b = self.cs.bundles.create(
+            name='platinum',
+            description='biggest',
+            zone='nectar',
+            order=3,
+            su_per_year=5000,
+        )
+        self.cs.assert_called('POST', '/bundles/')
+        self.assertIsInstance(b, bundles.Bundle)
+        self.assertEqual('platinum', b.name)
+
+    def test_bundle_update(self):
+        b = self.cs.bundles.update(1, description='updated')
+        self.cs.assert_called('PATCH', '/bundles/1/')
+        self.assertEqual('updated', b.description)

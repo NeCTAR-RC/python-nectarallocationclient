@@ -21,3 +21,14 @@ class Site(base.Resource):
 class SiteManager(base.BasicManager):
     base_url = 'sites'
     resource_class = Site
+
+    def create(self, name, display_name, enabled=True):
+        data = {
+            'name': name,
+            'display_name': display_name,
+            'enabled': enabled,
+        }
+        return self._create(f'/{self.base_url}/', data=data)
+
+    def update(self, resource_id, **kwargs):
+        return self._update(f'/{self.base_url}/{resource_id}/', data=kwargs)

@@ -14,18 +14,19 @@
 from nectarallocationclient import base
 
 
-class Facility(base.Resource):
+class Approver(base.Resource):
     pass
 
 
-class FacilityManager(base.BasicManager):
-    base_url = 'ncris-facilities'
-    resource_class = Facility
+class ApproverManager(base.BasicManager):
+    base_url = 'approvers'
+    resource_class = Approver
 
-    def create(self, name, short_name):
+    def create(self, username, display_name, sites=None):
         data = {
-            'name': name,
-            'short_name': short_name,
+            'username': username,
+            'display_name': display_name,
+            'sites': [base.getid(s) for s in sites] if sites else [],
         }
         return self._create(f'/{self.base_url}/', data=data)
 

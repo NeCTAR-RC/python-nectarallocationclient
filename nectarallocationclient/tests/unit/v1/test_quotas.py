@@ -55,3 +55,24 @@ class QuotasTest(utils.TestCase):
             },
         )
         self.assertIsInstance(q, quotas.Quota)
+
+    def test_quota_create_allows_zero_requested_quota(self):
+        q = self.cs.quotas.create(
+            allocation=2,
+            resource=4,
+            quota=3,
+            zone='foo',
+            requested_quota=0,
+        )
+        self.cs.assert_called(
+            'POST',
+            '/quotas/',
+            data={
+                'allocation': 2,
+                'resource': 4,
+                'zone': 'foo',
+                'quota': 3,
+                'requested_quota': 0,
+            },
+        )
+        self.assertIsInstance(q, quotas.Quota)

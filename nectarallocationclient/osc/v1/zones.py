@@ -17,6 +17,7 @@ from osc_lib.command import command
 from osc_lib import utils
 
 from nectarallocationclient import exceptions
+from nectarallocationclient.osc import utils as osc_utils
 
 
 class ShowZone(command.ShowOne):
@@ -79,3 +80,61 @@ class ListComputeHomes(command.Lister):
         columns = ['Allocation Home', 'Zones']
 
         return (columns, zones.items())
+
+
+class CreateZone(command.ShowOne):
+    """Create a zone."""
+
+    log = logging.getLogger(__name__ + '.CreateZone')
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument('name', metavar='<name>', help='Name of the zone')
+        parser.add_argument(
+            'display_name',
+            metavar='<display_name>',
+            help='Display name of the zone',
+        )
+        parser.add_argument(
+            '--disabled',
+            action='store_true',
+            help='Create the zone disabled (default: enabled)',
+        )
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug('take_action(%s)', parsed_args)
+        client = self.app.client_manager.allocation
+        zone = client.zones.create(
+            name=parsed_args.name,
+            display_name=parsed_args.display_name,
+            enabled=not parsed_args.disabled,
+        )
+        return self.dict2columns(zone.to_dict())
+
+
+class SetZone(command.ShowOne):
+    """Update a zone."""
+
+    log = logging.getLogger(__name__ + '.SetZone')
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument('zone', metavar='<zone>', help=('ID of zone'))
+        parser.add_argument(
+            '--property',
+            metavar='<key=value>',
+            action='append',
+            help=(
+                'Property to set on the zone. This can be '
+                'specified multiple times'
+            ),
+        )
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug('take_action(%s)', parsed_args)
+        client = self.app.client_manager.allocation
+        fields = osc_utils.format_parameters(parsed_args.property)
+        zone = client.zones.update(parsed_args.zone, **fields)
+        return self.dict2columns(zone.to_dict())

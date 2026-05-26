@@ -18,6 +18,7 @@ from osc_lib.command import command
 from osc_lib import utils as osc_utils
 
 from nectarallocationclient import exceptions
+from nectarallocationclient.osc import utils
 
 
 def get_organisation(client, arg):
@@ -180,4 +181,36 @@ class CreateOrganisation(command.ShowOne):
         }
 
         org = client.organisations.create(**fields)
+        return show_organisation(self, org)
+
+
+class SetOrganisation(command.ShowOne):
+    """Update an Organisation."""
+
+    log = logging.getLogger(__name__ + '.SetOrganisation')
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument(
+            'organisation',
+            metavar='<organisation>',
+            help=('ID, ror_id or name of organisation'),
+        )
+        parser.add_argument(
+            '--property',
+            metavar='<key=value>',
+            action='append',
+            help=(
+                'Property to set on the organisation. This can be '
+                'specified multiple times'
+            ),
+        )
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug('take_action(%s)', parsed_args)
+        client = self.app.client_manager.allocation
+        org = get_organisation(client, parsed_args.organisation)
+        fields = utils.format_parameters(parsed_args.property)
+        org = client.organisations.update(org.id, **fields)
         return show_organisation(self, org)

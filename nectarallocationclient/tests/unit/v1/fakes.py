@@ -20,10 +20,15 @@ from nectarallocationclient import client as base_client
 from nectarallocationclient.tests.unit import fakes
 from nectarallocationclient.tests.unit import utils
 from nectarallocationclient.v1 import allocations
+from nectarallocationclient.v1 import approvers
+from nectarallocationclient.v1 import ardc_projects
 from nectarallocationclient.v1 import bundles
+from nectarallocationclient.v1 import chiefinvestigators
 from nectarallocationclient.v1 import client
 from nectarallocationclient.v1 import facilities
+from nectarallocationclient.v1 import grants
 from nectarallocationclient.v1 import organisations
+from nectarallocationclient.v1 import publications
 from nectarallocationclient.v1 import quotas
 from nectarallocationclient.v1 import resources
 from nectarallocationclient.v1 import service_types
@@ -153,7 +158,14 @@ class FakeClient(fakes.FakeClient, client.Client):
         client.Client.__init__(self, session=mock.Mock())
         self.http_client = FakeSessionClient(**kwargs)
         self.allocations = allocations.AllocationManager(self.http_client)
+        self.approvers = approvers.ApproverManager(self.http_client)
+        self.ardc_projects = ardc_projects.ARDCProjectManager(self.http_client)
         self.bundles = bundles.BundleManager(self.http_client)
+        self.chiefinvestigators = chiefinvestigators.ChiefInvestigatorManager(
+            self.http_client
+        )
+        self.grants = grants.GrantManager(self.http_client)
+        self.publications = publications.PublicationManager(self.http_client)
         self.quotas = quotas.QuotaManager(self.http_client)
         self.resources = resources.ResourceManager(self.http_client)
         self.service_types = service_types.ServiceTypeManager(self.http_client)
@@ -705,3 +717,431 @@ class FakeSessionClient(base_client.SessionClient):
                 "resource": 4,
             },
         )
+
+    def post_sites(self, **kw):
+        return (
+            201,
+            {},
+            {
+                "id": 3,
+                "name": "newsite",
+                "display_name": "New Site",
+                "enabled": True,
+            },
+        )
+
+    def patch_sites_kanmantoo(self, data, **kw):
+        return (
+            200,
+            {},
+            {
+                "name": "kanmantoo",
+                "display_name": "Kanmantoo",
+                "enabled": True,
+            },
+        )
+
+    def post_zones(self, **kw):
+        return (
+            201,
+            {},
+            {"name": "tasmania", "display_name": "Tasmania", "enabled": True},
+        )
+
+    def patch_zones_australia(self, data, **kw):
+        return (
+            200,
+            {},
+            {"name": "australia", "display_name": "Oz", "enabled": True},
+        )
+
+    def post_resources(self, **kw):
+        return (
+            201,
+            {},
+            {
+                "id": 11,
+                "name": "Servers",
+                "quota_name": "instances",
+                "unit": "Servers",
+                "requestable": True,
+                "resource_type": "integer",
+                "help_text": "",
+                "service_type": "compute",
+            },
+        )
+
+    def patch_resources_1(self, data, **kw):
+        return (
+            200,
+            {},
+            {
+                "id": 1,
+                "name": "Instances",
+                "quota_name": "instances",
+                "unit": "servers",
+                "requestable": False,
+                "resource_type": "integer",
+                "service_type": "compute",
+            },
+        )
+
+    def post_service_types(self, **kw):
+        return (
+            201,
+            {},
+            {
+                "catalog_name": "compute",
+                "name": "Compute",
+                "zones": [],
+                "experimental": False,
+                "location_specific": False,
+                "resource_set": [],
+            },
+        )
+
+    def get_service_types_compute(self, **kw):
+        return (
+            200,
+            {},
+            {
+                "catalog_name": "compute",
+                "name": "Compute",
+                "zones": [],
+                "experimental": False,
+                "location_specific": False,
+                "resource_set": [],
+            },
+        )
+
+    def patch_service_types_compute(self, data, **kw):
+        return (
+            200,
+            {},
+            {
+                "catalog_name": "compute",
+                "name": "Compute Updated",
+                "zones": [],
+                "experimental": False,
+                "location_specific": False,
+                "resource_set": [],
+            },
+        )
+
+    def post_ncris_facilities(self, **kw):
+        return (
+            201,
+            {},
+            {"id": 5, "name": "New Magic Facility", "short_name": "NMF"},
+        )
+
+    def patch_ncris_facilities_AMF(self, data, **kw):
+        return (
+            200,
+            {},
+            {"name": "Applied Magic Facility", "short_name": "AMF"},
+        )
+
+    def post_bundles(self, **kw):
+        return (
+            201,
+            {},
+            {
+                "id": 3,
+                "name": "platinum",
+                "description": "biggest",
+                "zone": "nectar",
+                "su_per_year": 5000,
+                "order": 3,
+                "quotas": [],
+            },
+        )
+
+    def patch_bundles_1(self, data, **kw):
+        return (
+            200,
+            {},
+            {
+                "id": 1,
+                "name": "bronze",
+                "description": "updated",
+                "zone": "var",
+                "su_per_year": 3000,
+                "order": 2,
+                "quotas": [],
+            },
+        )
+
+    def patch_organisations_1(self, data, **kw):
+        return (
+            200,
+            {},
+            {
+                "id": 1,
+                "short_name": "KU",
+                "full_name": "Kanmantoo University",
+                "ror_name": "https://ror.org/11111111",
+                "enabled": False,
+            },
+        )
+
+    def get_approvers(self, **kw):
+        approvers = [
+            {
+                "id": 1,
+                "username": "approver1@example.org",
+                "display_name": "Approver One",
+                "sites": [1],
+            },
+            {
+                "id": 2,
+                "username": "approver2@example.org",
+                "display_name": "Approver Two",
+                "sites": [1, 2],
+            },
+        ]
+        return (200, {}, approvers)
+
+    def get_approvers_1(self, **kw):
+        return (
+            200,
+            {},
+            {
+                "id": 1,
+                "username": "approver1@example.org",
+                "display_name": "Approver One",
+                "sites": [1],
+            },
+        )
+
+    def post_approvers(self, **kw):
+        return (
+            201,
+            {},
+            {
+                "id": 3,
+                "username": "approver3@example.org",
+                "display_name": "Approver Three",
+                "sites": [],
+            },
+        )
+
+    def patch_approvers_1(self, data, **kw):
+        return (
+            200,
+            {},
+            {
+                "id": 1,
+                "username": "approver1@example.org",
+                "display_name": "Renamed Approver",
+                "sites": [1],
+            },
+        )
+
+    def get_ardc_projects(self, **kw):
+        projects = [
+            {
+                "id": 1,
+                "name": "Australian BioCommons",
+                "short_name": "BioCommons",
+                "project": True,
+                "project_id": "AP1",
+                "enabled": True,
+                "rank": 100,
+                "explain": False,
+            },
+            {
+                "id": 2,
+                "name": "Some Program",
+                "short_name": "SP",
+                "project": False,
+                "project_id": "",
+                "enabled": True,
+                "rank": 50,
+                "explain": True,
+            },
+        ]
+        return (200, {}, projects)
+
+    def get_ardc_projects_1(self, **kw):
+        return (
+            200,
+            {},
+            {
+                "id": 1,
+                "name": "Australian BioCommons",
+                "short_name": "BioCommons",
+                "project": True,
+                "project_id": "AP1",
+                "enabled": True,
+                "rank": 100,
+                "explain": False,
+            },
+        )
+
+    def post_ardc_projects(self, **kw):
+        return (
+            201,
+            {},
+            {
+                "id": 3,
+                "name": "New Project",
+                "short_name": "NP",
+                "project": True,
+                "project_id": "AP3",
+                "enabled": True,
+                "rank": 100,
+                "explain": False,
+            },
+        )
+
+    def patch_ardc_projects_1(self, data, **kw):
+        return (
+            200,
+            {},
+            {
+                "id": 1,
+                "name": "Australian BioCommons",
+                "short_name": "BioCommons",
+                "project": True,
+                "project_id": "AP1",
+                "enabled": False,
+                "rank": 100,
+                "explain": False,
+            },
+        )
+
+    def get_chiefinvestigators(self, **kw):
+        cis = [
+            {
+                "id": 1,
+                "title": "Dr",
+                "given_name": "Jane",
+                "surname": "Smith",
+                "email": "jane@example.org",
+                "primary_organisation": 1,
+                "additional_researchers": "",
+            },
+        ]
+        return (200, {}, cis)
+
+    def get_chiefinvestigators_1(self, **kw):
+        return (
+            200,
+            {},
+            {
+                "id": 1,
+                "title": "Dr",
+                "given_name": "Jane",
+                "surname": "Smith",
+                "email": "jane@example.org",
+                "primary_organisation": 1,
+                "additional_researchers": "",
+            },
+        )
+
+    def post_chiefinvestigators(self, **kw):
+        return (
+            201,
+            {},
+            {
+                "id": 2,
+                "title": "Prof",
+                "given_name": "John",
+                "surname": "Doe",
+                "email": "john@example.org",
+                "primary_organisation": 1,
+                "additional_researchers": "",
+            },
+        )
+
+    def patch_chiefinvestigators_1(self, data, **kw):
+        return (
+            200,
+            {},
+            {
+                "id": 1,
+                "title": "Prof",
+                "given_name": "Jane",
+                "surname": "Smith",
+                "email": "jane@example.org",
+                "primary_organisation": 1,
+                "additional_researchers": "",
+            },
+        )
+
+    def delete_chiefinvestigators_1(self, **kw):
+        return (204, {}, '')
+
+    def get_grants(self, **kw):
+        grants = [
+            {
+                "id": 1,
+                "allocation": 123,
+                "grant_type": "arc",
+                "funding_body_scheme": "ARC Discovery",
+                "grant_id": "DP123",
+                "first_year_funded": 2020,
+                "last_year_funded": 2023,
+                "total_funding": 100000,
+            },
+        ]
+        return (200, {}, grants)
+
+    def get_grants_1(self, **kw):
+        return (
+            200,
+            {},
+            {
+                "id": 1,
+                "allocation": 123,
+                "grant_type": "arc",
+                "funding_body_scheme": "ARC Discovery",
+                "grant_id": "DP123",
+                "first_year_funded": 2020,
+                "last_year_funded": 2023,
+                "total_funding": 100000,
+            },
+        )
+
+    def post_grants(self, **kw):
+        return (
+            201,
+            {},
+            {
+                "id": 2,
+                "allocation": 123,
+                "grant_type": "nhmrc",
+                "funding_body_scheme": "NHMRC",
+                "grant_id": "GR2",
+                "first_year_funded": 2021,
+                "last_year_funded": 2024,
+                "total_funding": 200000,
+            },
+        )
+
+    def delete_grants_1(self, **kw):
+        return (204, {}, '')
+
+    def get_publications(self, **kw):
+        publications = [
+            {"id": 1, "allocation": 123, "publication": "A great paper"},
+        ]
+        return (200, {}, publications)
+
+    def get_publications_1(self, **kw):
+        return (
+            200,
+            {},
+            {"id": 1, "allocation": 123, "publication": "A great paper"},
+        )
+
+    def post_publications(self, **kw):
+        return (
+            201,
+            {},
+            {"id": 2, "allocation": 123, "publication": "Another paper"},
+        )
+
+    def delete_publications_1(self, **kw):
+        return (204, {}, '')

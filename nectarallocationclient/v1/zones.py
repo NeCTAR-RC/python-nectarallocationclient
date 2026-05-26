@@ -24,3 +24,14 @@ class ZoneManager(base.BasicManager):
 
     def compute_homes(self):
         return self._get(f'/{self.base_url}/compute_homes/', return_raw=True)
+
+    def create(self, name, display_name, enabled=True):
+        data = {
+            'name': name,
+            'display_name': display_name,
+            'enabled': enabled,
+        }
+        return self._create(f'/{self.base_url}/', data=data)
+
+    def update(self, resource_id, **kwargs):
+        return self._update(f'/{self.base_url}/{resource_id}/', data=kwargs)

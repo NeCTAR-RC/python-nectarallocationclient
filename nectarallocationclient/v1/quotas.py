@@ -50,6 +50,8 @@ class QuotaManager(base.Manager):
             'resource': base.getid(resource),
             'zone': zone,
             'quota': quota,
-            'requested_quota': requested_quota or quota,
+            'requested_quota': (
+                quota if requested_quota is None else requested_quota
+            ),
         }
         return self._create(f'/{self.base_url}/', data=data)

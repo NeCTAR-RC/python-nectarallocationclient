@@ -14,18 +14,32 @@
 from nectarallocationclient import base
 
 
-class Facility(base.Resource):
+class ARDCProject(base.Resource):
     pass
 
 
-class FacilityManager(base.BasicManager):
-    base_url = 'ncris-facilities'
-    resource_class = Facility
+class ARDCProjectManager(base.BasicManager):
+    base_url = 'ardc-projects'
+    resource_class = ARDCProject
 
-    def create(self, name, short_name):
+    def create(
+        self,
+        name,
+        short_name,
+        project=True,
+        project_id='',
+        enabled=True,
+        rank=100,
+        explain=False,
+    ):
         data = {
             'name': name,
             'short_name': short_name,
+            'project': project,
+            'project_id': project_id,
+            'enabled': enabled,
+            'rank': rank,
+            'explain': explain,
         }
         return self._create(f'/{self.base_url}/', data=data)
 

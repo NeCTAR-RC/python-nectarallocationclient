@@ -73,3 +73,94 @@ class ShowGrant(command.ShowOne):
             raise exceptions.CommandError(str(ex))
 
         return self.dict2columns(grant.to_dict())
+
+
+class CreateGrant(command.ShowOne):
+    """Create a grant for an allocation."""
+
+    log = logging.getLogger(__name__ + '.CreateGrant')
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument(
+            'allocation',
+            metavar='<allocation>',
+            help=('ID or Name of allocation'),
+        )
+        parser.add_argument(
+            '--grant-type',
+            metavar='<grant_type>',
+            required=True,
+            help='Grant type (e.g. arc, nhmrc, comp, govt, industry, ext, '
+            'institutional)',
+        )
+        parser.add_argument(
+            '--grant-subtype',
+            metavar='<grant_subtype>',
+            required=True,
+            help='Grant subtype (must be valid for the grant type, '
+            'e.g. arc-discovery; use unspecified if none applies)',
+        )
+        parser.add_argument(
+            '--funding-body-scheme',
+            metavar='<scheme>',
+            default='',
+            help='Other funding source details',
+        )
+        parser.add_argument(
+            '--grant-id', metavar='<grant_id>', default='', help='Grant ID'
+        )
+        parser.add_argument(
+            '--first-year-funded',
+            metavar='<year>',
+            type=int,
+            required=True,
+            help='First year funded',
+        )
+        parser.add_argument(
+            '--last-year-funded',
+            metavar='<year>',
+            type=int,
+            required=True,
+            help='Last year funded',
+        )
+        parser.add_argument(
+            '--total-funding',
+            metavar='<amount>',
+            type=float,
+            required=True,
+            help='Total funding amount in AUD',
+        )
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug('take_action(%s)', parsed_args)
+        client = self.app.client_manager.allocation
+        allocation = get_allocation(client, parsed_args.allocation)
+        grant = client.grants.create(
+            allocation=allocation.id,
+            grant_type=parsed_args.grant_type,
+            grant_subtype=parsed_args.grant_subtype,
+            funding_body_scheme=parsed_args.funding_body_scheme,
+            grant_id=parsed_args.grant_id,
+            first_year_funded=parsed_args.first_year_funded,
+            last_year_funded=parsed_args.last_year_funded,
+            total_funding=parsed_args.total_funding,
+        )
+        return self.dict2columns(grant.to_dict())
+
+
+class DeleteGrant(command.Command):
+    """Delete a grant."""
+
+    log = logging.getLogger(__name__ + '.DeleteGrant')
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument('id', metavar='<id>', help=('ID of grant'))
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug('take_action(%s)', parsed_args)
+        client = self.app.client_manager.allocation
+        client.grants.delete(parsed_args.id)

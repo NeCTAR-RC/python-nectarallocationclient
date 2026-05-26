@@ -17,6 +17,7 @@ from osc_lib.command import command
 from osc_lib import utils as osc_utils
 
 from nectarallocationclient import exceptions
+from nectarallocationclient.osc import utils
 
 
 class ListSites(command.Lister):
@@ -57,4 +58,62 @@ class ShowSite(command.ShowOne):
         except exceptions.NotFound as ex:
             raise exceptions.CommandError(str(ex))
 
+        return self.dict2columns(site.to_dict())
+
+
+class CreateSite(command.ShowOne):
+    """Create a site."""
+
+    log = logging.getLogger(__name__ + '.CreateSite')
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument('name', metavar='<name>', help='Name of the site')
+        parser.add_argument(
+            'display_name',
+            metavar='<display_name>',
+            help='Display name of the site',
+        )
+        parser.add_argument(
+            '--disabled',
+            action='store_true',
+            help='Create the site disabled (default: enabled)',
+        )
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug('take_action(%s)', parsed_args)
+        client = self.app.client_manager.allocation
+        site = client.sites.create(
+            name=parsed_args.name,
+            display_name=parsed_args.display_name,
+            enabled=not parsed_args.disabled,
+        )
+        return self.dict2columns(site.to_dict())
+
+
+class SetSite(command.ShowOne):
+    """Update a site."""
+
+    log = logging.getLogger(__name__ + '.SetSite')
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument('id', metavar='<id>', help=('ID of site'))
+        parser.add_argument(
+            '--property',
+            metavar='<key=value>',
+            action='append',
+            help=(
+                'Property to set on the site. This can be '
+                'specified multiple times'
+            ),
+        )
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug('take_action(%s)', parsed_args)
+        client = self.app.client_manager.allocation
+        fields = utils.format_parameters(parsed_args.property)
+        site = client.sites.update(parsed_args.id, **fields)
         return self.dict2columns(site.to_dict())

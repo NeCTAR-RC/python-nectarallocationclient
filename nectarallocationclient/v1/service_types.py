@@ -30,3 +30,29 @@ class ServiceType(base.Resource):
 class ServiceTypeManager(base.BasicManager):
     base_url = 'service-types'
     resource_class = ServiceType
+
+    def create(
+        self,
+        catalog_name,
+        name,
+        description=None,
+        zones=None,
+        notes=None,
+        order=None,
+        experimental=False,
+        location_specific=False,
+    ):
+        data = {
+            'catalog_name': catalog_name,
+            'name': name,
+            'description': description,
+            'zones': [base.getid(z) for z in zones] if zones else [],
+            'notes': notes,
+            'order': order,
+            'experimental': experimental,
+            'location_specific': location_specific,
+        }
+        return self._create(f'/{self.base_url}/', data=data)
+
+    def update(self, resource_id, **kwargs):
+        return self._update(f'/{self.base_url}/{resource_id}/', data=kwargs)

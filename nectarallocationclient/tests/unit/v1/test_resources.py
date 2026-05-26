@@ -34,3 +34,19 @@ class ResourcesTest(utils.TestCase):
         self.cs.assert_called('GET', '/resources/1/')
         self.assertIsInstance(a, resources.Resource)
         self.assertEqual(1, a.id)
+
+    def test_resource_create(self):
+        a = self.cs.resources.create(
+            name='Servers',
+            service_type='compute',
+            quota_name='instances',
+            unit='Servers',
+        )
+        self.cs.assert_called('POST', '/resources/')
+        self.assertIsInstance(a, resources.Resource)
+        self.assertEqual(11, a.id)
+
+    def test_resource_update(self):
+        a = self.cs.resources.update(1, requestable=False)
+        self.cs.assert_called('PATCH', '/resources/1/')
+        self.assertFalse(a.requestable)

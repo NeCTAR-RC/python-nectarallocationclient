@@ -20,94 +20,94 @@ from nectarallocationclient import exceptions
 from nectarallocationclient.osc import utils
 
 
-class ListFacilities(command.Lister):
-    """List NCRIS Facilities."""
+class ListApprovers(command.Lister):
+    """List approvers."""
 
-    log = logging.getLogger(__name__ + '.ListFacilities')
-
-    def get_parser(self, prog_name):
-        parser = super().get_parser(prog_name)
-        return parser
+    log = logging.getLogger(__name__ + '.ListApprovers')
 
     def take_action(self, parsed_args):
         self.log.debug('take_action(%s)', parsed_args)
         client = self.app.client_manager.allocation
-        sites = client.facilities.list()
-        columns = ['id', 'short_name', 'name']
+        approvers = client.approvers.list()
+        columns = ['id', 'username', 'display_name', 'sites']
         return (
             columns,
-            (osc_utils.get_item_properties(s, columns) for s in sites),
+            (osc_utils.get_item_properties(a, columns) for a in approvers),
         )
 
 
-class ShowFacility(command.ShowOne):
-    """Show NCRIS Facility details."""
+class ShowApprover(command.ShowOne):
+    """Show approver details."""
 
-    log = logging.getLogger(__name__ + '.ShowFacility')
+    log = logging.getLogger(__name__ + '.ShowApprover')
 
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
-        parser.add_argument(
-            'id', metavar='<id>', help=('ID of NCRIS Facility')
-        )
+        parser.add_argument('id', metavar='<id>', help=('ID of approver'))
         return parser
 
     def take_action(self, parsed_args):
         self.log.debug('take_action(%s)', parsed_args)
         client = self.app.client_manager.allocation
         try:
-            site = client.facilities.get(parsed_args.id)
+            approver = client.approvers.get(parsed_args.id)
         except exceptions.NotFound as ex:
             raise exceptions.CommandError(str(ex))
 
-        return self.dict2columns(site.to_dict())
+        return self.dict2columns(approver.to_dict())
 
 
-class CreateFacility(command.ShowOne):
-    """Create an NCRIS Facility."""
+class CreateApprover(command.ShowOne):
+    """Create an approver."""
 
-    log = logging.getLogger(__name__ + '.CreateFacility')
+    log = logging.getLogger(__name__ + '.CreateApprover')
 
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
         parser.add_argument(
-            'short_name',
-            metavar='<short_name>',
-            help='Common short name or acronym',
+            'username',
+            metavar='<username>',
+            help='Email address of the approver',
         )
         parser.add_argument(
-            'name',
-            metavar='<name>',
-            help='Full NCRIS facility name',
+            'display_name',
+            metavar='<display_name>',
+            help='Display name of the approver',
+        )
+        parser.add_argument(
+            '--site',
+            metavar='<site>',
+            action='append',
+            default=[],
+            help='Site ID the approver is authorised for (repeat as required)',
         )
         return parser
 
     def take_action(self, parsed_args):
         self.log.debug('take_action(%s)', parsed_args)
         client = self.app.client_manager.allocation
-        facility = client.facilities.create(
-            name=parsed_args.name,
-            short_name=parsed_args.short_name,
+        approver = client.approvers.create(
+            username=parsed_args.username,
+            display_name=parsed_args.display_name,
+            sites=parsed_args.site,
         )
-        return self.dict2columns(facility.to_dict())
+        return self.dict2columns(approver.to_dict())
 
 
-class SetFacility(command.ShowOne):
-    """Update an NCRIS Facility."""
+class SetApprover(command.ShowOne):
+    """Update an approver."""
 
-    log = logging.getLogger(__name__ + '.SetFacility')
+    log = logging.getLogger(__name__ + '.SetApprover')
 
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
-        parser.add_argument(
-            'id', metavar='<id>', help=('ID of NCRIS Facility')
-        )
+        parser.add_argument('id', metavar='<id>', help=('ID of approver'))
         parser.add_argument(
             '--property',
             metavar='<key=value>',
             action='append',
             help=(
-                'Property to set on the facility. This can be '
+                'Property to set on the approver. This can be '
                 'specified multiple times'
             ),
         )
@@ -117,5 +117,5 @@ class SetFacility(command.ShowOne):
         self.log.debug('take_action(%s)', parsed_args)
         client = self.app.client_manager.allocation
         fields = utils.format_parameters(parsed_args.property)
-        facility = client.facilities.update(parsed_args.id, **fields)
-        return self.dict2columns(facility.to_dict())
+        approver = client.approvers.update(parsed_args.id, **fields)
+        return self.dict2columns(approver.to_dict())
