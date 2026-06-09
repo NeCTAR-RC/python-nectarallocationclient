@@ -25,10 +25,25 @@ class ListARDCProjects(command.Lister):
 
     log = logging.getLogger(__name__ + '.ListARDCProjects')
 
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument(
+            '--enabled',
+            action='store_true',
+            help=(
+                'Show only enabled programs and projects (as the '
+                'allocation form does)'
+            ),
+        )
+        return parser
+
     def take_action(self, parsed_args):
         self.log.debug('take_action(%s)', parsed_args)
         client = self.app.client_manager.allocation
-        projects = client.ardc_projects.list()
+        filters = {}
+        if parsed_args.enabled:
+            filters['enabled'] = True
+        projects = client.ardc_projects.list(**filters)
         columns = [
             'id',
             'short_name',
@@ -36,6 +51,8 @@ class ListARDCProjects(command.Lister):
             'project',
             'project_id',
             'enabled',
+            'rank',
+            'explain',
         ]
         return (
             columns,
