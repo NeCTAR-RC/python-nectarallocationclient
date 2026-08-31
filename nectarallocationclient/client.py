@@ -11,6 +11,8 @@
 #   under the License.
 #
 
+from http import cookiejar
+
 from keystoneauth1 import adapter
 from oslo_utils import importutils
 
@@ -25,9 +27,54 @@ def Client(version, *args, **kwargs):
     return client_class(*args, **kwargs)
 
 
+class BlockCookies(cookiejar.DefaultCookiePolicy):
+    """A cookie policy that neither stores nor sends any cookie.
+
+    requests merges a session's cookies into a fresh jar before sending, so
+    only set_ok() is consulted in practice.  That is enough: a cookie that
+    is never stored is never sent.
+    """
+
+    def set_ok(self, cookie, request):
+        return False
+
+    def return_ok(self, cookie, request):
+        return False
+
+
+def disable_cookies(session):
+    """Stop a session holding on to cookies handed out by the API.
+
+    The allocations API is a Django application, and authenticating to it
+    creates a Django session and returns a sessionid cookie.  keystoneauth
+    keeps cookies in its underlying requests.Session for the life of the
+    process, and the API prefers its own session authentication over the
+    token, so a client that hangs on to that cookie stops being
+    authenticated by the token it sends.  Once the keystone token held
+    inside that Django session expires, every subsequent request is
+    silently downgraded to anonymous, and only restarting the process
+    recovers.  Nothing here needs cookies, so drop them.
+    """
+    # A keystoneauth Session, or an Adapter wrapping one, was passed in.
+    # The requests.Session that owns the cookie jar sits at the bottom of
+    # that chain.
+    for _ in range(3):
+        if session is None:
+            return
+        if hasattr(session, 'cookies'):
+            session.cookies.set_policy(BlockCookies())
+            session.cookies.clear()
+            return
+        session = getattr(session, 'session', None)
+
+
 class SessionClient(adapter.Adapter):
     client_name = 'python-nectarallocationclient'
     client_version = nectarallocationclient.__version__
+
+    def __init__(self, session, **kwargs):
+        super().__init__(session, **kwargs)
+        disable_cookies(session)
 
     def request(self, url, method, **kwargs):
         project_id = self.get_project_id()
