@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Added support for Python 3.14. The unit tests now run under
+    Python 3.14 and it has been added to the supported version
+    classifiers.
